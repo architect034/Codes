@@ -87,45 +87,49 @@ void pre()
 }
 void solve()
 {
-   ll x, k;
-   cin >> x >> k;
-   int kitna = 0;
-   int n = primes.size();
-   f(i, 0, n - 1, 1)
+   int n, m;
+   cin >> n >> m;
+   vector<ll> a(n), b(m);
+   for (ll &x : a)
+      cin >> x;
+   for (ll &x : b)
+      cin >> x;
+   int idx = -1;
+   ll res = -1e18 - 10;
+   for (int i = 0; i < n; i++)
    {
-      while (x % primes[i] == 0)
+      for (int j = 0; j < m; j++)
       {
-         kitna++;
-         x /= primes[i];
-      }
-      if (x == 1)
-      {
-         break;
+         if (a[i] * b[j] > res)
+         {
+            res = a[i] * b[j];
+            idx = i;
+         }
       }
    }
-   if (x > 1)
+
+   res = -1e18 - 10;
+   for (int i = 0; i < n; i++)
    {
-      kitna++;
+      if (i == idx)
+         continue;
+      ll x = a[i];
+      for (ll y : b)
+      {
+         res = max(res, x * y);
+      }
    }
-   cout << (kitna >= k) ? "1" : "0";
-   nl;
+   cout << res << "\n";
 }
 int main()
 {
    ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(NULL);
    pre();
    int test_cases = 1;
-   cin >> test_cases;
+   // cin >> test_cases;
    while (test_cases--)
    {
       solve();
    }
    return 0;
 }
-// 1
-// 5
-// 1 3
-// 2 5
-// 4 9
-// 7 8
-// 9 10

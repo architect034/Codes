@@ -83,32 +83,85 @@ void pre()
    freopen("input.txt", "r", stdin);
    freopen("output.txt", "w", stdout);
 #endif
-   sieve();
 }
-void solve()
+bool check(vector<pair<int, int>> v)
 {
-   ll x, k;
-   cin >> x >> k;
-   int kitna = 0;
-   int n = primes.size();
-   f(i, 0, n - 1, 1)
+   sort(all(v));
+   int n = v.size();
+   // cout << "checking\n";
+   // for (int i = 0; i < n; i++)
+   // {
+   //    cout << v[i].ss << " " << v[i].ff << "\n";
+   // }
+   // cout << "checking end\n";
+   for (int i = 1; i < n; i++)
    {
-      while (x % primes[i] == 0)
+      if (v[i].ff < v[i - 1].ss)
       {
-         kitna++;
-         x /= primes[i];
-      }
-      if (x == 1)
-      {
-         break;
+         return false;
       }
    }
-   if (x > 1)
+   return true;
+}
+void solve(int tc)
+{
+   int n;
+   cin >> n;
+   vector<pair<int, pair<int, int>>> in(n);
+   for (int i = 0; i < n; i++)
    {
-      kitna++;
+      cin >> in[i].ff >> in[i].ss.ff;
+      in[i].ss.ss = i;
    }
-   cout << (kitna >= k) ? "1" : "0";
-   nl;
+   sort(all(in));
+   map<int, int> m;
+   for (int i = 0; i < n; i++)
+   {
+      m[in[i].ss.ss] = i;
+   }
+   vector<char> res(n);
+   res[in[0].ss.ss] = 'J';
+   int last = in[0].ss.ff;
+   // cout << in[0].ff << " " << in[0].ss.ff << " Add hua\n";
+   for (int i = 1; i < n; i++)
+   {
+      if (in[i].ff >= last)
+      {
+         res[in[i].ss.ss] = 'J';
+         last = in[i].ss.ff;
+         // cout << in[i].ff << " " << in[i].ss.ff << " Add hua\n";
+      }
+   }
+
+   vector<pair<int, int>> tmp;
+   for (int i = 0; i < n; i++)
+   {
+      if (res[i] != 'J')
+      {
+         res[i] = 'C';
+         int idx = m[i];
+         tmp.pb({in[idx].ff, in[idx].ss.ff});
+      }
+   }
+   // for (char c : res)
+   // {
+   //    cout << c;
+   // }
+   // nl;
+
+   if (check(tmp))
+   {
+      cout << "Case #" << tc << ": ";
+      for (char ch : res)
+      {
+         cout << ch;
+      }
+      nl;
+   }
+   else
+   {
+      cout << "Case #" << tc << ": IMPOSSIBLE\n";
+   }
 }
 int main()
 {
@@ -116,16 +169,9 @@ int main()
    pre();
    int test_cases = 1;
    cin >> test_cases;
-   while (test_cases--)
+   for (int i = 1; i <= test_cases; i++)
    {
-      solve();
+      solve(i);
    }
    return 0;
 }
-// 1
-// 5
-// 1 3
-// 2 5
-// 4 9
-// 7 8
-// 9 10

@@ -83,32 +83,40 @@ void pre()
    freopen("input.txt", "r", stdin);
    freopen("output.txt", "w", stdout);
 #endif
-   sieve();
 }
-void solve()
+void solve(int tc)
 {
-   ll x, k;
-   cin >> x >> k;
-   int kitna = 0;
-   int n = primes.size();
-   f(i, 0, n - 1, 1)
+   string s;
+   cin >> s;
+   int op = 0, n = s.length();
+   string res = "";
+   for (int i = 0; i < n; i++)
    {
-      while (x % primes[i] == 0)
+      int x = s[i] - '0';
+      if (op < x)
       {
-         kitna++;
-         x /= primes[i];
+         while (op != x)
+         {
+            res += '(';
+            op++;
+         }
       }
-      if (x == 1)
+      else if (op > x)
       {
-         break;
+         while (op != x)
+         {
+            res += ')';
+            op--;
+         }
       }
+      res += s[i];
    }
-   if (x > 1)
+   while (op != 0)
    {
-      kitna++;
+      res += ')';
+      op--;
    }
-   cout << (kitna >= k) ? "1" : "0";
-   nl;
+   cout << "Case #" << tc << ": " << res << "\n";
 }
 int main()
 {
@@ -116,16 +124,9 @@ int main()
    pre();
    int test_cases = 1;
    cin >> test_cases;
-   while (test_cases--)
+   for (int i = 1; i <= test_cases; i++)
    {
-      solve();
+      solve(i);
    }
    return 0;
 }
-// 1
-// 5
-// 1 3
-// 2 5
-// 4 9
-// 7 8
-// 9 10

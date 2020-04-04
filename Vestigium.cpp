@@ -83,32 +83,40 @@ void pre()
    freopen("input.txt", "r", stdin);
    freopen("output.txt", "w", stdout);
 #endif
-   sieve();
 }
-void solve()
+void solve(int tc)
 {
-   ll x, k;
-   cin >> x >> k;
-   int kitna = 0;
-   int n = primes.size();
-   f(i, 0, n - 1, 1)
+   int n;
+   cin >> n;
+   int a[n][n];
+   int trace = 0;
+   for (int i = 0; i < n; i++)
    {
-      while (x % primes[i] == 0)
+      for (int j = 0; j < n; j++)
       {
-         kitna++;
-         x /= primes[i];
-      }
-      if (x == 1)
-      {
-         break;
+         cin >> a[i][j];
+         if (i == j)
+            trace += a[i][j];
       }
    }
-   if (x > 1)
+   int repeated_on_rows = 0, repeated_on_cols = 0;
+   for (int i = 0; i < n; i++)
    {
-      kitna++;
+      set<int> s;
+      for (int j = 0; j < n; j++)
+         s.insert(a[i][j]);
+      if (s.size() != n)
+         repeated_on_rows++;
    }
-   cout << (kitna >= k) ? "1" : "0";
-   nl;
+   for (int i = 0; i < n; i++)
+   {
+      set<int> s;
+      for (int j = 0; j < n; j++)
+         s.insert(a[j][i]);
+      if (s.size() != n)
+         repeated_on_cols++;
+   }
+   cout << "Case #" << tc << ": " << trace << " " << repeated_on_rows << " " << repeated_on_cols << "\n";
 }
 int main()
 {
@@ -116,16 +124,9 @@ int main()
    pre();
    int test_cases = 1;
    cin >> test_cases;
-   while (test_cases--)
+   for (int i = 1; i <= test_cases; i++)
    {
-      solve();
+      solve(i);
    }
    return 0;
 }
-// 1
-// 5
-// 1 3
-// 2 5
-// 4 9
-// 7 8
-// 9 10

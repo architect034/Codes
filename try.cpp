@@ -1,57 +1,159 @@
 #include <bits/stdc++.h>
+#define ll long long
+#define f(i, st, en, in) for (ll i = st; i <= en; i += in)
+#define rf(i, st, en, de) for (ll i = st; i >= en; i -= de)
+#define pb push_back
+#define pf push_front
+#define popb pop_back
+#define popf pop_front
+#define mp make_pair
+#define ff first
+#define ss second
+#define endl '\n'
+#define all(something) something.begin(), something.end()
+#define yes cout << "YES\n"
+#define no cout << "NO\n"
+#define ps(x) cout << x << " "
+#define pl(x) cout << x << endl
+#define nl cout << endl
 using namespace std;
-int main()
+const int MAX = 1e5 + 9;
+const ll mod = 1e9 + 7;
+vector<bool> prime(MAX, 1);
+vector<int> spf(MAX, 1);
+vector<int> primes;
+void sieve()
+{
+	prime[0] = prime[1] = 0;
+	spf[2] = 2;
+	f(i, 4, MAX - 1, 2)
+	{
+		spf[i] = 2;
+		prime[i] = 0;
+	}
+	primes.pb(2);
+	f(i, 3, MAX - 1, 2)
+	{
+		if (prime[i])
+		{
+			primes.pb(i);
+			spf[i] = i;
+			f(j, i * i, MAX - 1, i)
+			{
+				prime[j] = 0;
+				if (spf[j] == 1)
+				{
+					spf[j] = i;
+				}
+			}
+		}
+	}
+}
+ll power(ll a, ll b)
+{
+	ll res = 1;
+	while (b)
+	{
+		if (b & 1)
+		{
+			res = res * a;
+		}
+		a = a * a;
+		b = b >> 1;
+	}
+	return res;
+}
+ll power(ll a, ll b, ll m)
+{
+	ll res = 1;
+	while (b)
+	{
+		if (b & 1)
+		{
+			res = (res * a) % m;
+		}
+		a = (a * a) % m;
+		b = b >> 1;
+	}
+	return res % m;
+}
+void pre()
 {
 #ifndef ONLINE_JUDGE
 	freopen("input.txt", "r", stdin);
 	freopen("output.txt", "w", stdout);
 #endif
-	int t;
-	cin >> t;
-	while (t--)
+}
+bool check(vector<pair<int, int>> v)
+{
+	sort(all(v));
+	int n = v.size();
+	for (int i = 1; i < n; i++)
 	{
-		string s;
-		cin >> s;
-		int n = s.length();
-		int i = 0, j = -1;
-		vector<int> hash(26, 0), h(26, 0);
-		//vector 'hash' string s ke characters ko hash krne k lie
-		//vector 'h' i to j k segment ko hash kar raha hai in the program
-		for (char c : s)
-			hash[c - 'a']++;
-		int ans = n;
-		while (j <= n)
+		if (v[i].ss < v[i - 1].ff)
 		{
-			//yaha check ho raha hai ki i se j ke andar string k sabhi characters hai yaa nahi
-			bool say = 1;
-			for (int k = 0; k < 26; k++)
+			return false;
+		}
+	}
+	return true;
+}
+void solve(int tc)
+{
+	int n;
+	cin >> n;
+	vector<int> arr(n), dep(n);
+	for (int i = 0; i < n; i++)
+	{
+		cin >> arr[i] >> dep[i];
+	}
+	int l = power(2, n);
+	for (int i = 0; i < l; i++)
+	{
+		int x = i;
+		int idx = 0;
+		vector<pair<int, int>> cam, jam;
+		vector<char> res(n);
+		while (x)
+		{
+			if (x & 1)
 			{
-				if (hash[k] > 0 && h[k] == 0)
-				{
-					say = 0;
-					break;
-				}
+				cam.pb({dep[idx], arr[idx]});
+				res[idx] = 'C';
 			}
-			//agar saare charcters the i to j ke beech then ans is min(ans,j-i+1)
-			//aur left pointer ko forward move kr denge aur woh jispe point kar
-			//raha tha woh character k frequency of ek kam kr denge kyunki ab woh
-			//i to j k beech nahi raha (i.e i increment hogaya hai)
-			if (say)
+			idx++;
+			x /= 2;
+		}
+		for (int j = 0; j < n; j++)
+		{
+			if (res[j] != 'C')
 			{
-				ans = min(ans, j - i + 1);
-				h[s[i] - 'a']--;
-				i++;
-			}
-			//agar nahi hai saare characters iska matlb hmlog ko apne segment ka
-			//length badhana hai and islie j ko increment kar rahe hai aur
-			//ab woh jispe point kar raha hai uska frequency 1 badh gaya hai
-			else
-			{
-				j++;
-				if (j < n)
-					h[s[j] - 'a']++;
+				res[j] = 'J';
+				jam.pb({dep[j], arr[j]});
 			}
 		}
-		cout << ans << "\n";
+		bool say = check(cam) && check(jam);
+		if (say)
+		{
+			cout << "Case #" << tc << ": ";
+			for (char ch : res)
+			{
+				cout << ch;
+			}
+			nl;
+			return;
+		}
 	}
+	cout << "Case #" << tc << ": IMPOSSIBLE\n";
+}
+int main()
+{
+	ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(NULL);
+	pre();
+	int test_cases = 1;
+	cin >> test_cases;
+	for (int i = 1; i <= test_cases; i++)
+	{
+		solve(i);
+	}
+	return 0;
 }
