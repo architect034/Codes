@@ -1,0 +1,48 @@
+#include<bits/stdc++.h>
+using namespace std;
+const long long mod = 1e9+7;
+long long dp[1000010][11];
+bool b[1000010][11];
+long long nn;
+vector<long long> h(10,0);
+long long solve(vector<long long>&arr,long long i,long long cur,long long n,long long m,long long s){
+    if(s==n){
+        if(cur==0){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+    if(i==n){
+        if(s!=n)return 0;
+        if(cur==0){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+    if(b[i][cur]){
+        return dp[i][cur];
+    }
+    b[i][cur]=1;
+    return dp[i][cur]=((h[i]*(solve(arr,i,(cur+arr[i])%m,n,m,s+1)%mod)%mod)+(solve(arr,i+1,cur,n,m,s)%mod)+(h[i]*(solve(arr,i+1,(cur+arr[i])%m,n,m,s+1)%mod)%mod))%mod;
+}
+int main(){
+    long long n,m,l;
+    cin>>n>>m>>l;
+    nn=n;
+    vector<long long> v(l);
+    for(long long i=0;i<l;i++){
+        cin>>v[i];
+        v[i]=v[i]%m;
+        h[v[i]]++;
+    }
+    vector<long long> arr;
+    for(long long i=0;i<10;i++){
+        if(h[i]>0){
+            arr.push_back(i);
+        }   
+    }
+    cout<<solve(arr,0,0,(long long)arr.size(),m,0)-1;
+    return 0;
+}n

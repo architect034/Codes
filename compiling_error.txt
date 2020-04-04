@@ -1,0 +1,4 @@
+/home/gobind/Codes/GC Code.cpp: In function ‘void solve()’:
+/home/gobind/Codes/GC Code.cpp:115:10: error: return-statement with a value, in function returning 'void' [-fpermissive]
+   return ans;
+          ^~~

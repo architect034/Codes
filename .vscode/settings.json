@@ -1,0 +1,8 @@
+{
+   "files.associations": {
+      "iostream": "cpp",
+      "random": "cpp",
+      "type_traits": "cpp"
+   },
+   "editor.formatOnSave": true
+}
