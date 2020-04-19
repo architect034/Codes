@@ -1,7 +1,8 @@
 #include <bits/stdc++.h>
+#define Fast ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(NULL)
 #define ll long long
-#define f(i, st, en, in) for (ll i = st; i <= en; i += in)
-#define rf(i, st, en, de) for (ll i = st; i >= en; i -= de)
+#define f(i, a, b) for (int i = a; i < b; i++)
+#define rf(i, a, b) for (int i = a; i >= b; i--)
 #define pb push_back
 #define pf push_front
 #define popb pop_back
@@ -13,8 +14,6 @@
 #define all(something) something.begin(), something.end()
 #define yes cout << "YES\n"
 #define no cout << "NO\n"
-#define ps(x) cout << x << " "
-#define pl(x) cout << x << endl
 #define nl cout << endl
 using namespace std;
 const int MAX = 1e5 + 9;
@@ -110,10 +109,10 @@ void solve()
    cout << (kitna >= k) ? "1" : "0";
    nl;
 }
-int main()
-{
-   ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(NULL);
-   pre();
+void real_main() {}
+signed main() {
+   Fast;
+   virtual_main();
    int test_cases = 1;
    cin >> test_cases;
    while (test_cases--)
