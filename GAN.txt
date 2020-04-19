@@ -1,2 +1,35 @@
-The idea of text-to-image synthesis has been a very popular topic in the field of Deep Learning and many approaches exist for generating images based on the textual descriptions provided which their some advantages as well as some limitations. Autoencoders were used initially for generating images but it had some limitations. They were only efficient in generating images that were similar to the images they were trained on and faced difficulty in generating images which differ a lot from the images of the training set and as such on a description which is completely different from the training set would result to an image which would not correspond to the provided description. The introduction of Generative Adversarial Networks(GANs) in 2014 by Ian Goodfellow brought a remarkable change into the field of image generation and was able to generate images of much better resolution and details than that produced by earlier methods. It too suffer from some limitations which was on trying to generate images of higher resolution the images seem to deviate away from the descriptions provided. And also GANs are very hard to train. It also sometimes from non-convergence and the model parameters keep on oscillating and never converge, and results in generating a much lower resolution image. In Spite of these few drawbacks, GAN still seems to do a far better job at generating images than the other existing methods used.
-	Moreover, no work has been done using GANs for generating images of a particular domain. All the work has been done for images which are of a range of domains and did not focus on generating specific images. Our idea is to focus mainly on the human faces and generating images based on the descriptions provided, by trying to come up with a new architecture or trying different combinations of already existing GAN models with some tweaks to get better, more detailed and higher resolution images. 
+
+
+
+
+
+
+
+There are various versions of GANS that
+can be used to get desired results like 
+there are Comditional Gans , Attention Gans
+etc.  etc 
+So In conditional Gans we can specify how 
+the generated inages should like like. 
+The input which is fed to the generator 
+can be conitioned with the required
+attributes that we want in the image.
+and the genearted image has those attributes 
+in it..............................
+So, how does basic text-to-image generation
+using Gans work..The generator and the
+discriminator networks are basically deep 
+convolutional neural networks which works
+adversarially.The text description is 
+encoded and sent as input to the generator.
+The generator then produces an image as output
+this image and the description is provided
+as input to the discriminator and the 
+discriminator then checks whether the 
+image matches with the descriptions or not
+And upon various iterations,the generator
+becomes able to produce images exactly as given 
+in the descriptons.
+
+
+

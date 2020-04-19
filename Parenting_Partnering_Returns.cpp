@@ -20,8 +20,7 @@ using namespace std;
 const int MAX = 1e5 + 9;
 const ll mod = 1e9 + 7;
 vector<bool> prime(MAX, 1);
-vector<int> spf(MAX, 1);
-vector<int> primes;
+vector<int> spf(MAX, 1), primes;
 void sieve()
 {
    prime[0] = prime[1] = 0;
@@ -88,12 +87,6 @@ bool check(vector<pair<int, int>> v)
 {
    sort(all(v));
    int n = v.size();
-   // cout << "checking\n";
-   // for (int i = 0; i < n; i++)
-   // {
-   //    cout << v[i].ss << " " << v[i].ff << "\n";
-   // }
-   // cout << "checking end\n";
    for (int i = 1; i < n; i++)
    {
       if (v[i].ff < v[i - 1].ss)

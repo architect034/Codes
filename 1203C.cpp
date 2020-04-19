@@ -1,7 +1,8 @@
 #include <bits/stdc++.h>
+#define Fast ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(NULL)
 #define ll long long
-#define f(i, st, en, in) for (ll i = st; i <= en; i += in)
-#define rf(i, st, en, de) for (ll i = st; i >= en; i -= de)
+#define f(i, n) for (int i = 0; i < n; i++)
+#define rf for (int i = n; i >= 0; i--)
 #define pb push_back
 #define pf push_front
 #define popb pop_back
@@ -17,42 +18,36 @@
 #define pl(x) cout << x << endl
 #define nl cout << endl
 using namespace std;
-const int MAX = 1e7 + 9;
+const int MAX = 1e5 + 9;
 const ll mod = 1e9 + 7;
 vector<bool> prime(MAX, 1);
 vector<int> spf(MAX, 1);
-void sieve()
-{
+vector<int> primes;
+void sieve() {
    prime[0] = prime[1] = 0;
    spf[2] = 2;
-   f(i, 4, MAX - 1, 2)
-   {
+   for (ll i = 4; i < MAX; i += 2) {
       spf[i] = 2;
       prime[i] = 0;
    }
-   f(i, 3, MAX - 1, 2)
-   {
-      if (prime[i])
-      {
+   primes.pb(2);
+   for (ll i = 3; i < MAX; i += 2) {
+      if (prime[i]) {
+         primes.pb(i);
          spf[i] = i;
-         f(j, i * i, MAX - 1, i)
-         {
+         for (ll j = i * i; j < MAX; j += i) {
             prime[j] = 0;
-            if (spf[j] == 1)
-            {
+            if (spf[j] == 1) {
                spf[j] = i;
             }
          }
       }
    }
 }
-ll power(ll a, ll b)
-{
+ll power(ll a, ll b) {
    ll res = 1;
-   while (b)
-   {
-      if (b & 1)
-      {
+   while (b) {
+      if (b & 1) {
          res = res * a;
       }
       a = a * a;
@@ -60,13 +55,10 @@ ll power(ll a, ll b)
    }
    return res;
 }
-ll power(ll a, ll b, ll m)
-{
+ll power(ll a, ll b, ll m) {
    ll res = 1;
-   while (b)
-   {
-      if (b & 1)
-      {
+   while (b) {
+      if (b & 1) {
          res = (res * a) % m;
       }
       a = (a * a) % m;
@@ -74,44 +66,40 @@ ll power(ll a, ll b, ll m)
    }
    return res % m;
 }
-void pre()
-{
+void virtual_main() {
 #ifndef ONLINE_JUDGE
    freopen("input.txt", "r", stdin);
    freopen("output.txt", "w", stdout);
 #endif
 }
-void solve()
-{
+void real_main() {
    int n;
    cin >> n;
-   ll ans = 0;
-   set<ll> s;
-   for (int i = 0; i < n; i++)
-   {
-      ll x;
-      cin >> x;
-      ans = __gcd(ans, x);
+   vector<ll> v(n);
+   for (auto& x : v) cin >> x;
+   ll g = 0;
+   for (int i = 0; i < n; i++) {
+      g = __gcd(g, v[i]);
    }
-   for (ll i = 1; i * i <= ans; i++)
-   {
-      if (ans % i == 0)
-      {
-         s.insert(i);
-         s.insert(ans / i);
+   int ans = 0;
+   for (ll i = 1; i <= sqrt(g); i++) {
+      if (g % i == 0) {
+         ans++;
+         if (i != g / i) {
+            ans++;
+         }
       }
    }
-   cout << s.size() << "\n";
+   pl(ans);
 }
-int main()
-{
-   ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(NULL);
-   pre();
+signed main() {
+   Fast;
+   virtual_main();
    int test_cases = 1;
    // cin >> test_cases;
-   while (test_cases--)
-   {
-      solve();
+   for (int i = 1; i <= test_cases; i++) {
+      // cout << "Case #" << tc << ": ";
+      real_main();
    }
    return 0;
 }

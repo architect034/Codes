@@ -4,5 +4,6 @@
       "random": "cpp",
       "type_traits": "cpp"
    },
-   "editor.formatOnSave": true
+   "editor.formatOnSave": true,
+   "C_Cpp.errorSquiggles": "Disabled"
 }

@@ -2,120 +2,125 @@
  *architect034
  *NIT Silchar<36>
 */
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
-#define bhago   ios_base::sync_with_stdio(false),cin.tie(NULL),cout.tie(NULL)
-#define ll   long long
+#define bhago ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(NULL)
+#define ll long long
 #define ull unsigned long long
-#define loop(i,start,end,increment)   for(ll i=start;i<=end;i+=increment)
-#define ulta(i,start,end,decrement)   for(int i=start;i>=end;i-=decrement)
-#define pb   push_back
-#define popb   pop_back
-#define pf   push_front
-#define popf   pop_front
-#define mp   make_pair
-#define FF   first
-#define SS   second
-#define all(something)   something.begin(),something.end()
-#define vecitr   vector<ll>::iterator
-#define setitr   set<ll>::iterator0
-#define mapitr   map<ll,ll>::iterator
-#define mod   1000000007
+#define loop(i, start, end, increment) for (ll i = start; i <= end; i += increment)
+#define ulta(i, start, end, decrement) for (int i = start; i >= end; i -= decrement)
+#define pb push_back
+#define popb pop_back
+#define pf push_front
+#define popf pop_front
+#define mp make_pair
+#define FF first
+#define SS second
+#define all(something) something.begin(), something.end()
+#define vecitr vector<ll>::iterator
+#define setitr set<ll>::iterator0
+#define mapitr map<ll, ll>::iterator
+#define mod 1000000007
 void debug(string s)
 {
-	cout<<s<<"\n";
+	cout << s << "\n";
 }
 const int MAX = 2000007;
 bool prime[MAX];
 int sp[MAX];
 void sieve()
 {
-	for (int i=2;i<MAX;i+=2)
+	for (int i = 2; i < MAX; i += 2)
 	{
-		sp[i]=2;
+		sp[i] = 2;
 	}
-	for(ll i=3;i<MAX;i+=2)
+	for (ll i = 3; i < MAX; i += 2)
 	{
-		if(!prime[i])
+		if (!prime[i])
 		{
-			sp[i]=i;
-			for(ll j=i;(j*i)<MAX;j+=2)
+			sp[i] = i;
+			for (ll j = i; (j * i) < MAX; j += 2)
 			{
-				if(!prime[j*i])
+				if (!prime[j * i])
 				{
-					prime[j*i]=true;
-					sp[j*i]=i;
+					prime[j * i] = true;
+					sp[j * i] = i;
 				}
 			}
 		}
 	}
 }
-ll GCD(ll a,ll b)
+ll GCD(ll a, ll b)
 {
-	ll c=a%b;
-	while(c!=0)
+	ll c = a % b;
+	while (c != 0)
 	{
-		a=b;
-		b=c;
-		c=a%b;
+		a = b;
+		b = c;
+		c = a % b;
 	}
 	return b;
 }
-ll power(ll a,ll b)
+ll power(ll a, ll b)
 {
-	ll ans=1;
-	while(b!=0)
+	ll ans = 1;
+	while (b != 0)
 	{
-		if(b%2==1)
-			ans*=a;
-		a*=a;
-		b=b>>1;
+		if (b % 2 == 1)
+			ans *= a;
+		a *= a;
+		b = b >> 1;
 	}
 	return ans;
 }
 int main()
 {
 	bhago;
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+	freopen("output.txt", "w", stdout);
+#endif
 	int n;
 	int total;
-	cin>>total;
-	cin>>n;
+	cin >> total;
+	cin >> n;
 	int a[n];
-	loop(i,0,n-1,1)
+	loop(i, 0, n - 1, 1)
 	{
-		cin>>a[i];
+		cin >> a[i];
 	}
-	
-	int ways[n][total+1];
-	loop(i,0,total,1)
+
+	int ways[n][total + 1];
+	loop(i, 0, total, 1)
 	{
-		ways[0][i]=1;
+		ways[0][i] = 1;
 	}
-	loop(i,0,n-1,1)
+	loop(i, 0, n - 1, 1)
 	{
-		ways[i][0]=1;
+		ways[i][0] = 1;
 	}
-	for(int i=1;i<n;i++)
+	for (int i = 1; i < n; i++)
 	{
-		for(int j=1;j<=total;j++)
+		for (int j = 1; j <= total; j++)
 		{
-			if(a[i]>j)
+			if (a[i] > j)
 			{
-				ways[i][j]=ways[i-1][j];
+				ways[i][j] = ways[i - 1][j];
 			}
 			else
 			{
-				ways[i][j]=(ways[i-1][j]+ways[i][j-a[i]]);
+				ways[i][j] = (ways[i - 1][j] + ways[i][j - a[i]]);
 			}
 		}
 	}
-	loop(i,0,n-1,1)
+	loop(i, 0, n - 1, 1)
 	{
-		loop(j,0,total,1)
+		loop(j, 0, total, 1)
 		{
-			cout<<ways[i][j]<<" ";
+			cout << ways[i][j] << " ";
 		}
-		cout<<"\n";
+		cout << "\n";
 	}
+
 	return 0;
 }
