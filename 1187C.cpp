@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 #define Fast ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(NULL)
 #define ll long long
-#define ull unsigned long long
 #define f(i, a, b) for (int i = a; i < b; i++)
 #define rf(i, a, b) for (int i = a; i >= b; i--)
 #define pb push_back
@@ -17,9 +16,8 @@
 #define no cout << "NO\n"
 #define nl cout << endl
 using namespace std;
-#define int long long
 const int MAX = 1e5 + 9;
-const ll mod = (ll)1e9 + 7;
+const ll mod = 1e9 + 7;
 vector<bool> prime(MAX, 1);
 vector<int> spf(MAX, 1), primes;
 void sieve() {
@@ -88,15 +86,15 @@ T power(T a, T b) {
 }
 template <typename T>
 T power(T a, T b, T m) {
-   T res = 1;
+   ll res = 1;
    while (b) {
       if (b & 1) {
-         res = (res * a) % mod;
+         res = (res * a) % m;
       }
-      a = (a * a) % mod;
+      a = (a * a) % m;
       b = b >> 1;
    }
-   return res % mod;
+   return res % m;
 }
 void virtual_main() {
 #ifndef ONLINE_JUDGE
@@ -105,25 +103,67 @@ void virtual_main() {
 #endif
 }
 void real_main() {
-   ll n;
-   cin >> n;
-   map<ll, ll> m;
-   for (ll i = 0; i < n; i++) {
-      ll x;
-      cin >> x;
-      m[x]++;
+   int n, q;
+   cin >> n >> q;
+   vector<pair<int, int>> v, red;
+   f(i, 0, q) {
+      int t, l, r;
+      in(t, l, r);
+      if (t)
+         v.pb({l, r});
+      else
+         red.pb({l, r});
    }
-   ll nof = 1;
-   ll prev = 1;
-   for (auto x : m) {
-      ll a = x.ff;
-      ll k = x.ss;
-      ll p = (k * (k + 1)) / 2;
-      ll tmp = power(a, nof, mod) % mod;
-      prev = (((power(tmp, p, mod) % mod) % mod) * (power(prev, k + 1, mod) % mod)) % mod;
-      nof = (nof * (k + 1)) % (mod - 1);
+   sort(all(v));
+   vector<pair<int, int>> intervals;
+   if (!v.size()) {
+      yes;
+      rf(i, n, 1) {
+         ps(i);
+      }
+      return;
    }
-   pl<ll>(prev);
+   intervals.pb({v[0].ff, v[0].ss});
+   f(i, 1, v.size()) {
+      int st = v[i].ff;
+      int en = intervals.back().ss;
+      if (st <= en) {
+         intervals.back().ss = max(en, v[i].ss);
+      } else {
+         intervals.pb({v[i].ff, v[i].ss});
+      }
+   }
+   sort(all(red));
+   for (int i = 0; i < red.size(); i++) {
+      int st1 = red[i].ff, en1 = red[i].ss;
+      for (int j = 0; j < intervals.size(); j++) {
+         int st2 = intervals[j].ff, en2 = intervals[j].ss;
+         if (st1 >= st2 && en1 <= en2) {
+            no;
+            return;
+         }
+      }
+   }
+   vector<int> ans(n + 1, -1);
+   int put;
+   for (auto x : intervals) {
+      put = n + 5 - x.ff;
+      f(i, x.ff, x.ss + 1) {
+         ans[i] = put;
+      }
+   }
+   put = n + 100;
+   for (int i = 1; i <= n; i++) {
+      if (ans[i] == -1) {
+         ans[i] = n + 5 - i;
+      }
+   }
+   for (int i = 0; i < red.size(); i++) {
+   }
+   yes;
+   for (int i = 1; i <= n; i++) {
+      ps(ans[i]);
+   }
 }
 signed main() {
    Fast;

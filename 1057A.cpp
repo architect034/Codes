@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 #define Fast ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(NULL)
 #define ll long long
-#define ull unsigned long long
 #define f(i, a, b) for (int i = a; i < b; i++)
 #define rf(i, a, b) for (int i = a; i >= b; i--)
 #define pb push_back
@@ -17,9 +16,8 @@
 #define no cout << "NO\n"
 #define nl cout << endl
 using namespace std;
-#define int long long
 const int MAX = 1e5 + 9;
-const ll mod = (ll)1e9 + 7;
+const ll mod = 1e9 + 7;
 vector<bool> prime(MAX, 1);
 vector<int> spf(MAX, 1), primes;
 void sieve() {
@@ -88,15 +86,15 @@ T power(T a, T b) {
 }
 template <typename T>
 T power(T a, T b, T m) {
-   T res = 1;
+   ll res = 1;
    while (b) {
       if (b & 1) {
-         res = (res * a) % mod;
+         res = (res * a) % m;
       }
-      a = (a * a) % mod;
+      a = (a * a) % m;
       b = b >> 1;
    }
-   return res % mod;
+   return res % m;
 }
 void virtual_main() {
 #ifndef ONLINE_JUDGE
@@ -105,25 +103,23 @@ void virtual_main() {
 #endif
 }
 void real_main() {
-   ll n;
-   cin >> n;
-   map<ll, ll> m;
-   for (ll i = 0; i < n; i++) {
-      ll x;
-      cin >> x;
-      m[x]++;
+   int n;
+   in(n);
+   int p[n + 1];
+   p[1] = 1;
+   for (int i = 2; i <= n; i++) {
+      int x;
+      in(x);
+      p[i] = x;
    }
-   ll nof = 1;
-   ll prev = 1;
-   for (auto x : m) {
-      ll a = x.ff;
-      ll k = x.ss;
-      ll p = (k * (k + 1)) / 2;
-      ll tmp = power(a, nof, mod) % mod;
-      prev = (((power(tmp, p, mod) % mod) % mod) * (power(prev, k + 1, mod) % mod)) % mod;
-      nof = (nof * (k + 1)) % (mod - 1);
+   vector<int> v;
+   v.pb(n);
+   while (n != 1) {
+      v.pb(p[n]);
+      n = p[n];
    }
-   pl<ll>(prev);
+   reverse(all(v));
+   ps(v, v.size());
 }
 signed main() {
    Fast;

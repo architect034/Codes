@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 #define Fast ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(NULL)
 #define ll long long
-#define ull unsigned long long
 #define f(i, a, b) for (int i = a; i < b; i++)
 #define rf(i, a, b) for (int i = a; i >= b; i--)
 #define pb push_back
@@ -17,9 +16,8 @@
 #define no cout << "NO\n"
 #define nl cout << endl
 using namespace std;
-#define int long long
 const int MAX = 1e5 + 9;
-const ll mod = (ll)1e9 + 7;
+const ll mod = 1e9 + 7;
 vector<bool> prime(MAX, 1);
 vector<int> spf(MAX, 1), primes;
 void sieve() {
@@ -88,15 +86,15 @@ T power(T a, T b) {
 }
 template <typename T>
 T power(T a, T b, T m) {
-   T res = 1;
+   ll res = 1;
    while (b) {
       if (b & 1) {
-         res = (res * a) % mod;
+         res = (res * a) % m;
       }
-      a = (a * a) % mod;
+      a = (a * a) % m;
       b = b >> 1;
    }
-   return res % mod;
+   return res % m;
 }
 void virtual_main() {
 #ifndef ONLINE_JUDGE
@@ -104,26 +102,37 @@ void virtual_main() {
    freopen("output.txt", "w", stdout);
 #endif
 }
+ll n, k, ans;
+vector<ll> v[MAX], mar(MAX), par(MAX), dist(MAX);
+vector<vector<ll>> dp(100009, vector<ll>(505, 0));
+vector<bool> vis(MAX, false);
+void dfs(ll s, ll p) {
+   if (vis[s]) return;
+   vis[s] = true;
+   par[s] = p;
+   dp[s][0]++;
+   for (auto u : v[s])
+      if (u != p) {
+         dist[u] = dist[s] + 1;
+         dfs(u, s);
+         f(i, 1, k + 1) {
+            ans += dp[u][i - 1] * dp[s][k - i];
+         }
+         f(i, 1, 502) {
+            dp[s][i] += dp[u][i - 1];
+         }
+      }
+}
 void real_main() {
-   ll n;
-   cin >> n;
-   map<ll, ll> m;
-   for (ll i = 0; i < n; i++) {
-      ll x;
-      cin >> x;
-      m[x]++;
+   cin >> n >> k;
+   f(i, 0, n - 1) {
+      ll x, y, z;
+      cin >> x >> y;
+      v[x].pb(y);
+      v[y].pb(x);
    }
-   ll nof = 1;
-   ll prev = 1;
-   for (auto x : m) {
-      ll a = x.ff;
-      ll k = x.ss;
-      ll p = (k * (k + 1)) / 2;
-      ll tmp = power(a, nof, mod) % mod;
-      prev = (((power(tmp, p, mod) % mod) % mod) * (power(prev, k + 1, mod) % mod)) % mod;
-      nof = (nof * (k + 1)) % (mod - 1);
-   }
-   pl<ll>(prev);
+   dfs(1, 0);
+   cout << ans << endl;
 }
 signed main() {
    Fast;
