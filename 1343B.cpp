@@ -102,12 +102,33 @@ void virtual_main() {
    freopen("output.txt", "w", stdout);
 #endif
 }
-void real_main() {}
+void real_main() {
+   int n;
+   cin >> n;
+   n /= 2;
+   if (n & 1) {
+      no;
+      return;
+   }
+   int p = 2;
+   vector<int> v;
+   yes;
+   for (int i = 1; i <= n / 2; i++) {
+      cout << p << " " << p + 2 << " ";
+      v.pb(p - 1);
+      v.pb(p + 2 + 1);
+      p = p + 6;
+   }
+   for (auto x : v) {
+      cout << x << " ";
+   }
+   nl;
+}
 signed main() {
    Fast;
    virtual_main();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       // cout << "Case #" << tc << ": ";
       real_main();

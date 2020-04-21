@@ -102,12 +102,44 @@ void virtual_main() {
    freopen("output.txt", "w", stdout);
 #endif
 }
-void real_main() {}
+#define int long long
+void real_main() {
+   int n, k;
+   cin >> n >> k;
+   vector<int> v(n);
+   for (int &x : v) {
+      cin >> x;
+   }
+   vector<int> ans(2 * k + 2, 0);
+   for (int i = 0; i < n / 2; i++) {
+      int sum = v[i] + v[n - 1 - i];
+      int st = min(v[i], v[n - 1 - i]) + 1;
+      int en = k + max(v[i], v[n - 1 - i]);
+      ans[st]++;
+      ans[sum]--;
+      int nst = sum + 1;
+      ans[nst]++;
+      ans[en + 1]--;
+      ans[2] += 2;
+      ans[st] -= 2;
+      ans[en + 1] += 2;
+      ans[(2 * k) + 1] -= 2;
+   }
+   int res = INT_MAX;
+   // cout << ans[1] << " ";
+   for (int i = 2; i <= 2 * k; i++) {
+      ans[i] = ans[i] + ans[i - 1];
+      res = min(res, ans[i]);
+      // cout << ans[i] << " ";
+   }
+   // nl;
+   pl(res);
+}
 signed main() {
    Fast;
    virtual_main();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       // cout << "Case #" << tc << ": ";
       real_main();
