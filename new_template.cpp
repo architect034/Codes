@@ -1,8 +1,6 @@
 #include <bits/stdc++.h>
 #define Fast ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(NULL)
 #define ll long long
-#define f(i, a, b) for (int i = a; i < b; i++)
-#define rf(i, a, b) for (int i = a; i >= b; i--)
 #define pb push_back
 #define pf push_front
 #define popb pop_back
@@ -59,7 +57,7 @@ void ps(T x) {
 }
 template <typename T>
 void ps(const vector<T> &x, int n) {
-   f(i, 0, n) {
+   for (int i = 0; i < n; i++) {
       cout << x[i];
       (i == n - 1) ? cout << endl : cout << " ";
    }
@@ -70,7 +68,9 @@ void pl(T x) {
 }
 template <typename T>
 void pl(const vector<T> &x, int n) {
-   f(i, 0, n) { cout << x[i] << "\n"; }
+   for (int i = 0; i < n; i++) {
+      cout << x[i] << "\n";
+   }
 }
 template <typename T>
 T power(T a, T b) {
@@ -102,6 +102,7 @@ void virtual_main() {
    freopen("output.txt", "w", stdout);
 #endif
 }
+// #define int long long
 void real_main() {}
 signed main() {
    Fast;

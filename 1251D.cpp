@@ -59,7 +59,7 @@ void ps(T x) {
 }
 template <typename T>
 void ps(const vector<T> &x, int n) {
-   f(i, 0, n) {
+   for (int i = 0; i < n; i++) {
       cout << x[i];
       (i == n - 1) ? cout << endl : cout << " ";
    }
@@ -106,7 +106,6 @@ void virtual_main() {
 bool check(int x, vector<pair<int, int> > v, int n, int s) {
    int chota = 0, bada = 0, sum = 0;
    vector<int> extra;
-   // cout << x << " mid\n";
    for (int i = 0; i < n; i++) {
       if (v[i].ff >= x) {
          bada++;
@@ -122,7 +121,6 @@ bool check(int x, vector<pair<int, int> > v, int n, int s) {
    if (chota >= kitna) {
       return false;
    }
-   // reverse(all(extra));
    int reqd = kitna - bada;
    for (int i = 0; i < reqd; i++) {
       sum += x;
@@ -147,9 +145,6 @@ void real_main() {
       mx = max(mx, v[i].ss);
    }
    sort(all(v));
-   // for (auto it : v) {
-   //    cout << it.ff << " " << it.ss << "\n";
-   // }
    int low = mn, high = mx, ans = mx;
    while (low <= high) {
       int mid = (low + high) / 2;
