@@ -108,11 +108,12 @@ void real_main() {
    cin >> n >> a >> b >> c >> d;
    int aa = a - b, bb = a + b;
    int x = c - d, y = c + d;
-   int l = (x + n - 1) / n, r = (y + n - 1) / n;
-   if ((l >= aa && l <= bb) || (r >= aa && r <= bb)) {
-      yes;
-   } else {
+   int l = aa * n, r = bb * n;
+   // pl(l), pl(r);
+   if (l > y || r < x) {
       no;
+   } else {
+      yes;
    }
 }
 signed main() {

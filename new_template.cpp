@@ -103,7 +103,8 @@ void virtual_main() {
 #endif
 }
 // #define int long long
-void real_main() {}
+void real_main() {
+}
 signed main() {
    Fast;
    virtual_main();

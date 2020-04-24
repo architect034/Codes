@@ -120,11 +120,12 @@ void real_main() {
    for (int i = 1; i <= n; i++) {
       dp[i] += dp[i - 1];
    }
+   // ps(dp, n + 1);
    int l = 1, res = 0;
-   for (int i = k - 1, c = 0; i <= n; i++, c++) {
-      if ((dp[i] - dp[c]) > res) {
-         res = dp[i] - dp[c];
-         l = c + 1;
+   for (int i = k, c = 1; i <= n; i++, c++) {
+      if ((dp[i - 1] - dp[c]) > res) {
+         res = dp[i - 1] - dp[c];
+         l = c;
       }
    }
    ps(res + 1), pl(l);
