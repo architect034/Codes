@@ -106,19 +106,12 @@ void virtual_main() {
 void real_main() {
    int x, y, a, b;
    cin >> x >> y >> a >> b;
-   if (x == 0 && y == 0) {
-      pl(0);
-      return;
-   }
    if (x > y) {
       swap(x, y);
    }
-   if (a < b) {
-      int k1 = (x - 1) * a + (y - 1) * a;
-      pl((x - 1) * a + (y - 1) * a + b);
-   } else {
-      pl(max(1, 1 - x) * a + (y - x) * a + max(x, 1) * b);
-   }
+   int fix = (y - x) * a;
+   cout << fix + min(2 * a * x, b * x);
+   nl;
 }
 signed main() {
    Fast;
