@@ -102,14 +102,38 @@ void virtual_main() {
    freopen("output.txt", "w", stdout);
 #endif
 }
-// #define int long long
+#define int long long
 void real_main() {
+   //Nice bouy
+   int a, b, q;
+   in(a, b, q);
+   int lcm = (a * b) / __gcd(a, b);
+   vector<int> dp(lcm + 1, 0);
+   for (int i = 1; i <= lcm; i++) {
+      if ((i % a) % b != (i % b) % a) {
+         dp[i] = 1;
+      }
+      dp[i] += dp[i - 1];
+   }
+   int cnt = dp[lcm];
+   vector<int> ans;
+   while (q--) {
+      int l, r;
+      in(l, r);
+      int res = (r / lcm) * cnt - ((l - 1) / lcm) * cnt;
+      int k = r % lcm;
+      res += dp[k];
+      k = (l - 1) % lcm;
+      res -= dp[k];
+      ans.pb(res);
+   }
+   ps(ans, ans.size());
 }
 signed main() {
    Fast;
    virtual_main();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       // cout << "Case #" << tc << ": ";
       real_main();
