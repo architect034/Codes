@@ -97,7 +97,7 @@ T power(T a, T b, T m) {
    return res % m;
 }
 void virtual_main() {
-#ifndef ONLINE_JUDGE
+#ifndef OJ
    freopen("input.txt", "r", stdin);
    freopen("output.txt", "w", stdout);
 #endif
