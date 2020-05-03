@@ -103,24 +103,18 @@ void virtual_main() {
 #endif
 }
 #define int long long
-vector<int> g[MAX], par(MAX);
-void dfs(int x, int p) {
-   for (int y : g[x]) {
-      if (y != p) {
-         par[y] = x;
-         dfs(y, x);
+vector<int> g[MAX], sz(MAX, 1), par(MAX);
+void dfs(int u, int p) {
+   int k = 1;
+   for (int v : g[u]) {
+      if (v != p) {
+         par[v] = u;
+         dfs(v, u);
+         sz[u] += sz[v];
       }
    }
 }
-int cnt = 1;
-void counting_dfs(int x, int p, int not_to_explore) {
-   for (int y : g[x]) {
-      if (y != p && y != not_to_explore) {
-         cnt++;
-         counting_dfs(y, x, not_to_explore);
-      }
-   }
-}
+
 void real_main() {
    int n, x, y;
    in(n, x, y);
@@ -129,22 +123,15 @@ void real_main() {
       cin >> u1 >> u2;
       g[u1].pb(u2), g[u2].pb(u1);
    }
-   int ans = n * (n - 1), avoid;
-   dfs(x, 0);
-   counting_dfs(y, 0, par[y]);
-   int tmp = y;
-   while (1) {
-      if (par[tmp] == x) {
-         avoid = tmp;
-         break;
-      }
-      tmp = par[tmp];
+   int ans = n * (n - 1);
+   par[y] = 0;
+   dfs(y, 0);
+   int to_remove = x;
+   while (par[to_remove] != y) {
+      to_remove = par[to_remove];
    }
-   int eliminate = cnt;
-   cnt = 1;
-   counting_dfs(x, 0, avoid);
-   eliminate = eliminate * cnt;
-   pl(ans - eliminate);
+   ans = ans - sz[x] * (sz[y] - sz[to_remove]);
+   pl(ans);
 }
 signed main() {
    Fast;
