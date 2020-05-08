@@ -1,31 +1,49 @@
 #include <bits/stdc++.h>
-#define int long long
 using namespace std;
-const int MAX = 3e5 + 9;
-vector<int> g[MAX], sz(MAX, 1), par(MAX, 0);
-void dfs(int u, int pa) {
-   for (int v : g[u]) {
-      if (v != pa) {
-         par[v] = u;
-         dfs(v, u);
-         sz[u] += sz[v];
+bool comp(string &s1, string &s2) {
+   return s1.size() < s2.size();
+}
+void solve(int tc) {
+   // if (!tc) return;
+   // string s;
+   // getline(cin, s);
+   // cout << s;
+   // cout << "\n";
+
+   string S, T;
+
+   getline(cin, S);
+   stringstream X(S);
+   vector<pair<int, int> > v;
+   vector<string> gs;
+   int i = 0;
+   while (getline(X, T, ' ')) {
+      // cout << T << endl;
+      v.push_back({T.size(), i});
+      gs.push_back(T);
+      i++;
+   }
+   sort(gs.begin(), gs.end(), comp);
+   sort(v.begin(), v.end());
+   for (int i = 0; i < gs.size(); i++) {
+      cout << gs[i];
+      if (i != gs.size() - 1) {
+         cout << " ";
+      } else {
+         cout << "\n";
       }
    }
 }
-signed main() {
-   int n, a, b;
-   cin >> n >> a >> b;
-   for (int i = 0; i < n - 1; i++) {
-      int u1, u2;
-      cin >> u1 >> u2;
-      g[u1].push_back(u2), g[u2].push_back(u1);
+int main() {
+#ifndef ONLINE_JUDGE
+   freopen("input.txt", "r", stdin);
+   freopen("output.txt", "w", stdout);
+#endif
+   int t;
+   scanf("%d\n", &t);
+   int i = 0;
+   while (t--) {
+      solve(i);
+      i++;
    }
-   int res = n * (n - 1);
-   dfs(b, 0);
-   int p = a;
-   while (par[p] != b) {
-      p = par[p];
-   }
-   res = res - sz[a] * (sz[b] - sz[p]);
-   cout << res << "\n";
 }
