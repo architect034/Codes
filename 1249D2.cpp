@@ -13,7 +13,7 @@
 #define no cout << "NO\n"
 #define nl cout << endl
 using namespace std;
-const int MAX = 1e5 + 9;
+const int MAX = 2e5 + 9;
 const ll mod = 1e9 + 7;
 vector<bool> prime(MAX, 1);
 vector<int> spf(MAX, 1), primes;
@@ -99,13 +99,45 @@ void virtual_main() {
 #ifndef ONLINE_JUDGE
    freopen("input.txt", "r", stdin);
    freopen("output.txt", "w", stdout);
-   freopen("error.txt", "w", stderr);
 #endif
 }
-// #define int long long
+#define int long long
 void real_main() {
-   vector<int> v(10, 0);
-   cout << v[111111];
+   int n, k;
+   cin >> n >> k;
+   vector<pair<pair<int, int>, int> > v(n);
+   vector<int> dp(MAX, 0);
+   for (int i = 0; i < n; i += 1) {
+      cin >> v[i].ff.ff >> v[i].ff.ss;
+      v[i].ff.ss *= (-1);
+      v[i].ss = i + 1;
+   }
+   sort(all(v));
+   int p = 1;
+   vector<int> ans;
+   priority_queue<pair<int, int> > pq;
+   for (int i = 0; i < n; i++) {
+      int st = v[i].ff.ff, en = -v[i].ff.ss;
+      dp[st] += 1;
+      dp[en + 1] -= 1;
+      pq.push({en, v[i].ss});
+      while (p <= st) {
+         dp[p] += dp[p - 1];
+         p++;
+      }
+      if (dp[st] > k) {
+         int kitna = dp[st] - k;
+         while (kitna--) {
+            int sabse_dur = pq.top().ff;
+            ans.pb(pq.top().ss);
+            pq.pop();
+            dp[st] -= 1;
+            dp[sabse_dur + 1] += 1;
+         }
+      }
+   }
+   pl(ans.size());
+   ps(ans, ans.size());
 }
 signed main() {
    Fast;

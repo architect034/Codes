@@ -99,19 +99,52 @@ void virtual_main() {
 #ifndef ONLINE_JUDGE
    freopen("input.txt", "r", stdin);
    freopen("output.txt", "w", stdout);
-   freopen("error.txt", "w", stderr);
 #endif
 }
-// #define int long long
+#define int long long
+bool yummy(int x, vector<int> c, int n, int k) {
+   int cnt = 0, addon = 0;
+   for (int i = 1; i <= n; i++) {
+      int kitna = ((c[i] + addon) / x) * x;
+      cnt += ((c[i] + addon) / x);
+      c[i] -= kitna;
+      if (!kitna) addon = 0;
+      addon = c[i] + addon;
+   }
+   if (cnt >= k) {
+      return true;
+   }
+   return false;
+}
 void real_main() {
-   vector<int> v(10, 0);
-   cout << v[111111];
+   //             /
+   //            /
+   // PASSED - \/
+   int n, k;
+   cin >> n >> k;
+   vector<int> c(n + 1, 0);
+   int low = 1, high = 0;
+   for (int i = 1; i <= n; i++) {
+      cin >> c[i];
+      high = max(c[i] + c[i - 1], high);
+   }
+   int ans = 0;
+   while (low <= high) {
+      int mid = (low + high) >> 1;
+      if (yummy(mid, c, n, k)) {
+         ans = mid * k;
+         low = mid + 1;
+      } else {
+         high = mid - 1;
+      }
+   }
+   pl(ans);
 }
 signed main() {
    Fast;
    virtual_main();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       // cout << "Case #" << tc << ": ";
       real_main();

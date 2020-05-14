@@ -5,6 +5,7 @@
 #define pf push_front
 #define popb pop_back
 #define popf pop_front
+#define mp make_pair
 #define ff first
 #define ss second
 #define endl '\n'
@@ -99,19 +100,49 @@ void virtual_main() {
 #ifndef ONLINE_JUDGE
    freopen("input.txt", "r", stdin);
    freopen("output.txt", "w", stdout);
-   freopen("error.txt", "w", stderr);
 #endif
 }
 // #define int long long
 void real_main() {
-   vector<int> v(10, 0);
-   cout << v[111111];
+   int n;
+   cin >> n;
+   deque<int> dq;
+   for (int i = 0; i < n; i++) {
+      int x;
+      cin >> x;
+      dq.pb(x);
+   }
+   int last_alice = 0, last_bob = 0, talice = 0, tbob = 0;
+   int chance = 1, total_chances = 0;
+   while (!dq.empty()) {
+      if (chance == 1) {
+         total_chances++;
+         int sum = 0;
+         while (sum <= last_bob && dq.size() > 0) {
+            sum += dq.front();
+            dq.pop_front();
+         }
+         talice += sum;
+         last_alice = sum;
+      } else {
+         total_chances++;
+         int sum = 0;
+         while (sum <= last_alice && dq.size() > 0) {
+            sum += dq.back();
+            dq.pop_back();
+         }
+         tbob += sum;
+         last_bob = sum;
+      }
+      chance = chance ^ 1;
+   }
+   ps(total_chances), ps(talice), pl(tbob);
 }
 signed main() {
    Fast;
    virtual_main();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       // cout << "Case #" << tc << ": ";
       real_main();

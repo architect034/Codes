@@ -5,6 +5,7 @@
 #define pf push_front
 #define popb pop_back
 #define popf pop_front
+#define mp make_pair
 #define ff first
 #define ss second
 #define endl '\n'
@@ -99,19 +100,45 @@ void virtual_main() {
 #ifndef ONLINE_JUDGE
    freopen("input.txt", "r", stdin);
    freopen("output.txt", "w", stdout);
-   freopen("error.txt", "w", stderr);
 #endif
 }
-// #define int long long
+#define int long long
+int calc(int x, int y, int z) {
+   return ((x & z) * (y & z));
+}
 void real_main() {
-   vector<int> v(10, 0);
-   cout << v[111111];
+   int x, y, l, r;
+   cin >> x >> y >> l >> r;
+   r += 1;
+   int z = l, mx = 0;
+   for (int i = 63; i >= 0; i--) {
+      if ((r >> i) & 1LL) {
+         int check = (r | ((1LL << i) - 1)) ^ (1LL << i);
+         if (l > check) continue;
+         if (calc(x, y, check) > mx) {
+            mx = calc(x, y, check);
+            z = check;
+         } else if (calc(x, y, check) == mx) {
+            z = min(z, check);
+         }
+      }
+   }
+   for (int i = 63; i >= 0; i--) {
+      if ((z >> i) & 1LL) {
+         if (!(((x | y) >> i) & 1LL)) {
+            if ((z ^ (1LL << i)) >= l) {
+               z = z ^ (1LL << i);
+            }
+         }
+      }
+   }
+   pl(z);
 }
 signed main() {
    Fast;
    virtual_main();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       // cout << "Case #" << tc << ": ";
       real_main();

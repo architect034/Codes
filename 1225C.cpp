@@ -5,6 +5,7 @@
 #define pf push_front
 #define popb pop_back
 #define popf pop_front
+#define mp make_pair
 #define ff first
 #define ss second
 #define endl '\n'
@@ -99,13 +100,27 @@ void virtual_main() {
 #ifndef ONLINE_JUDGE
    freopen("input.txt", "r", stdin);
    freopen("output.txt", "w", stdout);
-   freopen("error.txt", "w", stderr);
 #endif
 }
-// #define int long long
+#define int long long
 void real_main() {
-   vector<int> v(10, 0);
-   cout << v[111111];
+   int n, p;
+   in(n, p);
+   for (int i = 1;; i++) {
+      int kitna_minus = p * i;
+      int num = n - kitna_minus;
+      if (num < 0) {
+         pl(-1);
+         return;
+      }
+      int kitna_set = __builtin_popcount(num);
+      if (kitna_set > i || (i > num)) {
+         continue;
+      } else {
+         pl(i);
+         return;
+      }
+   }
 }
 signed main() {
    Fast;

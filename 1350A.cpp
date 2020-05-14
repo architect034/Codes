@@ -96,22 +96,28 @@ T power(T a, T b, T m) {
    return res % m;
 }
 void virtual_main() {
-#ifndef ONLINE_JUDGE
+#ifndef OJ
    freopen("input.txt", "r", stdin);
    freopen("output.txt", "w", stdout);
-   freopen("error.txt", "w", stderr);
 #endif
 }
-// #define int long long
+#define int long long
 void real_main() {
-   vector<int> v(10, 0);
-   cout << v[111111];
+   int n, k;
+   cin >> n >> k;
+   for (int i = 2; i * i <= n; i++) {
+      if (n % i == 0) {
+         pl(n + i + 2 * (k - 1));
+         return;
+      }
+   }
+   pl(n + n + (k - 1) * 2);
 }
 signed main() {
    Fast;
    virtual_main();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       // cout << "Case #" << tc << ": ";
       real_main();

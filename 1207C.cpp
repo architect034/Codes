@@ -5,6 +5,7 @@
 #define pf push_front
 #define popb pop_back
 #define popf pop_front
+#define mp make_pair
 #define ff first
 #define ss second
 #define endl '\n'
@@ -99,19 +100,58 @@ void virtual_main() {
 #ifndef ONLINE_JUDGE
    freopen("input.txt", "r", stdin);
    freopen("output.txt", "w", stdout);
-   freopen("error.txt", "w", stderr);
 #endif
 }
-// #define int long long
+#define int long long
 void real_main() {
-   vector<int> v(10, 0);
-   cout << v[111111];
+   int n, a, b;
+   cin >> n >> a >> b;
+   string s;
+   cin >> s;
+   vector<vector<int> > dp(n + 1, vector<int>(2, 1000000000000000000));
+   dp[0][0] = b;
+   for (ll i = 0; i < n; ++i) {
+      if (s[i] == '0') {
+         dp[i + 1][0] = min(dp[i + 1][0], dp[i][0] + a + b);
+         dp[i + 1][1] = min(dp[i + 1][1], dp[i][0] + 2 * (a + b));
+         dp[i + 1][1] = min(dp[i + 1][1], dp[i][1] + a + 2 * b);
+         dp[i + 1][0] = min(dp[i + 1][0], dp[i][1] + 2 * a + b);
+      } else {
+         dp[i + 1][1] = min(dp[i + 1][1], dp[i][1] + a + 2 * b);
+      }
+   }
+
+   cout << dp[n][0] << "\n";
+
+   // vector<int> dpu(n, 0), dpd(n, 0);
+   // if (s[1] == '1') {
+   //    dpu[0] = min(2 * a + 3 * b, 4 * b + a);
+   //    dpd[0] = dpu[0];
+   // } else {
+   //    dpu[0] = min(2 * a + 3 * b, 4 * b + a);
+   //    dpd[0] = 2 * b + a;
+   // }
+   // // cout << dpu[0] << " " << dpd[0] << "\n";
+   // for (int i = 1; i < n - 1; i++) {
+   //    if (s[i + 1] == '1' || s[i] == '1') {
+   //       dpu[i] = min(dpu[i - 1] + a + 2 * b, dpd[i - 1] + 2 * a + 2 * b);
+   //       dpd[i] = dpu[i];
+   //    } else {
+   //       dpu[i] = min(dpu[i - 1] + a + 2 * b, (s[i - 1] == '0') ? dpd[i - 1] + 2 * a + 2 * b : 1000000000000000000);
+   //       dpd[i] = min(dpu[i - 1] + 2 * a + b, (s[i - 1] == '0') ? dpd[i - 1] + a + b : 1000000000000000000);
+   //    }
+   //    // cout << dpu[i] << " " << dpd[i] << "\n";
+   // }
+   // dpu[n - 1] = min(dpu[n - 2] + a + 2 * b, (s[n - 2] == '0') ? dpd[n - 2] + 2 * a + 2 * b : 1000000000000000000);
+   // dpd[n - 1] = min(dpu[n - 2] + 2 * a + b, (s[n - 2] == '0') ? dpd[n - 2] + a + b : 1000000000000000000);
+   // // cout << dpu[n - 1] << " " << dpd[n - 1] << "\n";
+   // pl(min(dpd[n - 1], dpu[n - 1]));
 }
 signed main() {
    Fast;
    virtual_main();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       // cout << "Case #" << tc << ": ";
       real_main();

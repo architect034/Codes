@@ -13,7 +13,7 @@
 #define no cout << "NO\n"
 #define nl cout << endl
 using namespace std;
-const int MAX = 1e5 + 9;
+const int MAX = 3e5 + 9;
 const ll mod = 1e9 + 7;
 vector<bool> prime(MAX, 1);
 vector<int> spf(MAX, 1), primes;
@@ -96,20 +96,64 @@ T power(T a, T b, T m) {
    return res % m;
 }
 void virtual_main() {
-#ifndef ONLINE_JUDGE
+#ifndef OJ
    freopen("input.txt", "r", stdin);
    freopen("output.txt", "w", stdout);
-   freopen("error.txt", "w", stderr);
 #endif
 }
-// #define int long long
+#define int long long
+int calc_brute(vector<int> v, int n) {
+   vector<int> tmp;
+   for (int i = 0; i < n - 1; i++) {
+      for (int j = i + 1; j < n; j++) {
+         tmp.pb((v[i] * v[j]) / __gcd(v[i], v[j]));
+      }
+   }
+   int g = 0;
+   for (int i = 0; i < tmp.size(); i++) {
+      g = __gcd(g, tmp[i]);
+   }
+   return g;
+}
 void real_main() {
-   vector<int> v(10, 0);
-   cout << v[111111];
+   int n;
+   cin >> n;
+   vector<int> v(n);
+   for (int &x : v) {
+      cin >> x;
+   }
+   map<int, int> no_of_times;
+   map<int, vector<int> > the_count;
+   for (int i = 0; i < n; i++) {
+      int x = v[i];
+      while (x != 1) {
+         int sp = spf[x];
+         no_of_times[sp]++;
+         int cnt = 0;
+         while (x % sp == 0) {
+            x = x / sp;
+            cnt++;
+         }
+         the_count[sp].pb(cnt);
+      }
+   }
+   int ans = 1;
+   for (auto x : no_of_times) {
+      int val = x.ff, kitne_baar = x.ss;
+      if (kitne_baar >= (n - 1)) {
+         vector<int> temp = the_count[val];
+         if (kitne_baar == n - 1)
+            temp.pb(0);
+         sort(all(temp));
+         ans = ans * power(val, max(temp[0], temp[1]));
+      }
+   }
+   pl(ans);
 }
 signed main() {
    Fast;
    virtual_main();
+   sieve();
    int test_cases = 1;
    // cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {

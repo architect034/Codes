@@ -5,6 +5,7 @@
 #define pf push_front
 #define popb pop_back
 #define popf pop_front
+#define mp make_pair
 #define ff first
 #define ss second
 #define endl '\n'
@@ -99,19 +100,32 @@ void virtual_main() {
 #ifndef ONLINE_JUDGE
    freopen("input.txt", "r", stdin);
    freopen("output.txt", "w", stdout);
-   freopen("error.txt", "w", stderr);
 #endif
 }
-// #define int long long
+#define int long long
 void real_main() {
-   vector<int> v(10, 0);
-   cout << v[111111];
+   int n, k;
+   cin >> n >> k;
+   int addon = 0;
+   int low = 1, high = 2 * max(k, n), ans = n;
+   while (low <= high) {
+      int mid = (low + high) >> 1;
+      int to = n * mid;
+      int addon = mid - 1;
+      if (addon + k < to) {
+         ans = addon + k;
+         high = mid - 1;
+      } else {
+         low = mid + 1;
+      }
+   }
+   pl(ans);
 }
 signed main() {
    Fast;
    virtual_main();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       // cout << "Case #" << tc << ": ";
       real_main();

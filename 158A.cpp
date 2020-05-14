@@ -99,13 +99,23 @@ void virtual_main() {
 #ifndef ONLINE_JUDGE
    freopen("input.txt", "r", stdin);
    freopen("output.txt", "w", stdout);
-   freopen("error.txt", "w", stderr);
 #endif
 }
 // #define int long long
 void real_main() {
-   vector<int> v(10, 0);
-   cout << v[111111];
+   int n, k;
+   cin >> n >> k;
+   vector<int> v(n + 1);
+   for (int i = 1; i <= n; i++) {
+      cin >> v[i];
+   }
+   int ans = 0;
+   for (int i = 1; i <= n; i++) {
+      if (v[i] >= v[k] && v[i]) {
+         ans++;
+      }
+   }
+   pl(ans);
 }
 signed main() {
    Fast;

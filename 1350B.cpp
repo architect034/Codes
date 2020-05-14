@@ -96,22 +96,39 @@ T power(T a, T b, T m) {
    return res % m;
 }
 void virtual_main() {
-#ifndef ONLINE_JUDGE
+#ifndef OJ
    freopen("input.txt", "r", stdin);
    freopen("output.txt", "w", stdout);
-   freopen("error.txt", "w", stderr);
 #endif
 }
 // #define int long long
 void real_main() {
-   vector<int> v(10, 0);
-   cout << v[111111];
+   //chutiya
+   int n;
+   cin >> n;
+   vector<int> v(n + 1);
+   for (int i = 1; i <= n; i++) {
+      cin >> v[i];
+   }
+   vector<int> dp(n + 1, 1);
+   for (int i = 1; i <= n; i++) {
+      int idx = i;
+      for (int j = 1; j <= sqrt(idx) + 1; j++) {
+         if (idx % j == 0 && v[idx] > v[j]) {
+            dp[idx] = max(dp[idx], dp[j] + 1);
+            if (idx / j != j && idx / j != idx && v[idx] > v[idx / j]) {
+               dp[idx] = max(dp[idx], dp[idx / j] + 1);
+            }
+         }
+      }
+   }
+   pl(*max_element(dp.begin() + 1, dp.end()));
 }
 signed main() {
    Fast;
-   virtual_main();
+   // virtual_main();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       // cout << "Case #" << tc << ": ";
       real_main();

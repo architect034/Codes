@@ -99,19 +99,47 @@ void virtual_main() {
 #ifndef ONLINE_JUDGE
    freopen("input.txt", "r", stdin);
    freopen("output.txt", "w", stdout);
-   freopen("error.txt", "w", stderr);
 #endif
 }
 // #define int long long
 void real_main() {
-   vector<int> v(10, 0);
-   cout << v[111111];
+   int n, k, hai = 0;
+   in(n, k);
+   vector<int> v(n);
+   for (int i = 0; i < n; i++) {
+      cin >> v[i];
+      if (v[i] == k) {
+         v[i] = 1;
+         hai++;
+      } else {
+         v[i] = (v[i] > k) ? 2 : 0;
+      }
+   }
+   if (hai == n) {
+      yes;
+      return;
+   }
+   if (!hai) {
+      no;
+      return;
+   }
+   for (int i = 0; i < n - 1; i++) {
+      if (v[i] && v[i + 1]) {
+         yes;
+         return;
+      }
+      if (i + 2 < n && v[i] && v[i + 2]) {
+         yes;
+         return;
+      }
+   }
+   no;
 }
 signed main() {
    Fast;
    virtual_main();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       // cout << "Case #" << tc << ": ";
       real_main();
