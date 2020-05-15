@@ -68,7 +68,11 @@ int main() {
 #endif
    int tc = 1;
    cin >> tc;
-   while (tc--) {
+   for (int i = 1; i <= tc; i++) {
+      double tic, tac;
+      tic = clock();
       solve();
+      tac = clock(), cerr << "TC " << i << " done in:: " << 1000 * (tac - tic) / CLOCKS_PER_SEC << " ms\n";
    }
+   cerr << "GG in: " << 1000 * ((double)clock()) / CLOCKS_PER_SEC << " ms\n";
 }

@@ -104,8 +104,6 @@ void virtual_main() {
 }
 // #define int long long
 void real_main() {
-   vector<int> v(10, 0);
-   cout << v[111111];
 }
 signed main() {
    Fast;
@@ -113,8 +111,12 @@ signed main() {
    int test_cases = 1;
    // cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
+      double tic, tac;
+      tic = clock();
       // cout << "Case #" << tc << ": ";
       real_main();
+      tac = clock(), cerr << "TC " << i << " in:: " << 1000 * (tac - tic) / CLOCKS_PER_SEC << " ms\n";
    }
+   cerr << "Dusted in: " << 1000 * ((double)clock()) / CLOCKS_PER_SEC << " ms\n";
    return 0;
 }
