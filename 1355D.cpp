@@ -102,10 +102,20 @@ void virtual_main() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-// #define int long long
+#define int long long
 void real_main() {
-   vector<int> v(n);
-   v.pb(x);
+   int n, s;
+   cin >> n >> s;
+   if (s >= 2 * n) {
+      yes;
+      for (int i = 1; i < n; i++) {
+         cout << 2 << " ";
+      }
+      cout << s - (n - 1) * 2 << "\n";
+      cout << 1 << "\n";
+      return;
+   }
+   no;
 }
 signed main() {
    Fast;
@@ -117,8 +127,8 @@ signed main() {
       tic = clock();
       // cout << "Case #" << tc << ": ";
       real_main();
-      tac = clock(), cerr << "TC " << i << " in:: " << 1000 * (tac - tic) / CLOCKS_PER_SEC << " ms\n";
+      tac = clock(), cerr << "TC " << i << " done in:: " << 1000 * (tac - tic) / CLOCKS_PER_SEC << " ms\n";
    }
-   cerr << "Dusted in: " << 1000 * ((double)clock()) / CLOCKS_PER_SEC << " ms\n";
+   cerr << "GG in: " << 1000 * ((double)clock()) / CLOCKS_PER_SEC << " ms\n";
    return 0;
 }

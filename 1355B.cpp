@@ -96,29 +96,38 @@ T power(T a, T b, T m) {
    return res % m;
 }
 void virtual_main() {
-#ifndef ONLINE_JUDGE
-   freopen("input.txt", "r", stdin);
-   freopen("output.txt", "w", stdout);
-   freopen("error.txt", "w", stderr);
-#endif
+   // #ifndef ONLINE_JUDGE
+   //    freopen("input.txt", "r", stdin);
+   //    freopen("output.txt", "w", stdout);
+   //    freopen("error.txt", "w", stderr);
+   // #endif
 }
-// #define int long long
+#define int long long
 void real_main() {
-   vector<int> v(n);
-   v.pb(x);
+   int n;
+   cin >> n;
+   vector<int> h(n + 1);
+   for (int i = 0; i < n; i++) {
+      int x;
+      cin >> x;
+      h[x]++;
+   }
+   int addon = 0, ans = 0;
+   for (int i = 1; i <= n; i++) {
+      if (!h[i]) continue;
+      h[i] += addon;
+      ans = ans + h[i] / i;
+      addon = h[i] % i;
+   }
+   cout << ans << "\n";
 }
 signed main() {
    Fast;
    virtual_main();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
-      double tic, tac;
-      tic = clock();
-      // cout << "Case #" << tc << ": ";
       real_main();
-      tac = clock(), cerr << "TC " << i << " in:: " << 1000 * (tac - tic) / CLOCKS_PER_SEC << " ms\n";
    }
-   cerr << "Dusted in: " << 1000 * ((double)clock()) / CLOCKS_PER_SEC << " ms\n";
    return 0;
 }

@@ -103,22 +103,33 @@ void virtual_main() {
 #endif
 }
 // #define int long long
+#define double long double
+#define M_PI 3.14159265358979323846
 void real_main() {
-   vector<int> v(n);
-   v.pb(x);
+   int n;
+   cin >> n;
+   double angle = (360.0 / (n * 2.0));
+   angle = angle * (M_PI) / (180.000000);
+   double side = 1.0, fix = angle;
+   int cnt = (n / 2) - 1;
+   for (int i = 0; i < cnt; i++) {
+      side += 2.0 * (cos(angle));
+      angle += fix;
+   }
+   cout << setprecision(9) << fixed << side << "\n";
 }
 signed main() {
    Fast;
    virtual_main();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
-      double tic, tac;
-      tic = clock();
+      // double tic, tac;
+      // tic = clock();
       // cout << "Case #" << tc << ": ";
       real_main();
-      tac = clock(), cerr << "TC " << i << " in:: " << 1000 * (tac - tic) / CLOCKS_PER_SEC << " ms\n";
+      // tac = clock(), cerr << "TC " << i << " done in:: " << 1000 * (tac - tic) / CLOCKS_PER_SEC << " ms\n";
    }
-   cerr << "Dusted in: " << 1000 * ((double)clock()) / CLOCKS_PER_SEC << " ms\n";
+   // cerr << "GG in: " << 1000 * ((double)clock()) / CLOCKS_PER_SEC << " ms\n";
    return 0;
 }

@@ -104,21 +104,44 @@ void virtual_main() {
 }
 // #define int long long
 void real_main() {
-   vector<int> v(n);
-   v.pb(x);
+   string s;
+   cin >> s;
+   int i = 0, j = -1;
+   int ans = INT_MAX;
+   vector<int> h(4, 0);
+   int n = s.size();
+   while (j < n) {
+      bool say = 1;
+      for (int i = 1; i <= 3; i++) {
+         if (h[i] == 0) {
+            say = 0;
+            break;
+         }
+      }
+      if (say) {
+         ans = min(ans, j - i + 1);
+         h[s[i] - '0']--;
+         i++;
+      } else {
+         j++;
+         h[s[j] - '0']++;
+      }
+   }
+   if (ans == INT_MAX) ans = 0;
+   pl(ans);
 }
 signed main() {
    Fast;
    virtual_main();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
-      double tic, tac;
-      tic = clock();
+      // double tic, tac;
+      // tic = clock();
       // cout << "Case #" << tc << ": ";
       real_main();
-      tac = clock(), cerr << "TC " << i << " in:: " << 1000 * (tac - tic) / CLOCKS_PER_SEC << " ms\n";
+      // tac = clock(), cerr << "TC " << i << " done in:: " << 1000 * (tac - tic) / CLOCKS_PER_SEC << " ms\n";
    }
-   cerr << "Dusted in: " << 1000 * ((double)clock()) / CLOCKS_PER_SEC << " ms\n";
+   // cerr << "GG in: " << 1000 * ((double)clock()) / CLOCKS_PER_SEC << " ms\n";
    return 0;
 }

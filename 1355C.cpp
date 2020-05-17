@@ -102,10 +102,28 @@ void virtual_main() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-// #define int long long
+#define int long long
 void real_main() {
-   vector<int> v(n);
-   v.pb(x);
+   int a, b, c, d;
+   cin >> a >> b >> c >> d;
+   int l = a, r = c, ans = 0;
+   while (l <= b && r >= b) {
+      int sum = l + r;
+      if (sum > d) {
+         ans = ans + (b - l + 1) * (d - c + 1);
+         r--;
+      } else if (sum <= c) {
+         l++;
+      } else if (sum > c && sum <= d) {
+         int k = (sum - c);
+         int remove_extra = k - (r - b + 1);
+         remove_extra = max(remove_extra, 0LL);
+         ans = ans + (k * (k + 1)) / 2;
+         ans = ans - (remove_extra * (remove_extra + 1)) / 2;
+         l++;
+      }
+   }
+   pl(ans);
 }
 signed main() {
    Fast;
@@ -113,12 +131,12 @@ signed main() {
    int test_cases = 1;
    // cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
-      double tic, tac;
-      tic = clock();
+      // double tic, tac;
+      // tic = clock();
       // cout << "Case #" << tc << ": ";
       real_main();
-      tac = clock(), cerr << "TC " << i << " in:: " << 1000 * (tac - tic) / CLOCKS_PER_SEC << " ms\n";
+      // tac = clock(), cerr << "TC " << i << " done in:: " << 1000 * (tac - tic) / CLOCKS_PER_SEC << " ms\n";
    }
-   cerr << "Dusted in: " << 1000 * ((double)clock()) / CLOCKS_PER_SEC << " ms\n";
+   // cerr << "GG in: " << 1000 * ((double)clock()) / CLOCKS_PER_SEC << " ms\n";
    return 0;
 }
