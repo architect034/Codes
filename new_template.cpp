@@ -1,4 +1,6 @@
-#include <bits/stdc++.h>
+#define dbg(...) ;
+#define db(...) ;
+#include "bits/stdc++.h"
 #define Fast ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(NULL)
 #define ll long long
 #define pb push_back
@@ -12,6 +14,7 @@
 #define yes cout << "YES\n"
 #define no cout << "NO\n"
 #define nl cout << endl
+#define PI 3.14159265358979323846
 using namespace std;
 const int MAX = 1e5 + 9;
 const ll mod = 1e9 + 7;
@@ -104,8 +107,6 @@ void virtual_main() {
 }
 // #define int long long
 void real_main() {
-   vector<int> v(n);
-   v.pb(x);
 }
 signed main() {
    Fast;
@@ -113,12 +114,8 @@ signed main() {
    int test_cases = 1;
    // cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
-      double tic, tac;
-      tic = clock();
       // cout << "Case #" << tc << ": ";
       real_main();
-      tac = clock(), cerr << "TC " << i << " in:: " << 1000 * (tac - tic) / CLOCKS_PER_SEC << " ms\n";
    }
-   cerr << "Dusted in: " << 1000 * ((double)clock()) / CLOCKS_PER_SEC << " ms\n";
    return 0;
 }

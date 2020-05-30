@@ -1,4 +1,6 @@
-#include <bits/stdc++.h>
+#define dbg(...) ;
+#define db(...) ;
+#include "bits/stdc++.h"
 #define Fast ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(NULL)
 #define ll long long
 #define pb push_back
@@ -38,18 +40,6 @@ void sieve() {
          }
       }
    }
-}
-template <typename T>
-void in(T &x) {
-   cin >> x;
-}
-template <typename T, typename U>
-void in(T &x, U &y) {
-   cin >> x >> y;
-}
-template <typename T, typename U, typename V>
-void in(T &x, U &y, V &z) {
-   cin >> x >> y >> z;
 }
 template <typename T>
 void ps(T x) {
@@ -128,7 +118,7 @@ void real_main() {
       cin >> v[i].ff >> v[i].ss;
       ans = min(ans, v[i].ff);
    }
-   int low = ans, high = 10000000000000000000;  //bohot mehnat karwadiye yaar isme th :P
+   int low = ans, high = 2e18;  //bohot mehnat karwadiye yaar isme th :P
    while (low <= high) {
       int mid = (low + high) / 2;
       if (check(v, mid, k, n)) {
