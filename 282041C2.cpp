@@ -103,30 +103,42 @@ void virtual_main() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-#define int long long
-void real_main() {
-   int n;
-   cin >> n;
-   set<int> s, prev, cur;
-   vector<int> v(n);
+#define int unsigned long long
+bool check(vector<pair<int, int> > v, int x, int k, int n) {
+   int kitna = 0;
    for (int i = 0; i < n; i++) {
-      cin >> v[i];
-   }
-   prev.insert(v[0]);
-   s.insert(v[0]);
-   for (int i = 1; i < n; i++) {
-      cur.insert(v[i]);
-      for (int x : prev) {
-         cur.insert(__gcd(v[i], x));
+      if (v[i].ff < x) {
+         int zarurat = x - v[i].ff;
+         kitna += (zarurat + v[i].ss - 1) / v[i].ss;
+         if (kitna > k) {
+            return false;
+         }
       }
-      s.insert(cur.begin(), cur.end());
-      prev = cur;
-      cur.clear();
    }
-   pl(s.size());
-   for (int x : s) {
-      ps(x);
+   if (kitna <= k) {
+      return true;
    }
+   return false;
+}
+void real_main() {
+   int n, k, ans = 1000000001;
+   cin >> n >> k;
+   vector<pair<int, int> > v(n);
+   for (int i = 0; i < n; i++) {
+      cin >> v[i].ff >> v[i].ss;
+      ans = min(ans, v[i].ff);
+   }
+   int low = ans, high = 10000000000000000000;  //bohot mehnat karwadiye yaar isme th :P
+   while (low <= high) {
+      int mid = (low + high) / 2;
+      if (check(v, mid, k, n)) {
+         ans = mid;
+         low = mid + 1;
+      } else {
+         high = mid - 1;
+      }
+   }
+   pl(ans);
 }
 signed main() {
    Fast;

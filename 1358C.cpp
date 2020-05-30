@@ -105,34 +105,15 @@ void virtual_main() {
 }
 #define int long long
 void real_main() {
-   int n;
-   cin >> n;
-   set<int> s, prev, cur;
-   vector<int> v(n);
-   for (int i = 0; i < n; i++) {
-      cin >> v[i];
-   }
-   prev.insert(v[0]);
-   s.insert(v[0]);
-   for (int i = 1; i < n; i++) {
-      cur.insert(v[i]);
-      for (int x : prev) {
-         cur.insert(__gcd(v[i], x));
-      }
-      s.insert(cur.begin(), cur.end());
-      prev = cur;
-      cur.clear();
-   }
-   pl(s.size());
-   for (int x : s) {
-      ps(x);
-   }
+   int x1, y1, x2, y2;
+   cin >> x1 >> y1 >> x2 >> y2;
+   cout << (x2 - x1) * (y2 - y1) + 1 << "\n";
 }
 signed main() {
    Fast;
    virtual_main();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       // double tic, tac;
       // tic = clock();

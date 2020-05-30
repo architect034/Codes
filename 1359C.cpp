@@ -105,34 +105,61 @@ void virtual_main() {
 }
 #define int long long
 void real_main() {
-   int n;
-   cin >> n;
-   set<int> s, prev, cur;
-   vector<int> v(n);
-   for (int i = 0; i < n; i++) {
-      cin >> v[i];
+   //bade harami nikle beta
+   int h, c, t;
+   cin >> h >> c >> t;
+   int low = 1, high = 1000000000;
+   long double m = (h + c) / 2.0;
+   long double d = abs((long double)t - m);
+   if (m >= (long double)t) {
+      pl(2);
+      return;
    }
-   prev.insert(v[0]);
-   s.insert(v[0]);
-   for (int i = 1; i < n; i++) {
-      cur.insert(v[i]);
-      for (int x : prev) {
-         cur.insert(__gcd(v[i], x));
+   int cnt = 100;
+   while ((high - low) > 2) {
+      int pointer = (low + high) / 2;
+      if (pointer % 2 == 0) {
+         pointer--;
       }
-      s.insert(cur.begin(), cur.end());
-      prev = cur;
-      cur.clear();
+      int value = ((pointer + 1) / 2) * h + (pointer / 2) * c;
+      if (value <= t * pointer) {
+         int ans1 = pointer;
+         pointer -= 2;
+         int v1 = value;
+         value = ((pointer + 1) / 2) * h + (pointer / 2) * c;
+         if (value <= t * pointer) {
+            high = pointer;
+            continue;
+         }
+         int d1 = abs(ans1 * t - v1), d2 = abs(pointer * t - value);
+         if ((d1 * pointer) < (d2 * ans1)) {
+            pl(ans1);
+            return;
+         } else {
+            pl(pointer);
+            return;
+         }
+      } else {
+         low = pointer;
+      }
    }
-   pl(s.size());
-   for (int x : s) {
-      ps(x);
+   int v1 = ((h * ((low + 1) / 2) + (low / 2) * c));
+   int v2 = ((h * ((high + 1) / 2) + (high / 2) * c));
+   int d1 = abs(v1 - low * t), d2 = abs(v2 - high * t);
+   if (d1 * high <= d2 * low) {
+      cout << low << "\n";
+      return;
+   } else {
+      cout << high << "\n";
+      return;
    }
+   cout << 1 << "\n";
 }
 signed main() {
    Fast;
    virtual_main();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       // double tic, tac;
       // tic = clock();

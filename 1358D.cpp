@@ -105,28 +105,36 @@ void virtual_main() {
 }
 #define int long long
 void real_main() {
-   int n;
-   cin >> n;
-   set<int> s, prev, cur;
-   vector<int> v(n);
-   for (int i = 0; i < n; i++) {
+   int n, x;
+   cin >> n >> x;
+   vector<int> v(2 * n + 1, 0), pre(2 * n + 1, 0);
+   vector<int> i_love_huggies(2 * n + 1, 0);
+   for (int i = 1; i <= n; i++) {
       cin >> v[i];
+      v[n + i] = v[i];
+      pre[i] = v[i] + pre[i - 1];
+      i_love_huggies[i] = (v[i] * (v[i] + 1)) / 2;
+      i_love_huggies[i] = i_love_huggies[i] + i_love_huggies[i - 1];
    }
-   prev.insert(v[0]);
-   s.insert(v[0]);
-   for (int i = 1; i < n; i++) {
-      cur.insert(v[i]);
-      for (int x : prev) {
-         cur.insert(__gcd(v[i], x));
+   for (int i = n + 1; i <= 2 * n; i++) {
+      pre[i] = v[i] + pre[i - 1];
+      i_love_huggies[i] = (v[i] * (v[i] + 1)) / 2;
+      i_love_huggies[i] = i_love_huggies[i] + i_love_huggies[i - 1];
+   }
+   int i = 0, j = 0, res = 0;
+   while (j <= 2 * n) {
+      int tot = pre[j] - pre[i];
+      if (tot < x) {
+         j++;
+      } else {
+         int huggies_now = i_love_huggies[j] - i_love_huggies[i];
+         int kitna_extra = tot - x;
+         huggies_now -= ((kitna_extra * (kitna_extra + 1)) / 2);
+         res = max(res, huggies_now);
+         i++;
       }
-      s.insert(cur.begin(), cur.end());
-      prev = cur;
-      cur.clear();
    }
-   pl(s.size());
-   for (int x : s) {
-      ps(x);
-   }
+   pl(res);
 }
 signed main() {
    Fast;

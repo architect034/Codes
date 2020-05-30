@@ -103,36 +103,30 @@ void virtual_main() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-#define int long long
+// #define int long long
 void real_main() {
    int n;
    cin >> n;
-   set<int> s, prev, cur;
    vector<int> v(n);
+   map<int, int> m;
    for (int i = 0; i < n; i++) {
       cin >> v[i];
+      m[v[i]]++;
    }
-   prev.insert(v[0]);
-   s.insert(v[0]);
-   for (int i = 1; i < n; i++) {
-      cur.insert(v[i]);
-      for (int x : prev) {
-         cur.insert(__gcd(v[i], x));
+   sort(all(v));
+   for (int i = n - 1; i >= 0; i--) {
+      if (v[i] <= (1 + i)) {
+         cout << 1 + i + 1 << "\n";
+         return;
       }
-      s.insert(cur.begin(), cur.end());
-      prev = cur;
-      cur.clear();
    }
-   pl(s.size());
-   for (int x : s) {
-      ps(x);
-   }
+   cout << 1 << "\n";
 }
 signed main() {
    Fast;
    virtual_main();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       // double tic, tac;
       // tic = clock();

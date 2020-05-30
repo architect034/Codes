@@ -103,30 +103,57 @@ void virtual_main() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-#define int long long
+// #define int long long
 void real_main() {
-   int n;
-   cin >> n;
-   set<int> s, prev, cur;
-   vector<int> v(n);
-   for (int i = 0; i < n; i++) {
-      cin >> v[i];
+   int n, q;
+   cin >> n >> q;
+   vector<pair<int, int> > v(q);
+   vector<int> dp(n + 2, 0);
+   for (int i = 0; i < q; i++) {
+      cin >> v[i].ff >> v[i].ss;
+      dp[v[i].ff]++;
+      dp[v[i].ss + 1]--;
    }
-   prev.insert(v[0]);
-   s.insert(v[0]);
-   for (int i = 1; i < n; i++) {
-      cur.insert(v[i]);
-      for (int x : prev) {
-         cur.insert(__gcd(v[i], x));
+   int total = 0;
+   for (int i = 1; i <= n; i++) {
+      dp[i] += dp[i - 1];
+      if (dp[i]) {
+         total++;
       }
-      s.insert(cur.begin(), cur.end());
-      prev = cur;
-      cur.clear();
    }
-   pl(s.size());
-   for (int x : s) {
-      ps(x);
+   sort(all(v));
+   vector<int> one(n + 1, 0), two(n + 1, 0);
+   for (int i = 1; i <= n; i++)
+      if (dp[i] == 1) one[i] = 1;
+   for (int i = 1; i <= n; i++)
+      if (dp[i] == 2) two[i] = 1;
+   for (int i = 1; i <= n; i++) {
+      one[i] += one[i - 1];
+      two[i] += two[i - 1];
    }
+   int ans = 0;
+   // cout << total << "\n";
+   for (int i = 0; i < q - 1; i++) {
+      for (int j = i + 1; j < q; j++) {
+         int fl = v[i].ff, fr = v[i].ss;
+         int sl = v[j].ff, sr = v[j].ss;
+         int one_seg_first_st = fl, one_seg_first_en = min(fr, sl - 1);
+         int cnt = one[min(fr, sl - 1)] - one[fl - 1];
+         if (sl <= fr) {
+            cnt += (two[min(fr, sr)] - two[sl - 1]);
+            // cout << "Two : " << two[min(fr, sr)] - two[sl - 1] << "\n";
+         }
+         if (sr != fr) {
+            if (sr < fr) {
+               cnt += (one[fr] - one[sr]);
+            } else
+               cnt += (one[max(fr, sr)] - one[max(fr, sl - 1)]);
+         }
+         // cout << cnt << " count on index " << i + 1 << " " << j + 1 << "\n";
+         ans = max(ans, total - cnt);
+      }
+   }
+   pl(ans);
 }
 signed main() {
    Fast;
