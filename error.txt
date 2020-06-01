@@ -1,3 +1,0 @@
-kitna = 5| n = 5| 
-kitna = 9| n = 5| 
-kitna = 10| n = 5| 
