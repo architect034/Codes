@@ -106,17 +106,28 @@ void virtual_main() {
 #endif
 }
 // #define int long long
-// #include <ext/pb_ds/assoc_container.hpp> // Common file
-// #include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
-// using namespace __gnu_pbds;
-// typedef tree< pair<int,int> ,null_type,less< pair<int,int> >,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
 void real_main() {
+   int n;
+   cin >> n;
+   vector<string> c(n);
+   for (int i = 0; i < n; i++) {
+      cin >> c[i];
+   }
+   for (int i = 0; i < n - 1; i++) {
+      for (int j = 0; j < n - 1; j++) {
+         if (c[i][j] == '1' && c[i + 1][j] == '0' && c[i][j + 1] == '0') {
+            no;
+            return;
+         }
+      }
+   }
+   yes;
 }
 signed main() {
    Fast;
    virtual_main();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       // cout << "Case #" << tc << ": ";
       real_main();

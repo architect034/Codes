@@ -111,6 +111,30 @@ void virtual_main() {
 // using namespace __gnu_pbds;
 // typedef tree< pair<int,int> ,null_type,less< pair<int,int> >,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
 void real_main() {
+   int n, s;
+   cin >> n >> s;
+   vector<int> v(n);
+   for (int i = 0; i < n; i++) {
+      int h, m;
+      cin >> h >> m;
+      v[i] = h * 60 + m;
+   }
+   sort(all(v));
+   int ans = 0;
+   if (ans + s + 1 <= v[0]) {
+      cout << ans / 60 << " " << ans % 60;
+      return;
+   }
+   ans = 0;
+   for (int i = 0; i < n - 1; i++) {
+      ans = v[i] + s + 1;
+      if (ans + s + 1 <= v[i + 1]) {
+         cout << ans / 60 << " " << ans % 60;
+         return;
+      }
+   }
+   ans = v[n - 1] + s + 1;
+   cout << ans / 60 << " " << ans % 60;
 }
 signed main() {
    Fast;

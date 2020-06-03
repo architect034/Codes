@@ -105,12 +105,32 @@ void virtual_main() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-// #define int long long
-// #include <ext/pb_ds/assoc_container.hpp> // Common file
-// #include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
-// using namespace __gnu_pbds;
-// typedef tree< pair<int,int> ,null_type,less< pair<int,int> >,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
+#define int long long
 void real_main() {
+   int n, res = 0LL;
+   cin >> n;
+   vector<int> a(n), b(n);
+   map<int, int> m;
+   for (int i = 0; i < n; i++) {
+      cin >> a[i];
+      m[a[i]]++;
+   }
+   for (int i = 0; i < n; i++) cin >> b[i];
+   vector<int> take_sure;
+   for (auto x : m) {
+      if (x.ss > 1) {
+         take_sure.pb(x.ff);
+      }
+   }
+   for (int i = 0; i < n; i++) {
+      for (int j = 0; j < take_sure.size(); j++) {
+         if (((a[i]) & (take_sure[j])) == a[i]) {
+            res += b[i];
+            break;
+         }
+      }
+   }
+   pl(res);
 }
 signed main() {
    Fast;

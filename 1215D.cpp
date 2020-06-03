@@ -106,11 +106,36 @@ void virtual_main() {
 #endif
 }
 // #define int long long
-// #include <ext/pb_ds/assoc_container.hpp> // Common file
-// #include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
-// using namespace __gnu_pbds;
-// typedef tree< pair<int,int> ,null_type,less< pair<int,int> >,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
 void real_main() {
+   int n;
+   cin >> n;
+   string s;
+   cin >> s;
+   vector<char> l(n / 2), r(n / 2);
+   for (int i = 0; i < n / 2; i++) {
+      l[i] = s[i];
+      r[i] = s[n / 2 + i];
+   }
+   int lsum = 0, rsum = 0, vl = 0, vr = 0;
+   for (int i = 0; i < n / 2; i++) {
+      if (l[i] != '?') {
+         lsum += (l[i] - '0');
+      } else {
+         vl++;
+      }
+   }
+   for (int i = 0; i < n / 2; i++) {
+      if (r[i] != '?') {
+         rsum += (r[i] - '0');
+      } else {
+         vr++;
+      }
+   }
+   if (lsum * 2 + vl * 9 == rsum * 2 + vr * 9) {
+      pl("Bicarp");
+   } else {
+      pl("Monocarp");
+   }
 }
 signed main() {
    Fast;

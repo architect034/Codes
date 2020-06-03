@@ -106,11 +106,55 @@ void virtual_main() {
 #endif
 }
 // #define int long long
-// #include <ext/pb_ds/assoc_container.hpp> // Common file
-// #include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
-// using namespace __gnu_pbds;
-// typedef tree< pair<int,int> ,null_type,less< pair<int,int> >,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
+int n;
+vector<int> v[MAX];
+vector<int> sz(MAX, 1), ans(MAX);
+vector<int> p(MAX), k(MAX);
+void dfs(int s) {
+   for (int i = 0; i < v[s].size(); i++) {
+      dfs(v[s][i]);
+      sz[s] += sz[v[s][i]];
+   }
+}
+vector<bool> marker(MAX, false);
+void dfs_solve(int x) {
+   int cnt = 0;
+   for (int j = 1; j <= n; j++) {
+      if (!marker[j]) {
+         cnt++;
+         if (cnt > k[x]) {
+            ans[x] = j;
+            marker[j] = 1;
+            break;
+         }
+      }
+   }
+   for (int i = 0; i < v[x].size(); i++) {
+      dfs_solve(v[x][i]);
+   }
+}
 void real_main() {
+   cin >> n;
+   int s = 0;
+   for (int i = 0; i < n; i++) {
+      cin >> p[i + 1] >> k[i + 1];
+      v[p[i + 1]].pb(i + 1);
+      if (p[i + 1] == 0) {
+         s = i + 1;
+      }
+   }
+   dfs(s);
+   for (int i = 1; i <= n; i++) {
+      if (sz[i] - 1 < k[i]) {
+         no;
+         return;
+      }
+   }
+   dfs_solve(s);
+   yes;
+   for (int i = 1; i <= n; i++) {
+      cout << ans[i] << " ";
+   }
 }
 signed main() {
    Fast;

@@ -16,7 +16,7 @@
 #define nl cout << endl
 #define PI 3.14159265358979323846
 using namespace std;
-const int MAX = 1e5 + 9;
+const int MAX = 2e5 + 9;
 const ll mod = 1e9 + 7;
 vector<bool> prime(MAX, 1);
 vector<int> spf(MAX, 1), primes;
@@ -110,7 +110,49 @@ void virtual_main() {
 // #include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
 // using namespace __gnu_pbds;
 // typedef tree< pair<int,int> ,null_type,less< pair<int,int> >,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
+vector<int> g[MAX];
+vector<int> v(MAX), dp(MAX, 0);
+int n;
+void dfs(int x, int p) {
+   dp[x] = v[x];
+   for (int y : g[x]) {
+      if (y != p) {
+         dfs(y, x);
+         if (dp[y] > 0)
+            dp[x] += dp[y];
+      }
+   }
+}
+void _main(int x, int p) {
+   for (int y : g[x]) {
+      if (y == p) continue;
+      if (dp[y] < dp[x]) {
+         if (dp[y] <= 0) {
+            dp[y] += dp[x];
+         } else {
+            dp[y] = dp[x];
+         }
+      }
+      _main(y, x);
+   }
+}
 void real_main() {
+   cin >> n;
+   for (int i = 1; i <= n; i++) {
+      cin >> v[i];
+      if (v[i] == 0) v[i] = -1;
+   }
+   for (int i = 0; i < n - 1; i++) {
+      int x, y;
+      cin >> x >> y;
+      g[x].pb(y), g[y].pb(x);
+   }
+   dfs(1, 0);
+   dbg(dp);
+   _main(1, 0);
+   for (int i = 1; i <= n; i++) {
+      cout << dp[i] << " ";
+   }
 }
 signed main() {
    Fast;

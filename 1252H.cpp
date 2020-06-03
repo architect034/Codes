@@ -105,12 +105,48 @@ void virtual_main() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-// #define int long long
+#define int long long
+#define ld long double
 // #include <ext/pb_ds/assoc_container.hpp> // Common file
 // #include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
 // using namespace __gnu_pbds;
 // typedef tree< pair<int,int> ,null_type,less< pair<int,int> >,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
+
 void real_main() {
+   int n;
+   cin >> n;
+   vector<pair<int, int>> v(n);
+   for (int i = 0; i < n; i++) {
+      cin >> v[i].ff >> v[i].ss;
+      if (v[i].ss < v[i].ff) {
+         swap(v[i].ff, v[i].ss);
+      }
+   }
+   sort(all(v));
+   reverse(all(v));
+   vector<int> sm(n);
+   dbg(v);
+   sm[0] = v[0].ss;
+   for (int i = 1; i < n; i++) {
+      sm[i] = max(sm[i - 1], v[i].ss);
+   }
+   dbg(sm);
+   int ans = 0;
+   for (int i = 0; i < n; i++) {
+      if (i == 0) {
+         ans = max(ans, (v[i].ff * v[i].ss));
+      } else {
+         ans = max(ans, (v[i].ff * v[i].ss));
+         dbg(ans);
+         ans = max(ans, v[i].ff * min(v[i].ss, sm[i - 1]) * 2);
+         dbg(ans);
+      }
+   }
+   if (ans % 2 == 1) {
+      cout << ans / 2 << ".5";
+   } else {
+      cout << ans / 2 << ".0";
+   }
 }
 signed main() {
    Fast;

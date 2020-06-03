@@ -106,11 +106,50 @@ void virtual_main() {
 #endif
 }
 // #define int long long
-// #include <ext/pb_ds/assoc_container.hpp> // Common file
-// #include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
-// using namespace __gnu_pbds;
-// typedef tree< pair<int,int> ,null_type,less< pair<int,int> >,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
 void real_main() {
+   int n;
+   cin >> n;
+   char c;
+   int dist[n + 1][n + 1];
+   for (int i = 1; i <= n; i++) {
+      for (int j = 1; j <= n; j++) {
+         cin >> c;
+         if (c == '1') {
+            dist[i][j] = 1;
+         } else if (i == j) {
+            dist[i][j] = 0;
+         } else {
+            dist[i][j] = MAX;
+         }
+      }
+   }
+   for (int k = 1; k <= n; k++) {
+      for (int i = 1; i <= n; i++) {
+         for (int j = 1; j <= n; j++) {
+            if ((dist[i][k] + dist[k][j]) < dist[i][j]) {
+               dist[i][j] = dist[i][k] + dist[k][j];
+            }
+         }
+      }
+   }
+   int m;
+   cin >> m;
+   vector<int> ans, tmp(m);
+   int lidx = 0;
+   for (int i = 0; i < m; i++) {
+      cin >> tmp[i];
+      if (i) {
+         if (dist[tmp[lidx]][tmp[i]] < (i - lidx)) {
+            ans.push_back(tmp[i - 1]);
+            lidx = i - 1;
+         }
+      } else {
+         ans.push_back(tmp[i]);
+      }
+   }
+   ans.push_back(tmp[m - 1]);
+   cout << ans.size() << endl;
+   ps(ans, ans.size());
 }
 signed main() {
    Fast;

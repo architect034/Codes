@@ -106,11 +106,41 @@ void virtual_main() {
 #endif
 }
 // #define int long long
-// #include <ext/pb_ds/assoc_container.hpp> // Common file
-// #include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
-// using namespace __gnu_pbds;
-// typedef tree< pair<int,int> ,null_type,less< pair<int,int> >,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
 void real_main() {
+   int n;
+   cin >> n;
+   vector<int> v(n);
+   map<int, set<int>> m;
+   map<int, int> last;
+   for (int &x : v) cin >> x;
+   for (int i = 0; i < n; i++) {
+      if (last[v[i]]) {
+         int x = last[v[i]];
+         m[v[i]].insert(i + 1 - x);
+      }
+      last[v[i]] = i + 1;
+   }
+   dbg(m);
+   map<int, int> done;
+   vector<pair<int, int>> ans;
+   for (int i = 0; i < n; i++) {
+      if (done[v[i]]) {
+         continue;
+      }
+      if (m[v[i]].size() == 0) {
+         ans.pb({v[i], 0});
+      } else {
+         if (m[v[i]].size() == 1) {
+            ans.pb({v[i], *(m[v[i]].begin())});
+         }
+      }
+      done[v[i]] = 1;
+   }
+   sort(all(ans));
+   pl(ans.size());
+   for (auto &x : ans) {
+      cout << x.ff << " " << x.ss << "\n";
+   }
 }
 signed main() {
    Fast;

@@ -99,18 +99,64 @@ T power(T a, T b, T m) {
    return res % m;
 }
 void virtual_main() {
+   sieve();
 #ifndef ONLINE_JUDGE
    freopen("input.txt", "r", stdin);
    freopen("output.txt", "w", stdout);
    freopen("error.txt", "w", stderr);
 #endif
 }
-// #define int long long
+#define int long long
 // #include <ext/pb_ds/assoc_container.hpp> // Common file
 // #include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
 // using namespace __gnu_pbds;
 // typedef tree< pair<int,int> ,null_type,less< pair<int,int> >,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
 void real_main() {
+   //A slight diff way
+   int n;
+   cin >> n;
+   vector<pair<int, int> > v(n);
+   for (pair<int, int> &x : v) {
+      cin >> x.ff >> x.ss;
+   }
+   set<int> s;
+   int x = v[0].ff;
+   for (int i = 0; i < primes.size(); i++) {
+      int d = primes[i];
+      if (x % d == 0) {
+         s.insert(d);
+         while (x % d == 0) {
+            x /= d;
+         }
+      }
+   }
+   if (x > 1) s.insert(x);
+   x = v[0].ss;
+   for (int i = 0; i < primes.size(); i++) {
+      int d = primes[i];
+      if (x % d == 0) {
+         s.insert(d);
+         while (x % d == 0) {
+            x /= d;
+         }
+      }
+   }
+   if (x > 1) s.insert(x);
+   dbg(s);
+   for (int x : s) {
+      bool say = true;
+      for (int i = 0; i < n; i++) {
+         if (v[i].ff % x != 0 && v[i].ss % x != 0) {
+            say = false;
+            break;
+         }
+      }
+      if (say) {
+         pl(x);
+         return;
+      }
+   }
+   pl(-1);
 }
 signed main() {
    Fast;

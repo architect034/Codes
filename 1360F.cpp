@@ -111,12 +111,40 @@ void virtual_main() {
 // using namespace __gnu_pbds;
 // typedef tree< pair<int,int> ,null_type,less< pair<int,int> >,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
 void real_main() {
+   int n, m;
+   cin >> n >> m;
+   vector<string> v(n);
+   for (int i = 0; i < n; i++) cin >> v[i];
+   for (int i = 0; i < m; i++) {
+      string s = v[0];
+      for (char c = 'a'; c <= 'z'; c++) {
+         s[i] = c;
+         bool say = 1;
+         for (int j = 0; j < n; j++) {
+            int d = 0;
+            for (int k = 0; k < m; k++) {
+               if (s[k] != v[j][k]) {
+                  d++;
+               }
+            }
+            if (d > 1) {
+               say = false;
+               break;
+            }
+         }
+         if (say) {
+            pl(s);
+            return;
+         }
+      }
+   }
+   pl(-1);
 }
 signed main() {
    Fast;
    virtual_main();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       // cout << "Case #" << tc << ": ";
       real_main();
