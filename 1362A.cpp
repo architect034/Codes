@@ -41,6 +41,10 @@ void sieve() {
       }
    }
 }
+// #include <ext/pb_ds/assoc_container.hpp> // Common file
+// #include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
+// using namespace __gnu_pbds;
+// typedef tree< pair<int,int> ,null_type,less< pair<int,int> >,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
 template <typename T>
 void in(T &x) {
    cin >> x;
@@ -99,7 +103,6 @@ T power(T a, T b, T m) {
    return res % m;
 }
 void virtual_main() {
-   sieve();
 #ifndef ONLINE_JUDGE
    freopen("input.txt", "r", stdin);
    freopen("output.txt", "w", stdout);
@@ -107,62 +110,39 @@ void virtual_main() {
 #endif
 }
 #define int long long
-// #include <ext/pb_ds/assoc_container.hpp> // Common file
-// #include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
-// using namespace __gnu_pbds;
-// typedef tree< pair<int,int> ,null_type,less< pair<int,int> >,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
 void real_main() {
-   //A slight diff way
-   int n;
-   cin >> n;
-   vector<pair<int, int> > v(n);
-   for (pair<int, int> &x : v) {
-      cin >> x.ff >> x.ss;
+   int a, b;
+   cin >> a >> b;
+   if (a < b) {
+      swap(a, b);
    }
-   set<int> s;
-   int x = v[0].ff;
-   for (int i = 0; i < primes.size(); i++) {
-      int d = primes[i];
-      if (x % d == 0) {
-         s.insert(d);
-         while (x % d == 0) {
-            x /= d;
-         }
-      }
+   if (a == b) {
+      pl(0);
+      return;
    }
-   if (x > 1) s.insert(x);
-   x = v[0].ss;
-   for (int i = 0; i < primes.size(); i++) {
-      int d = primes[i];
-      if (x % d == 0) {
-         s.insert(d);
-         while (x % d == 0) {
-            x /= d;
-         }
-      }
+   if (__gcd(a, b) != b) {
+      pl(-1);
+      return;
    }
-   if (x > 1) s.insert(x);
-   dbg(s);
-   for (int x : s) {
-      bool say = true;
-      for (int i = 0; i < n; i++) {
-         if (v[i].ff % x != 0 && v[i].ss % x != 0) {
-            say = false;
-            break;
-         }
-      }
-      if (say) {
-         pl(x);
-         return;
-      }
+   a = a / b;
+   if ((a & (a - 1)) == 0) {
+      int k = 8, ans = 0;
+
+      while (a % k == 0) ans++, a /= k;
+      k /= 2;
+      while (a % k == 0) ans++, a /= k;
+      k /= 2;
+      while (a % k == 0) ans++, a /= k;
+      pl(ans);
+   } else {
+      pl(-1);
    }
-   pl(-1);
 }
 signed main() {
    Fast;
    virtual_main();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       // cout << "Case #" << tc << ": ";
       real_main();

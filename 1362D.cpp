@@ -99,64 +99,51 @@ T power(T a, T b, T m) {
    return res % m;
 }
 void virtual_main() {
-   sieve();
 #ifndef ONLINE_JUDGE
    freopen("input.txt", "r", stdin);
    freopen("output.txt", "w", stdout);
    freopen("error.txt", "w", stderr);
 #endif
 }
-#define int long long
-// #include <ext/pb_ds/assoc_container.hpp> // Common file
-// #include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
-// using namespace __gnu_pbds;
-// typedef tree< pair<int,int> ,null_type,less< pair<int,int> >,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
+// #define int long long
 void real_main() {
-   //A slight diff way
-   int n;
-   cin >> n;
-   vector<pair<int, int> > v(n);
-   for (pair<int, int> &x : v) {
-      cin >> x.ff >> x.ss;
+   int n, m;
+   cin >> n >> m;
+   vector<int> g[n + 1];
+   for (int i = 0; i < m; i++) {
+      int u1, u2;
+      cin >> u1 >> u2;
+      g[u1].pb(u2), g[u2].pb(u1);
    }
-   set<int> s;
-   int x = v[0].ff;
-   for (int i = 0; i < primes.size(); i++) {
-      int d = primes[i];
-      if (x % d == 0) {
-         s.insert(d);
-         while (x % d == 0) {
-            x /= d;
+   vector<int> t(n + 1);
+   for (int i = 1; i <= n; i++) {
+      cin >> t[i];
+   }
+   vector<pair<int, int>> v;
+   for (int i = 1; i <= n; i++) {
+      v.pb({t[i], i});
+   }
+   sort(all(v));
+   for (int i = 0; i < n; i++) {
+      int x = v[i].ss;
+      set<int> s;
+      for (int y : g[x]) {
+         if (t[y] == t[x]) {
+            pl(-1);
+            return;
+         }
+         if (t[y] < t[x]) {
+            s.insert(t[y]);
          }
       }
-   }
-   if (x > 1) s.insert(x);
-   x = v[0].ss;
-   for (int i = 0; i < primes.size(); i++) {
-      int d = primes[i];
-      if (x % d == 0) {
-         s.insert(d);
-         while (x % d == 0) {
-            x /= d;
-         }
-      }
-   }
-   if (x > 1) s.insert(x);
-   dbg(s);
-   for (int x : s) {
-      bool say = true;
-      for (int i = 0; i < n; i++) {
-         if (v[i].ff % x != 0 && v[i].ss % x != 0) {
-            say = false;
-            break;
-         }
-      }
-      if (say) {
-         pl(x);
+      if (s.size() != t[x] - 1) {
+         pl(-1);
          return;
       }
    }
-   pl(-1);
+   for (int i = 0; i < n; i++) {
+      cout << v[i].ss << " ";
+   }
 }
 signed main() {
    Fast;

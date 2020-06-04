@@ -41,6 +41,10 @@ void sieve() {
       }
    }
 }
+// #include <ext/pb_ds/assoc_container.hpp> // Common file
+// #include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
+// using namespace __gnu_pbds;
+// typedef tree< pair<int,int> ,null_type,less< pair<int,int> >,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
 template <typename T>
 void in(T &x) {
    cin >> x;
@@ -99,60 +103,38 @@ T power(T a, T b, T m) {
    return res % m;
 }
 void virtual_main() {
-   sieve();
 #ifndef ONLINE_JUDGE
    freopen("input.txt", "r", stdin);
    freopen("output.txt", "w", stdout);
    freopen("error.txt", "w", stderr);
 #endif
 }
-#define int long long
-// #include <ext/pb_ds/assoc_container.hpp> // Common file
-// #include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
-// using namespace __gnu_pbds;
-// typedef tree< pair<int,int> ,null_type,less< pair<int,int> >,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
+// #define int long long
 void real_main() {
-   //A slight diff way
    int n;
    cin >> n;
-   vector<pair<int, int> > v(n);
-   for (pair<int, int> &x : v) {
-      cin >> x.ff >> x.ss;
-   }
+   vector<int> v(n);
    set<int> s;
-   int x = v[0].ff;
-   for (int i = 0; i < primes.size(); i++) {
-      int d = primes[i];
-      if (x % d == 0) {
-         s.insert(d);
-         while (x % d == 0) {
-            x /= d;
-         }
-      }
+   for (int &x : v) {
+      cin >> x;
+      s.insert(x);
    }
-   if (x > 1) s.insert(x);
-   x = v[0].ss;
-   for (int i = 0; i < primes.size(); i++) {
-      int d = primes[i];
-      if (x % d == 0) {
-         s.insert(d);
-         while (x % d == 0) {
-            x /= d;
-         }
+   for (int i = 1; i <= 1024; i++) {
+      set<int> milane_wala_set;
+      for (int j = 0; j < n; j++) {
+         milane_wala_set.insert(v[j] ^ i);
       }
-   }
-   if (x > 1) s.insert(x);
-   dbg(s);
-   for (int x : s) {
       bool say = true;
-      for (int i = 0; i < n; i++) {
-         if (v[i].ff % x != 0 && v[i].ss % x != 0) {
-            say = false;
-            break;
+      if (milane_wala_set.size() == s.size()) {
+         for (auto x = s.begin(), y = milane_wala_set.begin(); x != s.end() && y != milane_wala_set.end(); x++, y++) {
+            if (*x != *y) {
+               say = false;
+               break;
+            }
          }
       }
       if (say) {
-         pl(x);
+         pl(i);
          return;
       }
    }
@@ -162,7 +144,7 @@ signed main() {
    Fast;
    virtual_main();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       // cout << "Case #" << tc << ": ";
       real_main();

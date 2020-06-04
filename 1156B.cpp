@@ -99,70 +99,65 @@ T power(T a, T b, T m) {
    return res % m;
 }
 void virtual_main() {
-   sieve();
 #ifndef ONLINE_JUDGE
    freopen("input.txt", "r", stdin);
    freopen("output.txt", "w", stdout);
    freopen("error.txt", "w", stderr);
 #endif
 }
-#define int long long
+// #define int long long
 // #include <ext/pb_ds/assoc_container.hpp> // Common file
 // #include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
 // using namespace __gnu_pbds;
 // typedef tree< pair<int,int> ,null_type,less< pair<int,int> >,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
 void real_main() {
-   //A slight diff way
-   int n;
-   cin >> n;
-   vector<pair<int, int> > v(n);
-   for (pair<int, int> &x : v) {
-      cin >> x.ff >> x.ss;
-   }
-   set<int> s;
-   int x = v[0].ff;
-   for (int i = 0; i < primes.size(); i++) {
-      int d = primes[i];
-      if (x % d == 0) {
-         s.insert(d);
-         while (x % d == 0) {
-            x /= d;
-         }
+   string s;
+   cin >> s;
+   string s1 = "", s2 = "";
+   int n = s.size();
+   for (int i = 0; i < s.size(); i++) {
+      int x = s[i] - 'a';
+      if (x % 2 == 0) {
+         s1 += s[i];
+      } else {
+         s2 += s[i];
       }
    }
-   if (x > 1) s.insert(x);
-   x = v[0].ss;
-   for (int i = 0; i < primes.size(); i++) {
-      int d = primes[i];
-      if (x % d == 0) {
-         s.insert(d);
-         while (x % d == 0) {
-            x /= d;
-         }
+   sort(all(s1)), sort(all(s2));
+   string ans1 = s1 + s2;
+   string ans2 = s2 + s1;
+   dbg(ans1);
+   dbg(ans2);
+   bool say = 1;
+   for (int i = 0; i < n - 1; i++) {
+      int x = ans1[i] - 'a', y = ans1[i + 1] - 'a';
+      if (abs(x - y) == 1) {
+         say = 0;
       }
    }
-   if (x > 1) s.insert(x);
-   dbg(s);
-   for (int x : s) {
-      bool say = true;
-      for (int i = 0; i < n; i++) {
-         if (v[i].ff % x != 0 && v[i].ss % x != 0) {
-            say = false;
-            break;
-         }
-      }
-      if (say) {
-         pl(x);
-         return;
+   if (say) {
+      pl(ans1);
+      return;
+   }
+   say = 1;
+   for (int i = 0; i < n - 1; i++) {
+      int x = ans2[i] - 'a', y = ans2[i + 1] - 'a';
+      if (abs(x - y) == 1) {
+         say = 0;
       }
    }
-   pl(-1);
+   if (say) {
+      pl(ans2);
+      return;
+   }
+   pl("No answer");
 }
+
 signed main() {
    Fast;
    virtual_main();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       // cout << "Case #" << tc << ": ";
       real_main();
