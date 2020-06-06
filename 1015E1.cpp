@@ -109,45 +109,77 @@ void virtual_main() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-#define int long long
-long long calc(vector<long long> v, long long r) {
-   long long n = v.size();
-   if (r == 1) {
-      map<long long, long long> tmp;
-      for (long long i = 0; i < n; i++) {
-         tmp[v[i]]++;
-      }
-      long long out = 0;
-      for (auto x : tmp) {
-         if (x.second >= 3) {
-            out = out + (x.second * (x.second - 1LL) * (x.second - 2LL)) / (long long)6;
-         }
-      }
-      return out;
-   }
-   map<long long, long long> l, ri;
-   for (long long i = 0; i < n - 1; i++) {
-      l[v[i]]++;
-   }
-   ri[v[n - 1]]++;
-   long long ans = 0;
-   for (long long i = n - 2; i >= 0; i--) {
-      l[v[i]]--;
-      if (v[i] % r == 0) {
-         ans += (l[v[i] / r] * ri[v[i] * r]);
-      }
-      ri[v[i]]++;
-   }
-   return ans;
-}
+// #define int long long
 void real_main() {
-   int n, r;
-   cin >> n >> r;
-   vector<int> v(n);
+   int n, m;
+   cin >> n >> m;
+   vector<string> v(n);
    for (int i = 0; i < n; i++) {
       cin >> v[i];
    }
-   cout << calc(v, r);
+   vector<vector<char> > ans(n, vector<char>(m, '.'));
+   map<pair<int, int>, int> mp;
+   for (int i = 1; i < n - 1; i++) {
+      for (int j = 1; j < m - 1; j++) {
+         if (v[i][j] == '.') continue;
+         int l = 0, r = 0, u = 0, d = 0;
+         for (int k = j - 1; k >= 0; k--) {
+            if (v[i][k] == '*')
+               l++;
+            else
+               break;
+         }
+         for (int k = j + 1; k < m; k++) {
+            if (v[i][k] == '*')
+               r++;
+            else
+               break;
+         }
+         for (int k = i - 1; k >= 0; k--) {
+            if (v[k][j] == '*')
+               u++;
+            else
+               break;
+         }
+         for (int k = i + 1; k < n; k++) {
+            if (v[k][j] == '*')
+               d++;
+            else
+               break;
+         }
+         int reach = min({l, r, u, d});
+         if (reach == 0) {
+            continue;
+         }
+         mp[{i + 1, j + 1}] = reach;
+         ans[i][j] = '*';
+         for (int k = j - 1, cnt = reach; k >= 0 && cnt > 0; k--, cnt--) {
+            ans[i][k] = '*';
+         }
+         for (int k = j + 1, cnt = reach; k < m && cnt > 0; k++, cnt--) {
+            ans[i][k] = '*';
+         }
+         for (int k = i - 1, cnt = reach; k >= 0 && cnt > 0; k--, cnt--) {
+            ans[k][j] = '*';
+         }
+         for (int k = i + 1, cnt = reach; k < n && cnt > 0; k++, cnt--) {
+            ans[k][j] = '*';
+         }
+      }
+   }
+   dbg(mp);
+   for (int i = 0; i < n; i++) {
+      for (int j = 0; j < m; j++) {
+         if (ans[i][j] != v[i][j]) {
+            pl(-1);
+            return;
+         }
+      }
+   }
+   pl(mp.size());
+   for (auto x : mp) {
+      cout << x.ff.ff << " " << x.ff.ss << " " << x.ss << "\n";
+   }
 }
 signed main() {
    Fast;

@@ -109,45 +109,75 @@ void virtual_main() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-#define int long long
-long long calc(vector<long long> v, long long r) {
-   long long n = v.size();
-   if (r == 1) {
-      map<long long, long long> tmp;
-      for (long long i = 0; i < n; i++) {
-         tmp[v[i]]++;
-      }
-      long long out = 0;
-      for (auto x : tmp) {
-         if (x.second >= 3) {
-            out = out + (x.second * (x.second - 1LL) * (x.second - 2LL)) / (long long)6;
-         }
-      }
-      return out;
+// #define int long long
+const int N = 1e5 + 10;
+int n, m;
+vector<int> ans(N);
+int t[2 * N];
+
+void build() {
+   for (int i = n - 1; i > 0; --i) t[i] = (t[i << 1]) & (t[i << 1 | 1]);
+}
+
+int query(int l, int r) {
+   int res = power<int>(2, 30) - 1;
+   for (l += n, r += n; l < r; l >>= 1, r >>= 1) {
+      if (l & 1) res = (res) & (t[l++]);
+      if (r & 1) res = (res) & (t[--r]);
    }
-   map<long long, long long> l, ri;
-   for (long long i = 0; i < n - 1; i++) {
-      l[v[i]]++;
-   }
-   ri[v[n - 1]]++;
-   long long ans = 0;
-   for (long long i = n - 2; i >= 0; i--) {
-      l[v[i]]--;
-      if (v[i] % r == 0) {
-         ans += (l[v[i] / r] * ri[v[i] * r]);
-      }
-      ri[v[i]]++;
-   }
-   return ans;
+   return res;
 }
 void real_main() {
-   int n, r;
-   cin >> n >> r;
-   vector<int> v(n);
-   for (int i = 0; i < n; i++) {
-      cin >> v[i];
+   cin >> n >> m;
+   vector<pair<pair<int, int>, int> > v(m);
+   for (int i = 0; i < m; i++) {
+      cin >> v[i].ff.ff >> v[i].ff.ss >> v[i].ss;
    }
-   cout << calc(v, r);
+   vector<vector<int> > dp(32, vector<int>(n + 2, 0));
+   for (int i = 0; i < m; i++) {
+      int pos = 0;
+      int x = v[i].ss;
+      while (x) {
+         if (x % 2 == 1) {
+            dp[pos][v[i].ff.ff]++;
+            dp[pos][v[i].ff.ss + 1]--;
+         }
+         x >>= 1;
+         pos++;
+      }
+   }
+   for (int i = 0; i < 32; i++) {
+      for (int j = 1; j <= n + 1; j++) {
+         dp[i][j] += dp[i][j - 1];
+      }
+   }
+   vector<int> ans(n, power<int>(2, 30) - 1);
+
+   for (int i = 1; i <= n; i++) {
+      int x = 0;
+      for (int j = 0; j < 31; j++) {
+         if (dp[j][i]) {
+            x += (1 << j);
+         }
+      }
+      ans[i - 1] = x;
+   }
+   for (int i = 0; i < n; ++i) {
+      t[n + i] = ans[i];
+   }
+   dbg(ans);
+   build();
+   db(t);
+   for (int i = 0; i < m; i++) {
+      int ret = query(v[i].ff.ff - 1, v[i].ff.ss);
+      dbg(ret);
+      if (ret != v[i].ss) {
+         no;
+         return;
+      }
+   }
+   yes;
+   ps(ans, ans.size());
 }
 signed main() {
    Fast;

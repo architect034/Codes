@@ -16,7 +16,7 @@
 #define nl cout << endl
 #define PI 3.14159265358979323846
 using namespace std;
-const int MAX = 1e5 + 9;
+const int MAX = 1e3 + 9;
 const ll mod = 1e9 + 7;
 vector<bool> prime(MAX, 1);
 vector<int> spf(MAX, 1), primes;
@@ -109,45 +109,77 @@ void virtual_main() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-#define int long long
-long long calc(vector<long long> v, long long r) {
-   long long n = v.size();
-   if (r == 1) {
-      map<long long, long long> tmp;
-      for (long long i = 0; i < n; i++) {
-         tmp[v[i]]++;
-      }
-      long long out = 0;
-      for (auto x : tmp) {
-         if (x.second >= 3) {
-            out = out + (x.second * (x.second - 1LL) * (x.second - 2LL)) / (long long)6;
-         }
-      }
-      return out;
+// #define int long long
+int n, m;
+vector<vector<char> > v(MAX, vector<char>(MAX));
+vector<vector<int> > rp(MAX, vector<int>(MAX, 0)), cp(MAX, vector<int>(MAX, 0));
+bool check(int x, int i, int j) {
+   int lsum = rp[i][j - 1] - (((j - x - 1) >= 0) ? rp[i][j - x - 1] : 0);
+   int rsum = rp[i][j + x] - rp[i][j];
+   int usum = cp[i - 1][j] - (((i - x - 1) >= 0) ? cp[i - x - 1][j] : 0);
+   int dsum = cp[i + x][j] - cp[i][j];
+   if (lsum == rsum && rsum == usum && usum == dsum && lsum == x) {
+      return true;
    }
-   map<long long, long long> l, ri;
-   for (long long i = 0; i < n - 1; i++) {
-      l[v[i]]++;
-   }
-   ri[v[n - 1]]++;
-   long long ans = 0;
-   for (long long i = n - 2; i >= 0; i--) {
-      l[v[i]]--;
-      if (v[i] % r == 0) {
-         ans += (l[v[i] / r] * ri[v[i] * r]);
-      }
-      ri[v[i]]++;
-   }
-   return ans;
+   return false;
 }
 void real_main() {
-   int n, r;
-   cin >> n >> r;
-   vector<int> v(n);
+   cin >> n >> m;
    for (int i = 0; i < n; i++) {
-      cin >> v[i];
+      for (int j = 0; j < m; j++) {
+         cin >> v[i][j];
+         if (v[i][j] == '*') {
+            rp[i][j] = 1;
+            cp[i][j] = 1;
+         }
+      }
    }
-   cout << calc(v, r);
+   for (int i = 0; i < n; i++) {
+      for (int j = 0; j < m; j++) {
+         if (j) rp[i][j] += rp[i][j - 1];
+         if (i) cp[i][j] += cp[i - 1][j];
+      }
+   }
+   map<pair<int, int>, int> mp;
+   vector<vector<int> > rows(n, vector<int>(m + 1, 0)), col(n + 1, vector<int>(m, 0));
+   for (int i = 0; i < n; i++) {
+      for (int j = 0; j < m; j++) {
+         if (v[i][j] == '.') continue;
+         int low = 1, high = min({i, j, n - 1 - i, m - 1 - j}), ans = 0;
+         while (low <= high) {
+            int mid = (low + high) >> 1;
+            if (check(mid, i, j)) {
+               ans = mid;
+               low = mid + 1;
+            } else {
+               high = mid - 1;
+            }
+         }
+         if (ans) {
+            mp[{i + 1, j + 1}] = ans;
+            rows[i][j - ans]++, rows[i][j + ans + 1] -= 1;
+            col[i - ans][j]++, col[i + ans + 1][j] -= 1;
+         }
+      }
+   }
+   for (int i = 0; i < n; i++) {
+      for (int j = 0; j < m; j++) {
+         if (j) rows[i][j] += rows[i][j - 1];
+         if (i) col[i][j] += col[i - 1][j];
+      }
+   }
+   for (int i = 0; i < n; i++) {
+      for (int j = 0; j < m; j++) {
+         if ((v[i][j] == '*' && rows[i][j] == 0 && col[i][j] == 0) || (v[i][j] == '.' && rows[i][j] != 0 && col[i][j] != 0)) {
+            pl(-1);
+            return;
+         }
+      }
+   }
+   pl(mp.size());
+   for (auto x : mp) {
+      cout << x.ff.ff << " " << x.ff.ss << " " << x.ss << "\n";
+   }
 }
 signed main() {
    Fast;
