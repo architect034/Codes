@@ -1,28 +1,3 @@
-taken_col = 
-{0, 0}
+v = 
+{"#ab", "#abc", "#ac", "#b", "#b", "#bb"}
 | 
-taken_row = 
-{0, 0}
-| 
-chance = false| 
-chance = true| 
-taken_col = 
-{0, 1}
-| 
-taken_row = 
-{0, 1}
-| 
-chance = false| 
-taken_col = 
-{1, 1, 1}
-| 
-taken_row = 
-{1, 1}
-| 
-taken_col = 
-{1, 0, 0}
-| 
-taken_row = 
-{1, 0, 1}
-| 
-chance = false| 
