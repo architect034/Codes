@@ -1,5 +1,4 @@
-#define dbg(...) ;
-#define db(...) ;
+
 #include "bits/stdc++.h"
 #define ll long long
 using namespace std;
@@ -56,11 +55,11 @@ vector<int> solve(int n, vector<int>& f, vector<int>& s, vector<int>& v, vector<
    return ans;
 }
 signed main() {
-#ifndef ONLINE_JUDGE
-   freopen("input.txt", "r", stdin);
-   freopen("output.txt", "w", stdout);
-   freopen("error.txt", "w", stderr);
-#endif
+   // #ifndef ONLINE_JUDGE
+   //    freopen("input.txt", "r", stdin);
+   //    freopen("output.txt", "w", stdout);
+   //    freopen("error.txt", "w", stderr);
+   // #endif
    sieve();
    int n, m;
    cin >> n >> m;
