@@ -169,5 +169,5 @@ signed main() {
    maximumSumPath(root);
    hasPathSum(root, 27);
    verticalSum(root);
-   LCA(2, 4, root);
+   LCA(15, 5, root);
 }
