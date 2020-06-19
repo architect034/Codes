@@ -1,1 +1,12 @@
-2
+Pre order : 10 5 3 9 7 8 20 15 12 23 
+Post order : 3 8 7 9 5 12 15 23 20 10 
+In Order : 3 5 7 8 9 10 12 15 20 23 
+Level Order : 10 5 20 3 9 15 23 7 12 8 
+Height of Tree : 5
+Diameter of Tree : 8
+Max Sum Path : 86
+Path with sum 27 doesnot exist.
+Vertical lines sum : 3 24 42 20 23 
+LCA of 15 and 5 is 10
+Top View : 3 5 10 20 23 
+Bottom View : 3 12 8 20 23 

@@ -156,6 +156,49 @@ void LCA(int x, int y, struct Node* root) {
    int lca = LCAUtil(x, y, root)->data;
    cout << "LCA of " << x << " and " << y << " is " << lca << endl;
 }
+void topViewUtil(struct Node* root, map<int, int>& m, int hd) {
+   if (root == NULL) return;
+   if (m.find(hd) == m.end()) {
+      m[hd] = root->data;
+   }
+   topViewUtil(root->left, m, hd - 1);
+   topViewUtil(root->right, m, hd + 1);
+}
+void topView(struct Node* root) {
+   cout << "Top View : ";
+   map<int, int> m;
+   topViewUtil(root, m, 0);
+   for (auto x : m) {
+      cout << x.second << " ";
+   }
+   cout << endl;
+}
+void bottomViewUtil(struct Node* root, map<int, int>& m, int hd) {
+   if (root == NULL) return;
+   queue<pair<Node*, int>> q;
+   q.push({root, hd});
+   while (!q.empty()) {
+      Node* temp = q.front().first;
+      hd = q.front().second;
+      q.pop();
+      m[hd] = temp->data;
+      if (temp->left != NULL) {
+         q.push({temp->left, hd - 1});
+      }
+      if (temp->right != NULL) {
+         q.push({temp->right, hd + 1});
+      }
+   }
+}
+void bottomView(struct Node* root) {
+   cout << "Bottom View : ";
+   map<int, int> m;
+   bottomViewUtil(root, m, 0);
+   for (auto x : m) {
+      cout << x.second << " ";
+   }
+   cout << endl;
+}
 signed main() {
    IOEFILE();
    struct Node* root;
@@ -170,4 +213,6 @@ signed main() {
    hasPathSum(root, 27);
    verticalSum(root);
    LCA(15, 5, root);
+   topView(root);
+   bottomView(root);
 }
