@@ -111,26 +111,44 @@ void virtual_main() {
 }
 // #define int long long
 void real_main() {
-   map<vector<int>, vector<string> > m;
-   string s = "oaoaapappa";
-   vector<int> h(26, 0);
-   for (int i = 0; i < s.size(); i++) {
-      h[s[i] - 'a']++;
+   int n;
+   cin >> n;
+   vector<int> e, o;
+   for (int i = 0; i < 2 * n; i++) {
+      int x;
+      cin >> x;
+      if (x & 1)
+         o.pb(i + 1);
+      else
+         e.pb(i + 1);
    }
-   m[h].push_back(s);
-   s = "oaoaapappa";
-   h.assign(26, 0);
-   for (int i = 0; i < s.size(); i++) {
-      h[s[i] - 'a']++;
+   if (o.size() % 2 == 1) {
+      o.pop_back();
+      e.pop_back();
+   } else {
+      if (o.size())
+         o.pop_back(), o.pop_back();
+      else
+         e.pop_back(), e.pop_back();
    }
-   m[h].push_back(s);
-   dbg(m);
+   while (o.size()) {
+      cout << o.back() << " ";
+      o.pop_back();
+      cout << o.back() << "\n";
+      o.pop_back();
+   }
+   while (e.size()) {
+      cout << e.back() << " ";
+      e.pop_back();
+      cout << e.back() << "\n";
+      e.pop_back();
+   }
 }
 signed main() {
    IO;
    virtual_main();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       // cout << "Case #" << tc << ": ";
       real_main();

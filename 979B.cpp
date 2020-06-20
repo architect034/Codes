@@ -110,21 +110,41 @@ void virtual_main() {
 #endif
 }
 // #define int long long
+vector<string> s(3);
+int solve(int n, int p) {
+   string st = s[p];
+   vector<int> h(150, 0);
+   int mx = 0;
+   for (int i = 0; i < st.size(); i++) {
+      h[st[i]]++;
+      mx = max(mx, h[st[i]]);
+   }
+   if (n == 1 && mx == st.size()) st.pop_back();
+   return min(mx + n, (int)st.size());
+}
 void real_main() {
-   map<vector<int>, vector<string> > m;
-   string s = "oaoaapappa";
-   vector<int> h(26, 0);
-   for (int i = 0; i < s.size(); i++) {
-      h[s[i] - 'a']++;
+   int n;
+   cin >> n;
+   for (int i = 0; i < 3; i++) {
+      cin >> s[i];
    }
-   m[h].push_back(s);
-   s = "oaoaapappa";
-   h.assign(26, 0);
-   for (int i = 0; i < s.size(); i++) {
-      h[s[i] - 'a']++;
-   }
-   m[h].push_back(s);
-   dbg(m);
+   int a = solve(n, 0);
+   int b = solve(n, 1);
+   int c = solve(n, 2);
+   int mx = max({a, b, c});
+   dbg(a, b, c);
+   int cnt = 0;
+   if (mx == a) cnt++;
+   if (mx == b) cnt++;
+   if (mx == c) cnt++;
+   if (cnt > 1)
+      pl("Draw");
+   else if (a > b && a > c)
+      pl("Kuro");
+   else if (b > a && b > c)
+      pl("Shiro");
+   else
+      pl("Katie");
 }
 signed main() {
    IO;

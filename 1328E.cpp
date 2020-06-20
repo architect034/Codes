@@ -172,7 +172,7 @@ void real_main() {
             node = par[x][0];
          }
       }
-      dbg(arr);
+      // dbg(arr);
       bool say = true;
       for (int i = 0; i < k; i++) {
          int LCA = lca(arr[i], node);

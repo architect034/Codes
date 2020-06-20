@@ -103,6 +103,7 @@ T power(T a, T b, T m) {
    return res % m;
 }
 void virtual_main() {
+   sieve();
 #ifndef ONLINE_JUDGE
    freopen("input.txt", "r", stdin);
    freopen("output.txt", "w", stdout);
@@ -111,26 +112,49 @@ void virtual_main() {
 }
 // #define int long long
 void real_main() {
-   map<vector<int>, vector<string> > m;
-   string s = "oaoaapappa";
-   vector<int> h(26, 0);
-   for (int i = 0; i < s.size(); i++) {
-      h[s[i] - 'a']++;
+   int n;
+   cin >> n;
+   if (n == 1) {
+      pl("FastestFinger");
+      return;
    }
-   m[h].push_back(s);
-   s = "oaoaapappa";
-   h.assign(26, 0);
-   for (int i = 0; i < s.size(); i++) {
-      h[s[i] - 'a']++;
+   if ((n & 1) || (n == 2)) {
+      pl("Ashishgup");
+      return;
    }
-   m[h].push_back(s);
-   dbg(m);
+   int two = 0, other = 0;
+   for (int i = 0; i < primes.size(); i++) {
+      int x = primes[i];
+      while (n % x == 0) {
+         if (x == 2)
+            two++;
+         else
+            other++;
+         n /= x;
+      }
+   }
+   if (n > 1) {
+      other++;
+   }
+   if (two > 1 && other) {
+      pl("Ashishgup");
+      return;
+   }
+   if (two > 1 && other == 0) {
+      pl("FastestFinger");
+      return;
+   }
+   if (two == 1 && other > 1) {
+      pl("Ashishgup");
+   } else {
+      pl("FastestFinger");
+   }
 }
 signed main() {
    IO;
    virtual_main();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       // cout << "Case #" << tc << ": ";
       real_main();

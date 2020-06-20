@@ -111,26 +111,15 @@ void virtual_main() {
 }
 // #define int long long
 void real_main() {
-   map<vector<int>, vector<string> > m;
-   string s = "oaoaapappa";
-   vector<int> h(26, 0);
-   for (int i = 0; i < s.size(); i++) {
-      h[s[i] - 'a']++;
-   }
-   m[h].push_back(s);
-   s = "oaoaapappa";
-   h.assign(26, 0);
-   for (int i = 0; i < s.size(); i++) {
-      h[s[i] - 'a']++;
-   }
-   m[h].push_back(s);
-   dbg(m);
+   int n;
+   cin >> n;
+   pl(n / 2);
 }
 signed main() {
    IO;
    virtual_main();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       // cout << "Case #" << tc << ": ";
       real_main();
