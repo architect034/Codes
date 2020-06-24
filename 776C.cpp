@@ -1,7 +1,7 @@
 #define dbg(...) ;
 #define db(...) ;
 #include "bits/stdc++.h"
-#define IOE ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(NULL), cerr.tie(NULL)
+#define IO ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(NULL), cerr.tie(NULL)
 #define ll long long
 #define pb push_back
 #define pf push_front
@@ -45,6 +45,18 @@ void sieve() {
 // #include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
 // using namespace __gnu_pbds;
 // typedef tree< pair<int,int> ,null_type,less< pair<int,int> >,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
+template <typename T>
+void in(T &x) {
+   cin >> x;
+}
+template <typename T, typename U>
+void in(T &x, U &y) {
+   cin >> x >> y;
+}
+template <typename T, typename U, typename V>
+void in(T &x, U &y, V &z) {
+   cin >> x >> y >> z;
+}
 template <typename T>
 void ps(T x) {
    cout << x << " ";
@@ -90,23 +102,76 @@ T power(T a, T b, T m) {
    }
    return res % m;
 }
-void _IOE() {
+void virtual_main() {
 #ifndef ONLINE_JUDGE
    freopen("input.txt", "r", stdin);
    freopen("output.txt", "w", stdout);
    freopen("error.txt", "w", stderr);
 #endif
 }
-// #define int long long
-void _main() {
+#define int long long
+int MX = 1e15 + 1;
+int n, k;
+vector<int> v(MAX);
+int solve_for_1(int x) {
+   map<int, int> m;
+   int ans = 0, sum = 0;
+   for (int i = 0; i < n; i++) {
+      sum += v[i];
+      int rem = sum - 1;
+      if (rem == 0) {
+         ans++;
+      }
+      if (m.find(rem) != m.end()) {
+         ans += m[rem];
+      }
+      if (k == -1) {
+         int rem2 = sum + 1;
+         if (rem2 == 0) {
+            ans++;
+         }
+         if (m.find(rem2) != m.end()) {
+            ans += m[rem2];
+         }
+      }
+      m[sum]++;
+   }
+   return ans;
+}
+void real_main() {
+   cin >> n >> k;
+   for (int &i : v) cin >> i;
+   map<int, int> m;
+   int ans = 0, x = 0;
+   if (abs(k) == 1) {
+      pl(solve_for_1(k));
+      return;
+   }
+   for (int i = 0; i < n; i++) {
+      x += v[i];
+      int total = 1;
+      while (total <= MX) {
+         int rem = x - total;
+         if (rem == 0) {
+            ans++;
+         }
+         if (m.find(rem) != m.end()) {
+            ans += m[rem];
+         }
+         total *= k;
+      }
+      m[x]++;
+   }
+   pl(ans);
 }
 signed main() {
-   IOE;
-   _IOE();
+   IO;
+   virtual_main();
    int test_cases = 1;
    // cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
-      _main();
+      // cout << "Case #" << tc << ": ";
+      real_main();
    }
    return 0;
 }

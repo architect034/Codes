@@ -110,59 +110,101 @@ void virtual_main() {
 #endif
 }
 // #define int long long
-int real_main() {
-   vector<int> v;
-   int n;
-   cin >> n;
+int n, k;
+vector<int> v(MAX);
+bool check(int x) {
+   vector<pair<int, int> > a;
    for (int i = 0; i < n; i++) {
-      int x;
-      cin >> x;
-      v.pb(x);
+      if (v[i] <= x) {
+         a.pb({i, v[i]});
+      }
    }
-   int x;
-   cin >> x;
-   int lb = 0, rb = n - 1, ans = 0;
-   while (lb <= rb) {
+   sort(all(a));
+   int kitna = (k + 1) / 2;
+   if (a.size() >= kitna) {
+      vector<int> idx;
+      idx.pb(a[0].ff);
+      kitna--;
+      for (int i = 1; i < a.size(); i++) {
+         int last = idx.back();
+         if (a[i].ff - last > 1) {
+            idx.pb(a[i].ff);
+            kitna--;
+         }
+         if (kitna == 0) {
+            if (k % 2 == 0) {
+               if (n - idx.back() > 1) {
+                  return true;
+               }
+            } else {
+               return true;
+            }
+         }
+      }
+      if (kitna == 0) {
+         if (k % 2 == 0) {
+            if (n - idx.back() > 1) {
+               return true;
+            }
+         } else {
+            return true;
+         }
+      }
+   }
+   kitna = k / 2;
+   if (a.size() >= kitna) {
+      vector<int> idx1;
+      for (int i = 0; i < a.size(); i++) {
+         if (idx1.empty() && a[i].ff > 0) {
+            idx1.pb(a[i].ff);
+            kitna--;
+         } else if (idx1.empty() == 0) {
+            int last = idx1.back();
+            if (a[i].ff - last > 1) {
+               kitna--;
+               idx1.pb(a[i].ff);
+            }
+         }
+         if (kitna == 0) {
+            if (k % 2 == 0) {
+               return true;
+            } else {
+               if (n - idx1.back() > 1) {
+                  return true;
+               }
+            }
+         }
+      }
+      if (kitna == 0) {
+         if (k % 2 == 0) {
+            return true;
+         } else {
+            if (n - idx1.back() > 1) {
+               return true;
+            }
+         }
+      }
+   }
+
+   return false;
+}
+void real_main() {
+   cin >> n >> k;
+   int lb = 0, rb = 0;
+   for (int i = 0; i < n; i++) {
+      cin >> v[i];
+      rb = max(rb, v[i]);
+   }
+   while (lb < rb) {
       int mb = (lb + rb) / 2;
-      if (mb + 1 < n && v[mb] > v[mb + 1]) {
-         ans = mb;
-         break;
-      }
-      if (mb - 1 >= 0 && v[mb] < v[mb - 1]) {
-         ans = mb - 1;
-         break;
-      }
-      if (v[mb] > v[lb]) {
-         lb = mb + 1;
-      } else {
-         rb = mb - 1;
-      }
-   }
-   dbg(ans);
-   int idx = ans;
-   rb = ans, lb = 0;
-   while (lb <= rb) {
-      int mb = (lb + rb) / 2;
-      if (v[mb] == x) {
-         return mb;
-      } else if (v[mb] > x) {
-         rb = mb - 1;
+      if (check(mb)) {
+         rb = mb;
       } else {
          lb = mb + 1;
       }
+      dbg(lb, rb);
    }
-   lb = idx + 1, rb = n - 1;
-   while (lb <= rb) {
-      int mb = (lb + rb) / 2;
-      if (v[mb] == x) {
-         return mb;
-      } else if (v[mb] > x) {
-         rb = mb - 1;
-      } else {
-         lb = mb + 1;
-      }
-   }
-   return -1;
+   pl(rb);
 }
 signed main() {
    IO;
@@ -171,7 +213,7 @@ signed main() {
    // cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       // cout << "Case #" << tc << ": ";
-      cout << real_main();
+      real_main();
    }
    return 0;
 }

@@ -1,7 +1,7 @@
 #define dbg(...) ;
 #define db(...) ;
 #include "bits/stdc++.h"
-#define IOE ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(NULL), cerr.tie(NULL)
+#define IO ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(NULL), cerr.tie(NULL)
 #define ll long long
 #define pb push_back
 #define pf push_front
@@ -45,6 +45,18 @@ void sieve() {
 // #include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
 // using namespace __gnu_pbds;
 // typedef tree< pair<int,int> ,null_type,less< pair<int,int> >,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
+template <typename T>
+void in(T &x) {
+   cin >> x;
+}
+template <typename T, typename U>
+void in(T &x, U &y) {
+   cin >> x >> y;
+}
+template <typename T, typename U, typename V>
+void in(T &x, U &y, V &z) {
+   cin >> x >> y >> z;
+}
 template <typename T>
 void ps(T x) {
    cout << x << " ";
@@ -90,23 +102,57 @@ T power(T a, T b, T m) {
    }
    return res % m;
 }
-void _IOE() {
+void virtual_main() {
 #ifndef ONLINE_JUDGE
    freopen("input.txt", "r", stdin);
    freopen("output.txt", "w", stdout);
    freopen("error.txt", "w", stderr);
 #endif
 }
-// #define int long long
-void _main() {
+#define int long long
+void real_main() {
+   int n, k;
+   cin >> n >> k;
+   deque<int> v(n);
+   for (int &i : v) cin >> i;
+   sort(all(v));
+   vector<int> w(k);
+   for (int &i : w) cin >> i;
+   sort(all(w));
+   reverse(all(w));
+   int ans = 0;
+   while (!w.empty() && w.back() == 1) {
+      ans += (2 * v.back());
+      v.pop_back();
+      w.pop_back();
+   }
+   k = w.size();
+   for (int i = 0; i < k; i++) {
+      int kitna = w[i] - 1;
+      int tmp = v.back();
+      v.pop_back();
+      int sm = INT_MAX;
+      if (!kitna) {
+         ans += 2 * tmp;
+         continue;
+      }
+      while (kitna--) {
+         sm = min(sm, v.front());
+         v.pop_front();
+      }
+      tmp += sm;
+      ans += tmp;
+   }
+   pl(ans);
 }
 signed main() {
-   IOE;
-   _IOE();
+   IO;
+   virtual_main();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
-      _main();
+      // cout << "Case #" << tc << ": ";
+      real_main();
    }
    return 0;
 }
