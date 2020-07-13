@@ -16,7 +16,7 @@
 #define nl cout << endl
 #define PI 3.14159265358979323846
 using namespace std;
-const int MAX = 2e6 + 9;
+const int MAX = 2e5 + 9;
 const ll mod = 1e9 + 7;
 vector<bool> prime(MAX, 1);
 vector<int> spf(MAX, 1), primes;
@@ -94,33 +94,29 @@ void _IOE() {
 #endif
 }
 // #define int long long
-vector<vector<int> > check(MAX, vector<int>(26, 0));
 void _main() {
-   string s;
-   cin >> s;
-   string isBad;
-   cin >> isBad;
-   int k;
-   cin >> k;
-   int n = s.size(), ans = 0, cnt = 0;
+   int n;
+   cin >> n;
+   vector<pair<int, int> > v;
+   int x = 3, y = 3;
    for (int i = 0; i < n; i++) {
-      int bc = 0, mark = 0;
-      for (int j = i; j < n; j++) {
-         if (isBad[s[j] - 'a'] == '0') {
-            bc++;
-         }
-         if (bc > k) {
-            break;
-         }
-         int c = s[j] - 'a';
-         if (check[mark][c] == 0) {
-            ans++;
-            check[mark][c] = ++cnt;
-         }
-         mark = check[mark][c];
-      }
+      v.pb({x, y});
+      x++, y++;
    }
-   pl(ans);
+   vector<pair<int, int> > ans;
+   ans.pb({2, 2}), ans.pb({3, 2}), ans.pb({2, 3});
+   for (int i = 0; i < n; i++) {
+      int x = v[i].ff, y = v[i].ss;
+      ans.pb({x, y + 1}), ans.pb({x + 1, y});
+      if (i == n - 1) {
+         ans.pb({x + 1, y + 1});
+      }
+      ans.pb({x, y});
+   }
+   cout << ans.size() << "\n";
+   for (pair<int, int> x : ans) {
+      cout << x.ff << " " << x.ss << "\n";
+   }
 }
 signed main() {
    IOE;

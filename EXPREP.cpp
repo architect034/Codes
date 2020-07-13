@@ -16,8 +16,8 @@
 #define nl cout << endl
 #define PI 3.14159265358979323846
 using namespace std;
-const int MAX = 2e6 + 9;
-const ll mod = 1e9 + 7;
+const int MAX = 2e5 + 9;
+const ll mod = 998244353;
 vector<bool> prime(MAX, 1);
 vector<int> spf(MAX, 1), primes;
 void sieve() {
@@ -74,9 +74,8 @@ T power(T a, T b) {
    }
    return res;
 }
-template <typename T>
-T power(T a, T b, T m) {
-   T res = 1;
+long long power(long long a, long long b, long long m) {
+   long long res = 1LL;
    while (b) {
       if (b & 1) {
          res = (res * a) % m;
@@ -93,40 +92,68 @@ void _IOE() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-// #define int long long
-vector<vector<int> > check(MAX, vector<int>(26, 0));
+#define int long long
 void _main() {
    string s;
    cin >> s;
-   string isBad;
-   cin >> isBad;
-   int k;
-   cin >> k;
-   int n = s.size(), ans = 0, cnt = 0;
+   int n = s.size();
+   vector<int> a(26);
+   for (int i = 0; i < 26; i++) cin >> a[i];
+   vector<vector<int> > v(n);
+   vector<int> h(26, 0);
    for (int i = 0; i < n; i++) {
-      int bc = 0, mark = 0;
+      h[s[i] - 'a']++;
+      v[i] = h;
+   }
+   int sum = 0LL;
+   int d = (n * (n + 1)) / 2LL;
+   for (int i = 0; i < n; i++) {
       for (int j = i; j < n; j++) {
-         if (isBad[s[j] - 'a'] == '0') {
-            bc++;
+         vector<int> t(26, 0);
+         for (int k = 0; k < 26; k++) {
+            t[k] = v[j][k] - (((i - 1) >= 0) ? (v[(i - 1)][k]) : 0);
          }
-         if (bc > k) {
-            break;
+         for (int k = i; k <= j; k++) {
+            vector<int> tmp(26, 0);
+            int len = k - i + 1;
+            int kit = (j - i + 1) / len;
+            for (int p = 0; p < 26; p++) {
+               tmp[p] = v[k][p] - (((i - 1) >= 0) ? (v[(i - 1)][p]) : 0);
+               tmp[p] *= kit;
+            }
+            int rem = (j - i + 1) % len;
+            if (rem) {
+               for (int p = 0; p < 26; p++) {
+                  tmp[p] += ((((i + rem - 1) >= 0) ? v[i + rem - 1][p] : 0) - (((i - 1) >= 0) ? (v[(i - 1)][p]) : 0));
+               }
+            }
+            bool say = 1;
+            for (int p = 0; p < 26; p++) {
+               if (t[p] != tmp[p]) {
+                  say = 0;
+                  break;
+               }
+            }
+            if (say) {
+               for (int p = 0; p < 26; p++) {
+                  tmp[p] = v[k][p] - (((i - 1) >= 0) ? (v[(i - 1)][p]) : 0);
+                  sum = sum + (tmp[p] * a[p]);
+               }
+            }
          }
-         int c = s[j] - 'a';
-         if (check[mark][c] == 0) {
-            ans++;
-            check[mark][c] = ++cnt;
-         }
-         mark = check[mark][c];
       }
    }
-   pl(ans);
+   int g = __gcd(sum, d);
+   sum /= g;
+   d /= g;
+   sum = ((sum % mod) * (power(d, mod - 2, mod))) % mod;
+   cout << sum << "\n";
 }
 signed main() {
    IOE;
    _IOE();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       _main();
    }

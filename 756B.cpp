@@ -16,7 +16,7 @@
 #define nl cout << endl
 #define PI 3.14159265358979323846
 using namespace std;
-const int MAX = 2e6 + 9;
+const int MAX = 2e5 + 9;
 const ll mod = 1e9 + 7;
 vector<bool> prime(MAX, 1);
 vector<int> spf(MAX, 1), primes;
@@ -93,34 +93,23 @@ void _IOE() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-// #define int long long
-vector<vector<int> > check(MAX, vector<int>(26, 0));
+#define int long long
 void _main() {
-   string s;
-   cin >> s;
-   string isBad;
-   cin >> isBad;
-   int k;
-   cin >> k;
-   int n = s.size(), ans = 0, cnt = 0;
+   int n;
+   cin >> n;
+   vector<int> v(n);
    for (int i = 0; i < n; i++) {
-      int bc = 0, mark = 0;
-      for (int j = i; j < n; j++) {
-         if (isBad[s[j] - 'a'] == '0') {
-            bc++;
-         }
-         if (bc > k) {
-            break;
-         }
-         int c = s[j] - 'a';
-         if (check[mark][c] == 0) {
-            ans++;
-            check[mark][c] = ++cnt;
-         }
-         mark = check[mark][c];
-      }
+      cin >> v[i];
    }
-   pl(ans);
+   vector<int> dp(n + 1, 0);
+   for (int i = 1; i <= n; i++) {
+      dp[i] = dp[i - 1] + 20;
+      dp[i] = min(dp[i], dp[upper_bound(all(v), v[i - 1] - 90L) - v.begin()] + 50);
+      dp[i] = min(dp[i], dp[upper_bound(all(v), v[i - 1] - 1440L) - v.begin()] + 120);
+   }
+   for (int i = 1; i <= n; i++) {
+      cout << dp[i] - dp[i - 1] << "\n";
+   }
 }
 signed main() {
    IOE;

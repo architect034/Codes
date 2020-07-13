@@ -16,7 +16,7 @@
 #define nl cout << endl
 #define PI 3.14159265358979323846
 using namespace std;
-const int MAX = 2e6 + 9;
+const int MAX = 2e5 + 9;
 const ll mod = 1e9 + 7;
 vector<bool> prime(MAX, 1);
 vector<int> spf(MAX, 1), primes;
@@ -94,33 +94,69 @@ void _IOE() {
 #endif
 }
 // #define int long long
-vector<vector<int> > check(MAX, vector<int>(26, 0));
 void _main() {
    string s;
    cin >> s;
-   string isBad;
-   cin >> isBad;
-   int k;
-   cin >> k;
-   int n = s.size(), ans = 0, cnt = 0;
+   s += '$';
+   int n = s.size();
+   vector<pair<char, int>> a;
+   vector<int> c(n), suf(n);
    for (int i = 0; i < n; i++) {
-      int bc = 0, mark = 0;
-      for (int j = i; j < n; j++) {
-         if (isBad[s[j] - 'a'] == '0') {
-            bc++;
-         }
-         if (bc > k) {
-            break;
-         }
-         int c = s[j] - 'a';
-         if (check[mark][c] == 0) {
-            ans++;
-            check[mark][c] = ++cnt;
-         }
-         mark = check[mark][c];
+      a.pb({s[i], i});
+   }
+   sort(all(a));
+   for (int i = 0; i < n; i++) suf[i] = a[i].ss;
+   c[suf[0]] = 0;
+   for (int i = 1; i < n; i++) {
+      if (a[i].ff == a[i - 1].ff) {
+         c[suf[i]] = c[suf[i - 1]];
+      } else {
+         c[suf[i]] = c[suf[i - 1]] + 1;
       }
    }
-   pl(ans);
+   int k = 0;
+   while ((1 << (k)) < n) {
+      vector<pair<pair<int, int>, int>> a(n);
+      for (int i = 0; i < n; i++) {
+         a[i] = {{c[i], c[(i + (1 << k)) % n]}, i};
+      }
+      sort(all(a));
+      for (int i = 0; i < n; i++) suf[i] = a[i].ss;
+      c[suf[0]] = 0;
+      for (int i = 1; i < n; i++) {
+         if (a[i].ff == a[i - 1].ff) {
+            c[suf[i]] = c[suf[i - 1]];
+         } else {
+            c[suf[i]] = c[suf[i - 1]] + 1;
+         }
+      }
+      k++;
+   }
+   s += s;
+   int q;
+   cin >> q;
+   while (q--) {
+      string t;
+      cin >> t;
+      int len = t.size();
+      int low = 0, high = n - 1, ans = -1, say = 0;
+      while (low <= high) {
+         int mid = (low + high) / 2;
+         string temp = s.substr(suf[mid], len);
+         if (temp == t) {
+            pl("Yes");
+            say = 1;
+            break;
+         } else if (temp < t) {
+            low = mid + 1;
+         } else {
+            high = mid - 1;
+         }
+      }
+      if (!say) {
+         pl("No");
+      }
+   }
 }
 signed main() {
    IOE;

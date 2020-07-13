@@ -16,7 +16,7 @@
 #define nl cout << endl
 #define PI 3.14159265358979323846
 using namespace std;
-const int MAX = 2e6 + 9;
+const int MAX = 2e5 + 9;
 const ll mod = 1e9 + 7;
 vector<bool> prime(MAX, 1);
 vector<int> spf(MAX, 1), primes;
@@ -94,33 +94,35 @@ void _IOE() {
 #endif
 }
 // #define int long long
-vector<vector<int> > check(MAX, vector<int>(26, 0));
+bool con(char c) {
+   if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u') return false;
+   return true;
+}
 void _main() {
    string s;
    cin >> s;
-   string isBad;
-   cin >> isBad;
-   int k;
-   cin >> k;
-   int n = s.size(), ans = 0, cnt = 0;
-   for (int i = 0; i < n; i++) {
-      int bc = 0, mark = 0;
-      for (int j = i; j < n; j++) {
-         if (isBad[s[j] - 'a'] == '0') {
-            bc++;
+   vector<string> ans;
+   int n = s.size(), last = 0;
+   for (int i = 0; i < n - 2; i++) {
+      if (con(s[i]) && con(s[i + 1]) && con(s[i + 2])) {
+         if (s[i] == s[i + 1] && s[i] == s[i + 2]) continue;
+         string tmp = "";
+         for (int j = last; j < i + 2; j++) {
+            tmp += s[j];
          }
-         if (bc > k) {
-            break;
-         }
-         int c = s[j] - 'a';
-         if (check[mark][c] == 0) {
-            ans++;
-            check[mark][c] = ++cnt;
-         }
-         mark = check[mark][c];
+         ans.pb(tmp);
+         last = i + 2;
+         i = i + 1;
       }
    }
-   pl(ans);
+   if (last < n) {
+      string tmp = "";
+      for (int i = last; i < n; i++) {
+         tmp += s[i];
+      }
+      ans.pb(tmp);
+   }
+   ps(ans, ans.size());
 }
 signed main() {
    IOE;

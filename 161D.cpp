@@ -1,13 +1,12 @@
-#include <bits/stdc++.h>
-#define Fast ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(NULL)
+#define dbg(...) ;
+#define db(...) ;
+#include "bits/stdc++.h"
+#define IOE ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(NULL), cerr.tie(NULL)
 #define ll long long
-#define f(i, a, b) for (int i = a; i < b; i++)
-#define rf(i, a, b) for (int i = a; i >= b; i--)
 #define pb push_back
 #define pf push_front
 #define popb pop_back
 #define popf pop_front
-#define mp make_pair
 #define ff first
 #define ss second
 #define endl '\n'
@@ -15,8 +14,9 @@
 #define yes cout << "YES\n"
 #define no cout << "NO\n"
 #define nl cout << endl
+#define PI 3.14159265358979323846
 using namespace std;
-const int MAX = 1e5 + 9;
+const int MAX = 2e5 + 9;
 const ll mod = 1e9 + 7;
 vector<bool> prime(MAX, 1);
 vector<int> spf(MAX, 1), primes;
@@ -42,24 +42,12 @@ void sieve() {
    }
 }
 template <typename T>
-void in(T &x) {
-   cin >> x;
-}
-template <typename T, typename U>
-void in(T &x, U &y) {
-   cin >> x >> y;
-}
-template <typename T, typename U, typename V>
-void in(T &x, U &y, V &z) {
-   cin >> x >> y >> z;
-}
-template <typename T>
 void ps(T x) {
    cout << x << " ";
 }
 template <typename T>
 void ps(const vector<T> &x, int n) {
-   f(i, 0, n) {
+   for (int i = 0; i < n; i++) {
       cout << x[i];
       (i == n - 1) ? cout << endl : cout << " ";
    }
@@ -70,7 +58,9 @@ void pl(T x) {
 }
 template <typename T>
 void pl(const vector<T> &x, int n) {
-   f(i, 0, n) { cout << x[i] << "\n"; }
+   for (int i = 0; i < n; i++) {
+      cout << x[i] << "\n";
+   }
 }
 template <typename T>
 T power(T a, T b) {
@@ -86,7 +76,7 @@ T power(T a, T b) {
 }
 template <typename T>
 T power(T a, T b, T m) {
-   ll res = 1;
+   T res = 1;
    while (b) {
       if (b & 1) {
          res = (res * a) % m;
@@ -96,52 +86,47 @@ T power(T a, T b, T m) {
    }
    return res % m;
 }
-void virtual_main() {
+void _IOE() {
 #ifndef ONLINE_JUDGE
    freopen("input.txt", "r", stdin);
    freopen("output.txt", "w", stdout);
+   freopen("error.txt", "w", stderr);
 #endif
 }
-ll n, k, ans;
-vector<ll> v[MAX], mar(MAX), par(MAX), dist(MAX);
-vector<vector<ll>> dp(100009, vector<ll>(505, 0));
-vector<bool> vis(MAX, false);
-void dfs(ll s, ll p) {
-   if (vis[s]) return;
-   vis[s] = true;
-   par[s] = p;
-   dp[s][0]++;
-   for (auto u : v[s])
-      if (u != p) {
-         dist[u] = dist[s] + 1;
-         dfs(u, s);
-         f(i, 1, k + 1) {
-            ans += dp[u][i - 1] * dp[s][k - i];
-         }
-         f(i, 1, 502) {
-            dp[s][i] += dp[u][i - 1];
-         }
+// #define int long long
+int n, k, ans = 0;
+int dp[50005][505];
+vector<int> g[50005];
+void dfs(int u, int p) {
+   dp[u][0] = 1;
+   for (int v : g[u]) {
+      if (v == p) continue;
+      dfs(v, u);
+      for (int i = 0; i < k; i++) {
+         ans += (dp[u][i] * dp[v][k - 1 - i]);
       }
+      for (int i = 0; i < k; i++) {
+         dp[u][i + 1] += dp[v][i];
+      }
+   }
 }
-void real_main() {
+void _main() {
    cin >> n >> k;
-   f(i, 0, n - 1) {
-      ll x, y, z;
-      cin >> x >> y;
-      v[x].pb(y);
-      v[y].pb(x);
+   for (int i = 0; i < n - 1; i++) {
+      int u1, u2;
+      cin >> u1 >> u2;
+      g[u1].pb(u2), g[u2].pb(u1);
    }
    dfs(1, 0);
-   cout << ans << endl;
+   pl(ans);
 }
 signed main() {
-   Fast;
-   virtual_main();
+   IOE;
+   _IOE();
    int test_cases = 1;
    // cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
-      // cout << "Case #" << tc << ": ";
-      real_main();
+      _main();
    }
    return 0;
 }

@@ -16,7 +16,7 @@
 #define nl cout << endl
 #define PI 3.14159265358979323846
 using namespace std;
-const int MAX = 2e6 + 9;
+const int MAX = 2e4 + 9;
 const ll mod = 1e9 + 7;
 vector<bool> prime(MAX, 1);
 vector<int> spf(MAX, 1), primes;
@@ -93,34 +93,52 @@ void _IOE() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-// #define int long long
-vector<vector<int> > check(MAX, vector<int>(26, 0));
+#define int long long
 void _main() {
-   string s;
-   cin >> s;
-   string isBad;
-   cin >> isBad;
-   int k;
-   cin >> k;
-   int n = s.size(), ans = 0, cnt = 0;
+   sieve();
+   int n, p;
+   cin >> n >> p;
+   vector<int> v(n);
+   int st = INT_MAX, en = INT_MIN;
    for (int i = 0; i < n; i++) {
-      int bc = 0, mark = 0;
-      for (int j = i; j < n; j++) {
-         if (isBad[s[j] - 'a'] == '0') {
-            bc++;
+      cin >> v[i];
+      st = min(st, v[i]);
+      en = max(en, v[i]);
+   }
+   sort(all(v));
+   vector<int> store;
+   for (int i = st; i <= en; i++) {
+      vector<int> h(2005, 0);
+      int pointer = 0, say = 1;
+      int x = i, ans = 1, cnt = 0, times = 0;
+      while (times < n) {
+         while (pointer < n && v[pointer] <= x) {
+            pointer++;
          }
-         if (bc > k) {
+         if (pointer <= cnt) {
+            say = 0;
             break;
          }
-         int c = s[j] - 'a';
-         if (check[mark][c] == 0) {
-            ans++;
-            check[mark][c] = ++cnt;
+         int temp = (pointer - cnt);
+         while (temp > 1) {
+            h[spf[temp]]++;
+            temp /= spf[temp];
          }
-         mark = check[mark][c];
+         if (h[p]) {
+            say = 0;
+            break;
+         }
+         ans = ans * (pointer - cnt);
+         cnt++;
+         x++;
+         times++;
+      }
+      if (say && h[p] == 0) {
+         store.pb(i);
       }
    }
-   pl(ans);
+   pl(store.size());
+   ps(store, store.size());
 }
 signed main() {
    IOE;

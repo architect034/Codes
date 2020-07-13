@@ -16,7 +16,7 @@
 #define nl cout << endl
 #define PI 3.14159265358979323846
 using namespace std;
-const int MAX = 2e6 + 9;
+const int MAX = 2e5 + 9;
 const ll mod = 1e9 + 7;
 vector<bool> prime(MAX, 1);
 vector<int> spf(MAX, 1), primes;
@@ -93,34 +93,36 @@ void _IOE() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-// #define int long long
-vector<vector<int> > check(MAX, vector<int>(26, 0));
+#define int long long
 void _main() {
-   string s;
-   cin >> s;
-   string isBad;
-   cin >> isBad;
-   int k;
-   cin >> k;
-   int n = s.size(), ans = 0, cnt = 0;
-   for (int i = 0; i < n; i++) {
-      int bc = 0, mark = 0;
-      for (int j = i; j < n; j++) {
-         if (isBad[s[j] - 'a'] == '0') {
-            bc++;
-         }
-         if (bc > k) {
-            break;
-         }
-         int c = s[j] - 'a';
-         if (check[mark][c] == 0) {
-            ans++;
-            check[mark][c] = ++cnt;
-         }
-         mark = check[mark][c];
+   int n;
+   cin >> n;
+   vector<int> v(n);
+   for (int &i : v) cin >> i;
+   vector<int> bit(32, 0);
+   for (int i : v) {
+      int x = i;
+      int j = 0;
+      while (x) {
+         bit[j++] += x % 2;
+         x /= 2;
       }
    }
-   pl(ans);
+   int ans = 0;
+   while (true) {
+      int temp = 0;
+      for (int i = 0; i < 32; i++) {
+         if (!bit[i]) continue;
+         bit[i]--;
+         temp += (1 << i);
+      }
+      if (!temp) {
+         pl(ans);
+         return;
+      }
+      temp *= temp;
+      ans += temp;
+   }
 }
 signed main() {
    IOE;

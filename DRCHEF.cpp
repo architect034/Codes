@@ -16,7 +16,7 @@
 #define nl cout << endl
 #define PI 3.14159265358979323846
 using namespace std;
-const int MAX = 2e6 + 9;
+const int MAX = 2e5 + 9;
 const ll mod = 1e9 + 7;
 vector<bool> prime(MAX, 1);
 vector<int> spf(MAX, 1), primes;
@@ -90,35 +90,48 @@ void _IOE() {
 #ifndef ONLINE_JUDGE
    freopen("input.txt", "r", stdin);
    freopen("output.txt", "w", stdout);
-   freopen("error.txt", "w", stderr);
+   // freopen("error.txt", "w", stderr);
 #endif
 }
-// #define int long long
-vector<vector<int> > check(MAX, vector<int>(26, 0));
+#define int long long
+int n, k;
 void _main() {
-   string s;
-   cin >> s;
-   string isBad;
-   cin >> isBad;
-   int k;
-   cin >> k;
-   int n = s.size(), ans = 0, cnt = 0;
+   cin >> n >> k;
+   multiset<int> s;
    for (int i = 0; i < n; i++) {
-      int bc = 0, mark = 0;
-      for (int j = i; j < n; j++) {
-         if (isBad[s[j] - 'a'] == '0') {
-            bc++;
-         }
-         if (bc > k) {
-            break;
-         }
-         int c = s[j] - 'a';
-         if (check[mark][c] == 0) {
-            ans++;
-            check[mark][c] = ++cnt;
-         }
-         mark = check[mark][c];
+      int x;
+      cin >> x;
+      s.insert(x);
+   }
+   int ans = 0;
+   while (!s.empty()) {
+      dbg(s);
+      int bf = *s.rbegin();
+      if (k >= bf) {
+         ans += (s.size());
+         pl(ans);
+         return;
       }
+      ans++;
+      if (s.find(k) != s.end()) {
+         s.erase(s.find(k));
+         k *= 2;
+         continue;
+      }
+      if (k >= *s.begin()) {
+         auto pehla = s.lower_bound(k);
+         pehla--;
+         if (k <= 2 * (*pehla)) {
+            s.erase(pehla);
+            k = 2 * (*pehla);
+            dbg(ans);
+            continue;
+         }
+      }
+      auto it = s.end();
+      s.erase(--it);
+      s.insert(min(bf, 2 * (bf - k)));
+      k *= 2;
    }
    pl(ans);
 }
@@ -126,7 +139,7 @@ signed main() {
    IOE;
    _IOE();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       _main();
    }

@@ -16,7 +16,7 @@
 #define nl cout << endl
 #define PI 3.14159265358979323846
 using namespace std;
-const int MAX = 2e6 + 9;
+const int MAX = 2e5 + 9;
 const ll mod = 1e9 + 7;
 vector<bool> prime(MAX, 1);
 vector<int> spf(MAX, 1), primes;
@@ -94,39 +94,53 @@ void _IOE() {
 #endif
 }
 // #define int long long
-vector<vector<int> > check(MAX, vector<int>(26, 0));
 void _main() {
-   string s;
-   cin >> s;
-   string isBad;
-   cin >> isBad;
    int k;
    cin >> k;
-   int n = s.size(), ans = 0, cnt = 0;
-   for (int i = 0; i < n; i++) {
-      int bc = 0, mark = 0;
-      for (int j = i; j < n; j++) {
-         if (isBad[s[j] - 'a'] == '0') {
-            bc++;
-         }
-         if (bc > k) {
-            break;
-         }
-         int c = s[j] - 'a';
-         if (check[mark][c] == 0) {
-            ans++;
-            check[mark][c] = ++cnt;
-         }
-         mark = check[mark][c];
+   vector<vector<char> > g(8, vector<char>(8, 'X'));
+   queue<pair<int, int> > q;
+   q.push({0, 0});
+   g[0][0] = 'O';
+   k--;
+   while (!q.empty()) {
+      if (k == 0) {
+         break;
+      }
+      int x = q.front().ff, y = q.front().ss;
+      q.pop();
+      if (y - 1 >= 0 && k && g[x][y - 1] == 'X') {
+         q.push({x, y - 1});
+         k--;
+         g[x][y - 1] = '.';
+      }
+      if (x - 1 >= 0 && k && g[x - 1][y] == 'X') {
+         q.push({x - 1, y});
+         k--;
+         g[x - 1][y] = '.';
+      }
+      if (y + 1 < 8 && k && g[x][y + 1] == 'X') {
+         q.push({x, y + 1});
+         k--;
+         g[x][y + 1] = '.';
+      }
+      if (x + 1 < 8 && k && g[x + 1][y] == 'X') {
+         q.push({x + 1, y});
+         k--;
+         g[x + 1][y] = '.';
       }
    }
-   pl(ans);
+   for (int i = 0; i < 8; i++) {
+      for (int j = 0; j < 8; j++) {
+         cout << g[i][j];
+      }
+      nl;
+   }
 }
 signed main() {
    IOE;
    _IOE();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       _main();
    }

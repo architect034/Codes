@@ -16,7 +16,7 @@
 #define nl cout << endl
 #define PI 3.14159265358979323846
 using namespace std;
-const int MAX = 2e6 + 9;
+const int MAX = 2e5 + 9;
 const ll mod = 1e9 + 7;
 vector<bool> prime(MAX, 1);
 vector<int> spf(MAX, 1), primes;
@@ -93,40 +93,76 @@ void _IOE() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-// #define int long long
-vector<vector<int> > check(MAX, vector<int>(26, 0));
+#define int long long
 void _main() {
-   string s;
-   cin >> s;
-   string isBad;
-   cin >> isBad;
-   int k;
-   cin >> k;
-   int n = s.size(), ans = 0, cnt = 0;
+   int n, k;
+   cin >> n >> k;
+   if (k < n) {
+      int dp[n][n];
+      memset(dp, 0, sizeof dp);
+      for (int i = 0; i < k; i++) {
+         dp[i][i] = 1;
+      }
+      (k) ? pl(2) : pl(0);
+      for (int i = 0; i < n; i++) {
+         for (int j = 0; j < n; j++) {
+            cout << dp[i][j];
+         }
+         nl;
+      }
+      return;
+   }
+   int dp[n][n];
+   memset(dp, 0, sizeof dp);
+   int pc = k / n;
    for (int i = 0; i < n; i++) {
-      int bc = 0, mark = 0;
-      for (int j = i; j < n; j++) {
-         if (isBad[s[j] - 'a'] == '0') {
-            bc++;
-         }
-         if (bc > k) {
-            break;
-         }
-         int c = s[j] - 'a';
-         if (check[mark][c] == 0) {
-            ans++;
-            check[mark][c] = ++cnt;
-         }
-         mark = check[mark][c];
+      for (int j = i, cnt = 0; cnt < pc; cnt++) {
+         dp[j][i] = 1;
+         j = (j + 1) % n;
       }
    }
+   int ex = k % n;
+   dbg(ex);
+   if (ex) {
+      for (int i = 0; i < ex; i++) {
+         dp[pc][i] = 1;
+         pc++;
+         pc %= n;
+      }
+   }
+   int mnr = INT_MAX, mxr = 0, ans = 0;
+   for (int i = 0; i < n; i++) {
+      int sum = 0;
+      for (int j = 0; j < n; j++) {
+         sum += dp[i][j];
+      }
+      mxr = max(mxr, sum);
+      mnr = min(mnr, sum);
+   }
+   ans += ((mxr - mnr) * (mxr - mnr));
+   int mnc = INT_MAX, mxc = 0;
+   for (int i = 0; i < n; i++) {
+      int sum = 0;
+      for (int j = 0; j < n; j++) {
+         sum += dp[j][i];
+      }
+      mnc = min(mnc, sum);
+      mxc = max(mxc, sum);
+   }
+   ans += ((mxc - mnc) * (mxc - mnc));
    pl(ans);
+   for (int i = 0; i < n; i++) {
+      for (int j = 0; j < n; j++) {
+         cout << dp[i][j];
+      }
+      nl;
+   }
 }
 signed main() {
    IOE;
    _IOE();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       _main();
    }

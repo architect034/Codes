@@ -1,68 +1,72 @@
-#include <algorithm>
-#include <cmath>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
-#include <string>
-#include <vector>
-
-#define nax 1000005
-#define inf 100000000000000000LL
-#define pb push_back
-#define mp make_pair
-#define in insert
-#define ff first
-#define ss second
-#define pll pair<long long int, long long int>
-#define pii pair<int, int>
-#define vll vector<long long int>
-#define vii vector<int>
-#define sii set<int>
-#define vb vector<bool>
-#define sll set<long long int>
-#define mii map<int, int>
-#define mll map<long long int, long long int>
-#define mis map<int, string>
-#define all(n) n.begin(), n.end()
-#define tr(container, it) for (__typeof(container.begin()) it = container.begin(); it != container.end(); it++)
-#define lpi(i, a, b) for (int i = a; i <= b; i++)
-#define lpir(i, a, b) for (int i = a; i >= b; i--)
-#define lpl(i, a, b) for (ll i = a; i <= b; ++i)
-#define lplr(i, a, b) for (ll i = a; i >= b; --i)
-#define lpv(c, it) for (vii::iterator it = (c).begin(); it != (c).end(); it++)
-
+#include <bits/stdc++.h>
 using namespace std;
-typedef long long int ll;
-
-ll dp[505][505];
+#define fio ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(NULL)
+#define test() \
+   ll t;       \
+   cin >> t;   \
+   while (t--)
+#define ll long long
+#define ull unsigned long long
+#define loop(i, start, end, increment) for (ll i = start; i <= end; i += increment)
+#define ulta(i, start, end, decrement) for (ll i = start; i >= end; i -= decrement)
+#define pb push_back
+#define popb pop_back
+#define pf push_front
+#define popf pop_front
+#define mp make_pair
+#define FF first
+#define SS second
+#define all(something) something.begin(), something.end()
+#define mod 1000000007
+#define lpi(i, a, b) for (ll i = a; i < b; i++)
 int main() {
 #ifndef ONLINE_JUDGE
    freopen("input.txt", "r", stdin);
    freopen("output.txt", "w", stdout);
    freopen("error.txt", "w", stderr);
 #endif
-   //ios_base::sync_with_stdio(false); cin.tie(0);
-   //cout << "hello";
-   ll n, m, b, mod, ai;
-   cin >> n >> m >> b >> mod;
-   dp[0][0] = 1 % mod;
-   lpi(i, 1, n) {
-      cin >> ai;
-      lpi(j, 0, m - 1) {
-         for (int k = 0; k <= b - ai; k++) {
-            dp[j + 1][k + ai] += dp[j][k];
-            if (dp[j + 1][k + ai] >= mod)
-               dp[j + 1][k + ai] -= mod;
+   test() {
+      string s;
+      cin >> s;
+      ll m;
+      cin >> m;
+      vector<ll> v(m);
+      vector<ll> hax(26, 0);
+      lpi(i, 0, m) cin >> v[i];
+      lpi(i, 0, s.size()) hax[s[i] - 'a']++;
+      vector<char> ans(m, '.');
+      ll cnt = 0;
+      while (true) {
+         ll c = 0;
+         vector<ll> dist;
+         for (ll i = 0; i < m; i++) {
+            if (v[i] == 0) {
+               c++;
+               dist.push_back(i);
+            }
          }
+         for (ll j = 25; j >= 0; j--) {
+            if (hax[j] >= c && hax[j] != 0) {
+               for (ll ind = 0; ind < m; ind++) {
+                  if (v[ind] > 0) {
+                     for (ll ii = 0; ii < dist.size(); ii++) {
+                        v[ind] = abs(v[ind] - abs(ind - dist[ii]));
+                     }
+                  } else if (v[ind] == 0) {
+                     v[ind] = -1;
+                     ans[ind] = char(j + 'a');
+                     hax[j] = 0;
+                     cnt++;
+                  }
+               }
+               break;
+            }
+         }
+         if (cnt == m) break;
       }
+      for (int i = 0; i < m; i++) {
+         cout << ans[i];
+      }
+      cout << endl;
    }
-   ll ans = 0;
-   lpi(i, 0, b) {
-      ans = (ans + dp[m][i]) % mod;
-   }
-   cout << ans;
-   return 0;
 }

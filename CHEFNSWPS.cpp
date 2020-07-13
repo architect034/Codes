@@ -16,7 +16,7 @@
 #define nl cout << endl
 #define PI 3.14159265358979323846
 using namespace std;
-const int MAX = 2e6 + 9;
+const int MAX = 2e5 + 9;
 const ll mod = 1e9 + 7;
 vector<bool> prime(MAX, 1);
 vector<int> spf(MAX, 1), primes;
@@ -93,31 +93,40 @@ void _IOE() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-// #define int long long
-vector<vector<int> > check(MAX, vector<int>(26, 0));
+#define int long long
 void _main() {
-   string s;
-   cin >> s;
-   string isBad;
-   cin >> isBad;
-   int k;
-   cin >> k;
-   int n = s.size(), ans = 0, cnt = 0;
-   for (int i = 0; i < n; i++) {
-      int bc = 0, mark = 0;
-      for (int j = i; j < n; j++) {
-         if (isBad[s[j] - 'a'] == '0') {
-            bc++;
-         }
-         if (bc > k) {
-            break;
-         }
-         int c = s[j] - 'a';
-         if (check[mark][c] == 0) {
-            ans++;
-            check[mark][c] = ++cnt;
-         }
-         mark = check[mark][c];
+   int n, mn = INT_MAX;
+   cin >> n;
+   vector<int> a(n), b(n);
+   map<int, int> m, ma, mb;
+   for (int &i : a) cin >> i, m[i]++, ma[i]++, mn = min(mn, i);
+   for (int &i : b) cin >> i, m[i]++, mb[i]++, mn = min(mn, i);
+   dbg(m);
+   for (auto x : m) {
+      if (x.ss % 2 == 1) {
+         pl(-1);
+         return;
+      }
+      m[x.ff] /= 2;
+   }
+   int ans = 0;
+   sort(all(a)), sort(all(b));
+   int bal = 0;
+   for (auto x : m) {
+      if (x.ss > ma[x.ff])
+         bal += ((x.ss - ma[x.ff]));
+   }
+   dbg(bal);
+   for (auto x : m) {
+      int v = x.ff, cnt = x.ss;
+      if (ma[v] == cnt) continue;
+      int ex = abs(ma[v] - cnt);
+      if (ma[v] < cnt) {
+         ans += (min(2 * mn, v) * min(bal, ex));
+         bal -= min(bal, ex);
+      } else {
+         ans += (min(2 * mn, v) * min(bal, ex));
+         bal -= min(bal, ex);
       }
    }
    pl(ans);
@@ -126,7 +135,7 @@ signed main() {
    IOE;
    _IOE();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       _main();
    }

@@ -16,7 +16,7 @@
 #define nl cout << endl
 #define PI 3.14159265358979323846
 using namespace std;
-const int MAX = 2e6 + 9;
+const int MAX = 2e5 + 9;
 const ll mod = 1e9 + 7;
 vector<bool> prime(MAX, 1);
 vector<int> spf(MAX, 1), primes;
@@ -94,39 +94,56 @@ void _IOE() {
 #endif
 }
 // #define int long long
-vector<vector<int> > check(MAX, vector<int>(26, 0));
-void _main() {
-   string s;
-   cin >> s;
-   string isBad;
-   cin >> isBad;
-   int k;
-   cin >> k;
-   int n = s.size(), ans = 0, cnt = 0;
-   for (int i = 0; i < n; i++) {
-      int bc = 0, mark = 0;
-      for (int j = i; j < n; j++) {
-         if (isBad[s[j] - 'a'] == '0') {
-            bc++;
-         }
-         if (bc > k) {
-            break;
-         }
-         int c = s[j] - 'a';
-         if (check[mark][c] == 0) {
-            ans++;
-            check[mark][c] = ++cnt;
-         }
-         mark = check[mark][c];
+bool is_sorted(deque<int> &v) {
+   int n = v.size();
+   for (int i = 1; i < n; i++) {
+      if (v[i] < v[i - 1]) {
+         return false;
       }
    }
-   pl(ans);
+   return true;
+}
+void _main() {
+   int n;
+   cin >> n;
+   deque<int> v(n);
+   for (int i = 0; i < n; i++) cin >> v[i];
+   if (is_sorted(v)) {
+      pl(0);
+      return;
+   }
+   bool say = 0;
+   for (int i = 0; i < n; i++) {
+      if (v[i] == (i + 1)) {
+         v[i] = 1;
+      } else {
+         v[i] = 0;
+      }
+   }
+   while (v.size() && v.front() == 1) {
+      v.pop_front();
+   }
+   while (v.size() && v.back() == 1) {
+      v.pop_back();
+   }
+   dbg(v);
+   int cnt = 0;
+   for (int i = 0; i < v.size(); i++) {
+      if (v[i] == 1) {
+         cnt++;
+      }
+   }
+   if (cnt == 0) {
+      pl(1);
+   } else {
+      pl(2);
+   }
 }
 signed main() {
    IOE;
    _IOE();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       _main();
    }
