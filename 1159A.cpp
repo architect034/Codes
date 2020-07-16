@@ -94,46 +94,20 @@ void _IOE() {
 #endif
 }
 // #define int long long
-int n, d;
-vector<int> v(11);
-vector<string> ans;
-void solve(int curr, int idx, string s) {
-   if (idx == n) {
-      if (curr % d == 0) {
-         ans.push_back(s);
-      }
-      return;
-   }
-   if (ans.size()) return;
-   for (int i = 0; i < 3; i++) {
-      if (i == 0) {
-         solve(curr + v[idx], idx + 1, s + '+');
-      }
-      if (i == 1) {
-         solve(curr - v[idx], idx + 1, s + '-');
-      }
-      if (i == 2) {
-         solve(curr * v[idx], idx + 1, s + '*');
-      }
-   }
-}
 void _main() {
+   int n;
    cin >> n;
-   for (int i = 0; i < n; i++) cin >> v[i];
-   cin >> d;
-   solve(v[0], 1, "");
-   if (ans.size() == 0) {
-      pl(-1);
-      return;
+   string s;
+   cin >> s;
+   int v = 0;
+   for (char c : s) {
+      if (c == '-') {
+         v--;
+         v = max(v, 0);
+      } else
+         v++;
    }
-   string s = ans[0];
-   string res = "";
-   res += to_string(v[0]);
-   for (int i = 1; i < n; i++) {
-      res += s[i - 1];
-      res += to_string(v[i]);
-   }
-   ps(res);
+   cout << max(v, 0) << "\n";
 }
 signed main() {
    IOE;

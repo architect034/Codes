@@ -93,47 +93,18 @@ void _IOE() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-// #define int long long
-int n, d;
-vector<int> v(11);
-vector<string> ans;
-void solve(int curr, int idx, string s) {
-   if (idx == n) {
-      if (curr % d == 0) {
-         ans.push_back(s);
-      }
-      return;
-   }
-   if (ans.size()) return;
-   for (int i = 0; i < 3; i++) {
-      if (i == 0) {
-         solve(curr + v[idx], idx + 1, s + '+');
-      }
-      if (i == 1) {
-         solve(curr - v[idx], idx + 1, s + '-');
-      }
-      if (i == 2) {
-         solve(curr * v[idx], idx + 1, s + '*');
-      }
-   }
-}
+#define int long long
 void _main() {
+   int n;
    cin >> n;
+   vector<int> v(n);
    for (int i = 0; i < n; i++) cin >> v[i];
-   cin >> d;
-   solve(v[0], 1, "");
-   if (ans.size() == 0) {
-      pl(-1);
-      return;
+   int ans = INT_MAX;
+   for (int i = 0; i < n; i++) {
+      int d = max(i, n - 1 - i);
+      ans = min(ans, v[i] / d);
    }
-   string s = ans[0];
-   string res = "";
-   res += to_string(v[0]);
-   for (int i = 1; i < n; i++) {
-      res += s[i - 1];
-      res += to_string(v[i]);
-   }
-   ps(res);
+   pl(ans);
 }
 signed main() {
    IOE;

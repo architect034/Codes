@@ -93,47 +93,43 @@ void _IOE() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-// #define int long long
-int n, d;
-vector<int> v(11);
-vector<string> ans;
-void solve(int curr, int idx, string s) {
-   if (idx == n) {
-      if (curr % d == 0) {
-         ans.push_back(s);
-      }
-      return;
-   }
-   if (ans.size()) return;
-   for (int i = 0; i < 3; i++) {
-      if (i == 0) {
-         solve(curr + v[idx], idx + 1, s + '+');
-      }
-      if (i == 1) {
-         solve(curr - v[idx], idx + 1, s + '-');
-      }
-      if (i == 2) {
-         solve(curr * v[idx], idx + 1, s + '*');
-      }
-   }
-}
+#define int long long
 void _main() {
-   cin >> n;
-   for (int i = 0; i < n; i++) cin >> v[i];
-   cin >> d;
-   solve(v[0], 1, "");
-   if (ans.size() == 0) {
+   int n, m;
+   cin >> n >> m;
+   vector<int> a(n), b(m);
+   for (int &x : a) cin >> x;
+   for (int &y : b) cin >> y;
+   int _sb = *min_element(all(b));
+   int _sa = *max_element(all(a));
+   if (_sa > _sb) {
       pl(-1);
       return;
    }
-   string s = ans[0];
-   string res = "";
-   res += to_string(v[0]);
-   for (int i = 1; i < n; i++) {
-      res += s[i - 1];
-      res += to_string(v[i]);
+   sort(all(b));
+   sort(all(a));
+   reverse(all(a));
+   int ans = 0;
+   for (int i = 0; i < n; i++) {
+      int k = 0;
+      while (k < m - 1 && b.size()) {
+         ans += b.back();
+         b.pop_back();
+         k++;
+      }
+      if (b.size()) {
+         if (b.back() == a[i]) {
+            ans += a[i];
+            b.pop_back();
+         } else {
+            ans += a[i];
+         }
+         continue;
+      }
+      ans += (a[i] * (m - k));
+      dbg(ans);
    }
-   ps(res);
+   pl(ans);
 }
 signed main() {
    IOE;
