@@ -96,39 +96,27 @@ void _IOE() {
 // #define int long long
 class Solution {
   public:
-   int n;
-   int v[1005];
-   int dp[1005][1005][2];
-   int solve(int pos, int flag, int prev, int len) {
-      if (pos == n + 1) {
-         dbg(len);
-         return len;
-      }
-      if (dp[pos][prev][flag] != -1) {
-         return dp[pos][prev][flag];
-      }
-      if (flag) {
-         int mx = 0;
-         if (v[pos] > v[prev]) {
-            return dp[pos][prev][flag] = solve(pos + 1, flag ^ 1, pos, len + 1);
-         }
-         return dp[pos][prev][flag] = solve(pos + 1, flag, prev, len);
-      } else {
-         if (v[pos] < v[prev]) {
-            return dp[pos][prev][flag] = solve(pos + 1, flag ^ 1, pos, len + 1);
-         }
-         return dp[pos][prev][flag] = solve(pos + 1, flag, prev, len);
-      }
-   }
    void solution() {
-      memset(dp, -1, sizeof dp);
+      int n;
       cin >> n;
-      v[0] = INT_MAX;
-      for (int i = 1; i <= n; i++) cin >> v[i];
-      int ans = solve(1, 0, 0, 0);
-      v[0] = 0;
-      ans = max(ans, solve(1, 1, 0, 0));
-      pl(ans);
+      int W;
+      cin >> W;
+      vector<int> v(n);
+      for (int i = 0; i < n; i++) cin >> v[i];
+      vector<int> wt(n);
+      for (int i = 0; i < n; i++) cin >> wt[i];
+      int dp[n + 1][W + 1];
+      memset(dp, 0, sizeof dp);
+      for (int i = 1; i <= n; i++) {
+         for (int j = 1; j <= W; j++) {
+            if (wt[i - 1] <= j) {
+               dp[i][j] = max(dp[i - 1][j], v[i - 1] + dp[i - 1][j - wt[i - 1]]);
+            } else {
+               dp[i][j] = dp[i - 1][j];
+            }
+         }
+      }
+      pl(dp[n][W]);
    }
 };
 signed main() {
@@ -136,8 +124,8 @@ signed main() {
    _IOE();
    int test_cases = 1;
    cin >> test_cases;
+   Solution obj;
    for (int i = 1; i <= test_cases; i++) {
-      Solution obj;
       obj.solution();
    }
    return 0;

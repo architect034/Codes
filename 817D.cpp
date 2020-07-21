@@ -93,41 +93,67 @@ void _IOE() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-// #define int long long
-class Solution {
+#define int long long
+class Main {
   public:
-   int n;
-   int v[1005];
-   int dp[1005][1005][2];
-   int solve(int pos, int flag, int prev, int len) {
-      if (pos == n + 1) {
-         dbg(len);
-         return len;
-      }
-      if (dp[pos][prev][flag] != -1) {
-         return dp[pos][prev][flag];
-      }
-      if (flag) {
-         int mx = 0;
-         if (v[pos] > v[prev]) {
-            return dp[pos][prev][flag] = solve(pos + 1, flag ^ 1, pos, len + 1);
-         }
-         return dp[pos][prev][flag] = solve(pos + 1, flag, prev, len);
-      } else {
-         if (v[pos] < v[prev]) {
-            return dp[pos][prev][flag] = solve(pos + 1, flag ^ 1, pos, len + 1);
-         }
-         return dp[pos][prev][flag] = solve(pos + 1, flag, prev, len);
-      }
-   }
-   void solution() {
-      memset(dp, -1, sizeof dp);
+   void _main() {
+      int n;
       cin >> n;
-      v[0] = INT_MAX;
-      for (int i = 1; i <= n; i++) cin >> v[i];
-      int ans = solve(1, 0, 0, 0);
-      v[0] = 0;
-      ans = max(ans, solve(1, 1, 0, 0));
+      vector<int> v(n);
+      for (int i = 0; i < n; i++) cin >> v[i];
+      stack<int> s;
+      vector<int> l(n), r(n);
+      for (int i = 0; i < n; i++) {
+         while (!s.empty() && v[s.top()] < v[i]) {
+            s.pop();
+         }
+         if (s.empty())
+            l[i] = -1;
+         else
+            l[i] = s.top();
+         s.push(i);
+      }
+      while (s.empty() == 0) s.pop();
+      for (int i = n - 1; i >= 0; i--) {
+         while (!s.empty() && v[s.top()] <= v[i]) {
+            s.pop();
+         }
+         if (s.empty())
+            r[i] = n;
+         else
+            r[i] = s.top();
+         s.push(i);
+      }
+      int ans = 0;
+      for (int i = 0; i < n; i++) {
+         ans += (abs(i - l[i]) * abs(r[i] - i) * v[i]) - v[i];
+      }
+      while (s.empty() == 0) s.pop();
+      for (int i = 0; i < n; i++) {
+         while (!s.empty() && v[s.top()] > v[i]) {
+            s.pop();
+         }
+         if (s.empty())
+            l[i] = -1;
+         else
+            l[i] = s.top();
+         s.push(i);
+      }
+      while (s.empty() == 0) s.pop();
+      for (int i = n - 1; i >= 0; i--) {
+         while (!s.empty() && v[s.top()] >= v[i]) {
+            s.pop();
+         }
+         if (s.empty())
+            r[i] = n;
+         else
+            r[i] = s.top();
+
+         s.push(i);
+      }
+      for (int i = 0; i < n; i++) {
+         ans -= (abs(i - l[i]) * abs(r[i] - i) * v[i]) - v[i];
+      }
       pl(ans);
    }
 };
@@ -135,10 +161,10 @@ signed main() {
    IOE;
    _IOE();
    int test_cases = 1;
-   cin >> test_cases;
+   // cin >> test_cases;
+   Main obj;
    for (int i = 1; i <= test_cases; i++) {
-      Solution obj;
-      obj.solution();
+      obj._main();
    }
    return 0;
 }

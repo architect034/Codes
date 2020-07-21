@@ -96,48 +96,52 @@ void _IOE() {
 // #define int long long
 class Solution {
   public:
-   int n;
-   int v[1005];
-   int dp[1005][1005][2];
-   int solve(int pos, int flag, int prev, int len) {
-      if (pos == n + 1) {
-         dbg(len);
-         return len;
-      }
-      if (dp[pos][prev][flag] != -1) {
-         return dp[pos][prev][flag];
-      }
-      if (flag) {
-         int mx = 0;
-         if (v[pos] > v[prev]) {
-            return dp[pos][prev][flag] = solve(pos + 1, flag ^ 1, pos, len + 1);
-         }
-         return dp[pos][prev][flag] = solve(pos + 1, flag, prev, len);
-      } else {
-         if (v[pos] < v[prev]) {
-            return dp[pos][prev][flag] = solve(pos + 1, flag ^ 1, pos, len + 1);
-         }
-         return dp[pos][prev][flag] = solve(pos + 1, flag, prev, len);
-      }
-   }
    void solution() {
-      memset(dp, -1, sizeof dp);
+      int n;
       cin >> n;
-      v[0] = INT_MAX;
-      for (int i = 1; i <= n; i++) cin >> v[i];
-      int ans = solve(1, 0, 0, 0);
-      v[0] = 0;
-      ans = max(ans, solve(1, 1, 0, 0));
-      pl(ans);
+      vector<int> v(n);
+      for (int &x : v) cin >> x;
+      vector<int> dp(n, 1);
+      int i = 0, j = 1;
+      vector<int> par(n);
+      for (int i = 0; i < n; i++) {
+         par[i] = i;
+      }
+      for (int j = 1; j < n; j++) {
+         for (int i = 0; i < j; i++) {
+            if (v[j] > v[i] && dp[j] < dp[i] + 1) {
+               dp[j] = dp[i] + 1;
+               par[j] = i;
+            }
+         }
+      }
+      int mx = 1, idx = 0;
+      for (int i = 0; i < n; i++) {
+         if (dp[i] > mx) {
+            mx = dp[i];
+            idx = i;
+         }
+      }
+      cout << mx << "\n";
+      vector<int> seq;
+      while (true) {
+         seq.pb(v[idx]);
+         if (par[idx] == idx) break;
+         idx = par[idx];
+      }
+      reverse(seq.begin(), seq.end());
+      for (int i = 0; i < mx; i++) {
+         cout << seq[i] << " ";
+      }
    }
 };
 signed main() {
    IOE;
    _IOE();
    int test_cases = 1;
-   cin >> test_cases;
+   // cin >> test_cases;
+   Solution obj;
    for (int i = 1; i <= test_cases; i++) {
-      Solution obj;
       obj.solution();
    }
    return 0;

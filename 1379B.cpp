@@ -93,52 +93,34 @@ void _IOE() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-// #define int long long
-class Solution {
-  public:
-   int n;
-   int v[1005];
-   int dp[1005][1005][2];
-   int solve(int pos, int flag, int prev, int len) {
-      if (pos == n + 1) {
-         dbg(len);
-         return len;
+#define int long long
+void _main() {
+   int l, r, m;
+   cin >> l >> r >> m;
+   for (int a = l; a <= r; a++) {
+      int n = m / a;
+      int na = n * a;
+      int d = (m - na);
+      if (n > 0 && d >= 0 && d <= (r - l)) {
+         cout << a << " " << l + d << " " << l << "\n";
+         return;
       }
-      if (dp[pos][prev][flag] != -1) {
-         return dp[pos][prev][flag];
-      }
-      if (flag) {
-         int mx = 0;
-         if (v[pos] > v[prev]) {
-            return dp[pos][prev][flag] = solve(pos + 1, flag ^ 1, pos, len + 1);
-         }
-         return dp[pos][prev][flag] = solve(pos + 1, flag, prev, len);
-      } else {
-         if (v[pos] < v[prev]) {
-            return dp[pos][prev][flag] = solve(pos + 1, flag ^ 1, pos, len + 1);
-         }
-         return dp[pos][prev][flag] = solve(pos + 1, flag, prev, len);
+      n = (m + a - 1) / a;
+      na = n * a;
+      d = m - na;
+      if (d <= 0 && d >= (l - r)) {
+         cout << a << " " << r + d << " " << r << "\n";
+         return;
       }
    }
-   void solution() {
-      memset(dp, -1, sizeof dp);
-      cin >> n;
-      v[0] = INT_MAX;
-      for (int i = 1; i <= n; i++) cin >> v[i];
-      int ans = solve(1, 0, 0, 0);
-      v[0] = 0;
-      ans = max(ans, solve(1, 1, 0, 0));
-      pl(ans);
-   }
-};
+}
 signed main() {
    IOE;
    _IOE();
    int test_cases = 1;
    cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
-      Solution obj;
-      obj.solution();
+      _main();
    }
    return 0;
 }

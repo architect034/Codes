@@ -93,41 +93,30 @@ void _IOE() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-// #define int long long
+#define int long long
 class Solution {
   public:
    int n;
-   int v[1005];
-   int dp[1005][1005][2];
-   int solve(int pos, int flag, int prev, int len) {
-      if (pos == n + 1) {
-         dbg(len);
-         return len;
+   int dp[100001][2];
+   int solve(int pos, char last) {
+      if (pos == n) {
+         return 1;
       }
-      if (dp[pos][prev][flag] != -1) {
-         return dp[pos][prev][flag];
+      int f = last - '0';
+      if (dp[pos][f] != -1) {
+         return dp[pos][f] % mod;
       }
-      if (flag) {
-         int mx = 0;
-         if (v[pos] > v[prev]) {
-            return dp[pos][prev][flag] = solve(pos + 1, flag ^ 1, pos, len + 1);
-         }
-         return dp[pos][prev][flag] = solve(pos + 1, flag, prev, len);
+      if (last == '1') {
+         return dp[pos][f] = solve(pos + 1, '0') % mod;
       } else {
-         if (v[pos] < v[prev]) {
-            return dp[pos][prev][flag] = solve(pos + 1, flag ^ 1, pos, len + 1);
-         }
-         return dp[pos][prev][flag] = solve(pos + 1, flag, prev, len);
+         return dp[pos][f] = (solve(pos + 1, '1') + solve(pos + 1, '0')) % mod;
       }
    }
    void solution() {
       memset(dp, -1, sizeof dp);
       cin >> n;
-      v[0] = INT_MAX;
-      for (int i = 1; i <= n; i++) cin >> v[i];
-      int ans = solve(1, 0, 0, 0);
-      v[0] = 0;
-      ans = max(ans, solve(1, 1, 0, 0));
+      int ans = solve(1, '0') + solve(1, '1');
+      ans %= mod;
       pl(ans);
    }
 };

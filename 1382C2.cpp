@@ -96,39 +96,78 @@ void _IOE() {
 // #define int long long
 class Solution {
   public:
-   int n;
-   int v[1005];
-   int dp[1005][1005][2];
-   int solve(int pos, int flag, int prev, int len) {
-      if (pos == n + 1) {
-         dbg(len);
-         return len;
-      }
-      if (dp[pos][prev][flag] != -1) {
-         return dp[pos][prev][flag];
-      }
-      if (flag) {
-         int mx = 0;
-         if (v[pos] > v[prev]) {
-            return dp[pos][prev][flag] = solve(pos + 1, flag ^ 1, pos, len + 1);
+   void solve(string a, string b, vector<int> &ans) {
+      int cnt = 0;
+      int n = a.size();
+      for (int i = n - 1; i >= 0; i--) {
+         int idx = i + cnt;
+         if (a[idx] == b[i]) {
+            continue;
          }
-         return dp[pos][prev][flag] = solve(pos + 1, flag, prev, len);
-      } else {
-         if (v[pos] < v[prev]) {
-            return dp[pos][prev][flag] = solve(pos + 1, flag ^ 1, pos, len + 1);
+         if (a[idx] == a[cnt]) {
+            ans.pb(i + 1);
+            if (idx != cnt)
+               ans.pb(i);
+         } else {
+            ans.pb(1);
+            ans.pb(i + 1);
+            ans.pb(i);
          }
-         return dp[pos][prev][flag] = solve(pos + 1, flag, prev, len);
+         cnt++;
+      }
+   }
+   void compress(vector<int> ans, vector<int> &res) {
+      for (int i = 0; i < ans.size(); i++) {
+         int x = ans[i];
+         if (res.size() == 0) {
+            res.pb(x);
+         } else if (x == res.back()) {
+            res.pop_back();
+            continue;
+         } else {
+            res.pb(x);
+         }
       }
    }
    void solution() {
-      memset(dp, -1, sizeof dp);
+      int n;
       cin >> n;
-      v[0] = INT_MAX;
-      for (int i = 1; i <= n; i++) cin >> v[i];
-      int ans = solve(1, 0, 0, 0);
-      v[0] = 0;
-      ans = max(ans, solve(1, 1, 0, 0));
-      pl(ans);
+      string a, b;
+      cin >> a >> b;
+      vector<int> ans;
+      this->solve(a, b, ans);
+      vector<int> res;
+      this->compress(ans, res);
+      if (res.size() > 2 * n) {
+         ans.clear();
+         for (int i = 0; i < n; i++) {
+            if (a[i] == '0')
+               a[i] = '1';
+            else
+               a[i] = '0';
+         }
+         int l = 0, r = n - 1;
+         while (l < r) {
+            swap(a[l++], a[r--]);
+         }
+         int k = 0;
+         ans.pb(n);
+         this->solve(a, b, ans);
+         res.clear();
+         this->compress(ans, res);
+         ps(res.size());
+         for (int x : res) {
+            cout << x << " ";
+         }
+         nl;
+         return;
+      }
+      ps(res.size());
+      for (int x : res) {
+         cout << x << " ";
+      }
+      nl;
+      return;
    }
 };
 signed main() {
@@ -136,8 +175,8 @@ signed main() {
    _IOE();
    int test_cases = 1;
    cin >> test_cases;
+   Solution obj;
    for (int i = 1; i <= test_cases; i++) {
-      Solution obj;
       obj.solution();
    }
    return 0;

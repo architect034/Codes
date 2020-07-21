@@ -96,48 +96,47 @@ void _IOE() {
 // #define int long long
 class Solution {
   public:
-   int n;
-   int v[1005];
-   int dp[1005][1005][2];
-   int solve(int pos, int flag, int prev, int len) {
-      if (pos == n + 1) {
-         dbg(len);
-         return len;
-      }
-      if (dp[pos][prev][flag] != -1) {
-         return dp[pos][prev][flag];
-      }
-      if (flag) {
-         int mx = 0;
-         if (v[pos] > v[prev]) {
-            return dp[pos][prev][flag] = solve(pos + 1, flag ^ 1, pos, len + 1);
-         }
-         return dp[pos][prev][flag] = solve(pos + 1, flag, prev, len);
-      } else {
-         if (v[pos] < v[prev]) {
-            return dp[pos][prev][flag] = solve(pos + 1, flag ^ 1, pos, len + 1);
-         }
-         return dp[pos][prev][flag] = solve(pos + 1, flag, prev, len);
-      }
-   }
    void solution() {
-      memset(dp, -1, sizeof dp);
-      cin >> n;
-      v[0] = INT_MAX;
-      for (int i = 1; i <= n; i++) cin >> v[i];
-      int ans = solve(1, 0, 0, 0);
-      v[0] = 0;
-      ans = max(ans, solve(1, 1, 0, 0));
-      pl(ans);
+      int n, m;
+      cin >> n >> m;
+      int a[n][m];
+      for (int i = 0; i < n; i++) {
+         for (int j = 0; j < m; j++) {
+            cin >> a[i][j];
+         }
+      }
+      int x = 0;
+      vector<int> ans(n);
+      for (int i = 0; i < n; i++) {
+         x = (x ^ a[i][0]);
+         ans[i] = 1;
+      }
+      if (x) {
+         pl("TAK");
+         ps(ans, n);
+         return;
+      }
+      for (int i = 0; i < n; i++) {
+         for (int j = 0; j < m; j++) {
+            if (a[i][j] != a[i][0]) {
+               x ^= a[i][j];
+               ans[i] = j + 1;
+               pl("TAK");
+               ps(ans, n);
+               return;
+            }
+         }
+      }
+      pl("NIE");
    }
 };
 signed main() {
    IOE;
    _IOE();
    int test_cases = 1;
-   cin >> test_cases;
+   // cin >> test_cases;
+   Solution obj;
    for (int i = 1; i <= test_cases; i++) {
-      Solution obj;
       obj.solution();
    }
    return 0;

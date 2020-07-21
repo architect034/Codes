@@ -93,42 +93,57 @@ void _IOE() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-// #define int long long
-class Solution {
+#define int long long
+class Main {
   public:
-   int n;
-   int v[1005];
-   int dp[1005][1005][2];
-   int solve(int pos, int flag, int prev, int len) {
-      if (pos == n + 1) {
-         dbg(len);
-         return len;
+   void _main(int tc) {
+      int n, q;
+      cin >> n >> q;
+      int mx = INT_MIN;
+      vector<pair<int, int> > v(q);
+      vector<int> pre(q, 0);
+      for (int i = 0; i < q; i++) {
+         cin >> v[i].ff >> v[i].ss;
+         mx = max(mx, v[i].ss);
       }
-      if (dp[pos][prev][flag] != -1) {
-         return dp[pos][prev][flag];
+      sort(all(v)), reverse(all(v));
+      for (int i = 0; i < q; i++) {
+         pre[i] = v[i].ff;
+         if (i) pre[i] += pre[i - 1];
       }
-      if (flag) {
-         int mx = 0;
-         if (v[pos] > v[prev]) {
-            return dp[pos][prev][flag] = solve(pos + 1, flag ^ 1, pos, len + 1);
+      int res = 0;
+      for (int i = 0; i < q; i++) {
+         int mx = v[i].ss;
+         int low = 0, high = q - 1, to = 0;
+         while (low <= high) {
+            int mid = (low + high) / 2;
+            if (v[mid].ff > mx) {
+               to = mid;
+               low = mid + 1;
+            } else {
+               high = mid - 1;
+            }
          }
-         return dp[pos][prev][flag] = solve(pos + 1, flag, prev, len);
-      } else {
-         if (v[pos] < v[prev]) {
-            return dp[pos][prev][flag] = solve(pos + 1, flag ^ 1, pos, len + 1);
+         if (v[0].ff < mx) {
+            int ans = v[i].ff + (n - 1) * v[i].ss;
+            res = max(res, ans);
+            continue;
          }
-         return dp[pos][prev][flag] = solve(pos + 1, flag, prev, len);
+         to = min(n - 1, to);
+         int nn = n;
+         int ans = pre[to];
+         nn -= (to + 1);
+         if (nn) {
+            if (i <= to) {
+               ans += (nn * mx);
+            } else {
+               ans += (v[i].ff + mx * (nn - 1));
+            }
+         }
+         dbg(ans);
+         res = max(res, ans);
       }
-   }
-   void solution() {
-      memset(dp, -1, sizeof dp);
-      cin >> n;
-      v[0] = INT_MAX;
-      for (int i = 1; i <= n; i++) cin >> v[i];
-      int ans = solve(1, 0, 0, 0);
-      v[0] = 0;
-      ans = max(ans, solve(1, 1, 0, 0));
-      pl(ans);
+      pl(res);
    }
 };
 signed main() {
@@ -136,9 +151,9 @@ signed main() {
    _IOE();
    int test_cases = 1;
    cin >> test_cases;
+   Main obj;
    for (int i = 1; i <= test_cases; i++) {
-      Solution obj;
-      obj.solution();
+      obj._main(i);
    }
    return 0;
 }

@@ -94,41 +94,72 @@ void _IOE() {
 #endif
 }
 // #define int long long
-class Solution {
+class Main {
   public:
    int n;
-   int v[1005];
-   int dp[1005][1005][2];
-   int solve(int pos, int flag, int prev, int len) {
-      if (pos == n + 1) {
-         dbg(len);
-         return len;
-      }
-      if (dp[pos][prev][flag] != -1) {
-         return dp[pos][prev][flag];
-      }
-      if (flag) {
-         int mx = 0;
-         if (v[pos] > v[prev]) {
-            return dp[pos][prev][flag] = solve(pos + 1, flag ^ 1, pos, len + 1);
+   string s;
+   string _s = "abacaba";
+   bool dekho(int st) {
+      int id = 0;
+      string s2 = s;
+      for (int i = st; i < st + 7; i++) {
+         if (s[i] == _s[id] || s[i] == '?') {
+            s[i] = _s[id];
+         } else {
+            s = s2;
+            return false;
          }
-         return dp[pos][prev][flag] = solve(pos + 1, flag, prev, len);
-      } else {
-         if (v[pos] < v[prev]) {
-            return dp[pos][prev][flag] = solve(pos + 1, flag ^ 1, pos, len + 1);
-         }
-         return dp[pos][prev][flag] = solve(pos + 1, flag, prev, len);
+         id++;
       }
+      for (int i = 0; i < n; i++) {
+         if (s[i] == '?') s[i] = 'z';
+      }
+      int cnt = 0;
+      for (int i = 0; i <= n - 7; i++) {
+         if (s.substr(i, 7) == _s) {
+            cnt++;
+         }
+      }
+      s = s2;
+      if (cnt == 1) {
+         return true;
+      }
+      return false;
    }
-   void solution() {
-      memset(dp, -1, sizeof dp);
+   void change(int st) {
+      int id = 0;
+      for (int i = st; i < st + 7; i++) {
+         s[i] = _s[id];
+         id++;
+      }
+      for (int i = 0; i < n; i++) {
+         if (s[i] == '?') s[i] = 'z';
+      }
+      return;
+   }
+   void _main() {
       cin >> n;
-      v[0] = INT_MAX;
-      for (int i = 1; i <= n; i++) cin >> v[i];
-      int ans = solve(1, 0, 0, 0);
-      v[0] = 0;
-      ans = max(ans, solve(1, 1, 0, 0));
-      pl(ans);
+      cin >> s;
+      int cnt = 0;
+      for (int i = 0; i <= n - 7; i++) {
+         if (s.substr(i, 7) == _s) {
+            cnt++;
+         }
+      }
+      if (cnt > 1) {
+         no;
+         return;
+      }
+      for (int i = 0; i <= n - 7; i++) {
+         bool say = this->dekho(i);
+         if (say) {
+            this->change(i);
+            yes;
+            pl(s);
+            return;
+         }
+      }
+      no;
    }
 };
 signed main() {
@@ -136,9 +167,9 @@ signed main() {
    _IOE();
    int test_cases = 1;
    cin >> test_cases;
+   Main obj;
    for (int i = 1; i <= test_cases; i++) {
-      Solution obj;
-      obj.solution();
+      obj._main();
    }
    return 0;
 }

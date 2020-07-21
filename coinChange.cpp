@@ -94,51 +94,40 @@ void _IOE() {
 #endif
 }
 // #define int long long
-class Solution {
+class Main {
   public:
-   int n;
-   int v[1005];
-   int dp[1005][1005][2];
-   int solve(int pos, int flag, int prev, int len) {
-      if (pos == n + 1) {
-         dbg(len);
-         return len;
-      }
-      if (dp[pos][prev][flag] != -1) {
-         return dp[pos][prev][flag];
-      }
-      if (flag) {
-         int mx = 0;
-         if (v[pos] > v[prev]) {
-            return dp[pos][prev][flag] = solve(pos + 1, flag ^ 1, pos, len + 1);
-         }
-         return dp[pos][prev][flag] = solve(pos + 1, flag, prev, len);
-      } else {
-         if (v[pos] < v[prev]) {
-            return dp[pos][prev][flag] = solve(pos + 1, flag ^ 1, pos, len + 1);
-         }
-         return dp[pos][prev][flag] = solve(pos + 1, flag, prev, len);
-      }
-   }
-   void solution() {
-      memset(dp, -1, sizeof dp);
+   void _main() {
+      int n;
       cin >> n;
-      v[0] = INT_MAX;
-      for (int i = 1; i <= n; i++) cin >> v[i];
-      int ans = solve(1, 0, 0, 0);
-      v[0] = 0;
-      ans = max(ans, solve(1, 1, 0, 0));
-      pl(ans);
+      vector<int> v(n);
+      for (int i = 0; i < n; i++) {
+         cin >> v[i];
+      }
+      int a;
+      cin >> a;
+      int dp[n + 1][a + 1];
+      memset(dp, 0, sizeof dp);
+      for (int i = 0; i < n; i++) dp[i][0] = 1;
+      for (int i = 1; i <= n; i++) {
+         for (int j = 1; j <= a; j++) {
+            if (v[i - 1] <= j) {
+               dp[i][j] = dp[i][j - v[i - 1]] + dp[i - 1][j];
+            } else {
+               dp[i][j] = dp[i - 1][j];
+            }
+         }
+      }
+      pl(dp[n][a]);
    }
 };
 signed main() {
    IOE;
    _IOE();
    int test_cases = 1;
-   cin >> test_cases;
+   // cin >> test_cases;
+   Main obj;
    for (int i = 1; i <= test_cases; i++) {
-      Solution obj;
-      obj.solution();
+      obj._main();
    }
    return 0;
 }

@@ -94,51 +94,39 @@ void _IOE() {
 #endif
 }
 // #define int long long
-class Solution {
-  public:
-   int n;
-   int v[1005];
-   int dp[1005][1005][2];
-   int solve(int pos, int flag, int prev, int len) {
-      if (pos == n + 1) {
-         dbg(len);
-         return len;
-      }
-      if (dp[pos][prev][flag] != -1) {
-         return dp[pos][prev][flag];
-      }
-      if (flag) {
-         int mx = 0;
-         if (v[pos] > v[prev]) {
-            return dp[pos][prev][flag] = solve(pos + 1, flag ^ 1, pos, len + 1);
+int n;
+string s;
+int solve(int l, int r, char c) {
+   if (l >= r) {
+      if (l == r) {
+         if (s[l] == c) {
+            return 0;
          }
-         return dp[pos][prev][flag] = solve(pos + 1, flag, prev, len);
-      } else {
-         if (v[pos] < v[prev]) {
-            return dp[pos][prev][flag] = solve(pos + 1, flag ^ 1, pos, len + 1);
-         }
-         return dp[pos][prev][flag] = solve(pos + 1, flag, prev, len);
       }
+      return 1;
    }
-   void solution() {
-      memset(dp, -1, sizeof dp);
-      cin >> n;
-      v[0] = INT_MAX;
-      for (int i = 1; i <= n; i++) cin >> v[i];
-      int ans = solve(1, 0, 0, 0);
-      v[0] = 0;
-      ans = max(ans, solve(1, 1, 0, 0));
-      pl(ans);
+   int m = (l + r) / 2;
+   int s1 = 0, s2 = 0;
+   for (int i = l; i <= m; i++) {
+      if (s[i] != c) s1++;
    }
-};
+   for (int i = m + 1; i <= r; i++) {
+      if (s[i] != c) s2++;
+   }
+   return min(s1 + solve(m + 1, r, c + 1), s2 + solve(l, m, c + 1));
+}
+void _main() {
+   cin >> n;
+   cin >> s;
+   cout << solve(0, n - 1, 'a') << endl;
+}
 signed main() {
    IOE;
    _IOE();
    int test_cases = 1;
    cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
-      Solution obj;
-      obj.solution();
+      _main();
    }
    return 0;
 }

@@ -96,39 +96,45 @@ void _IOE() {
 // #define int long long
 class Solution {
   public:
-   int n;
-   int v[1005];
-   int dp[1005][1005][2];
-   int solve(int pos, int flag, int prev, int len) {
-      if (pos == n + 1) {
-         dbg(len);
-         return len;
-      }
-      if (dp[pos][prev][flag] != -1) {
-         return dp[pos][prev][flag];
-      }
-      if (flag) {
-         int mx = 0;
-         if (v[pos] > v[prev]) {
-            return dp[pos][prev][flag] = solve(pos + 1, flag ^ 1, pos, len + 1);
-         }
-         return dp[pos][prev][flag] = solve(pos + 1, flag, prev, len);
-      } else {
-         if (v[pos] < v[prev]) {
-            return dp[pos][prev][flag] = solve(pos + 1, flag ^ 1, pos, len + 1);
-         }
-         return dp[pos][prev][flag] = solve(pos + 1, flag, prev, len);
-      }
-   }
    void solution() {
-      memset(dp, -1, sizeof dp);
+      int n;
       cin >> n;
-      v[0] = INT_MAX;
-      for (int i = 1; i <= n; i++) cin >> v[i];
-      int ans = solve(1, 0, 0, 0);
-      v[0] = 0;
-      ans = max(ans, solve(1, 1, 0, 0));
-      pl(ans);
+      int a[n], b[n], c[n];
+      for (int i = 0; i < n; i++) {
+         cin >> a[i];
+      }
+      b[0] = 1;
+      c[0] = 1;
+      int f = 0, g = 0;
+      for (int i = 1; i < n; i++) {
+         if (f == 0) {
+            if (a[i - 1] < a[i]) {
+               b[i] = b[i - 1] + 1;
+               f++;
+            } else
+               b[i] = b[i - 1];
+         } else if (f == 1) {
+            if (a[i - 1] > a[i]) {
+               b[i] = b[i - 1] + 1;
+               f--;
+            } else
+               b[i] = b[i - 1];
+         }
+         if (g == 0) {
+            if (a[i - 1] > a[i]) {
+               c[i] = c[i - 1] + 1;
+               g++;
+            } else
+               c[i] = c[i - 1];
+         } else if (g == 1) {
+            if (a[i - 1] < a[i]) {
+               c[i] = c[i - 1] + 1;
+               g--;
+            } else
+               c[i] = c[i - 1];
+         }
+      }
+      cout << max(b[n - 1], c[n - 1]) << endl;
    }
 };
 signed main() {

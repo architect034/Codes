@@ -44,6 +44,17 @@ void deleteNode(struct node** head, int key) {
    prev->next = temp->next;
    free(temp);
 }
+void reverse(struct node** head) {
+   struct node* prev = NULL;
+   struct node* cur = *head;
+   while (cur) {
+      struct node* nxt = cur->next;
+      cur->next = prev;
+      prev = cur;
+      cur = nxt;
+   }
+   *head = prev;
+}
 int main() {
    input();
    struct node* head = NULL;
@@ -51,6 +62,6 @@ int main() {
       insert_into_list(&head, i);
    }
    print_list(&head);
-   deleteNode(&head, 10);
+   reverse(&head);
    print_list(&head);
 }

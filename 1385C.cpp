@@ -93,52 +93,66 @@ void _IOE() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-// #define int long long
-class Solution {
-  public:
-   int n;
-   int v[1005];
-   int dp[1005][1005][2];
-   int solve(int pos, int flag, int prev, int len) {
-      if (pos == n + 1) {
-         dbg(len);
-         return len;
-      }
-      if (dp[pos][prev][flag] != -1) {
-         return dp[pos][prev][flag];
-      }
-      if (flag) {
-         int mx = 0;
-         if (v[pos] > v[prev]) {
-            return dp[pos][prev][flag] = solve(pos + 1, flag ^ 1, pos, len + 1);
+int n;
+vector<int> v(MAX);
+bool check(int x) {
+   deque<int> dq;
+   for (int i = x; i < n; i++) {
+      dq.pb(v[i]);
+   }
+   vector<int> a;
+   if (dq.front() < dq.back()) {
+      a.pb(dq.front());
+      dq.pop_front();
+   } else {
+      a.pb(dq.back());
+      dq.pop_back();
+   }
+   while (dq.size()) {
+      int l = a.back();
+      int x;
+      if (dq.front() < dq.back()) {
+         if (l > dq.front()) {
+            return false;
+         } else {
+            a.push_back(dq.front());
          }
-         return dp[pos][prev][flag] = solve(pos + 1, flag, prev, len);
+         dq.pop_front();
       } else {
-         if (v[pos] < v[prev]) {
-            return dp[pos][prev][flag] = solve(pos + 1, flag ^ 1, pos, len + 1);
+         if (l > dq.back()) {
+            return false;
+         } else {
+            a.push_back(dq.back());
          }
-         return dp[pos][prev][flag] = solve(pos + 1, flag, prev, len);
+         dq.pop_back();
       }
    }
-   void solution() {
-      memset(dp, -1, sizeof dp);
-      cin >> n;
-      v[0] = INT_MAX;
-      for (int i = 1; i <= n; i++) cin >> v[i];
-      int ans = solve(1, 0, 0, 0);
-      v[0] = 0;
-      ans = max(ans, solve(1, 1, 0, 0));
-      pl(ans);
+   return true;
+}
+void _main() {
+   cin >> n;
+   for (int i = 0; i < n; i++) {
+      cin >> v[i];
    }
-};
+   int low = 0, high = n - 1, ans = n - 1;
+   while (low <= high) {
+      int mid = (low + high) / 2;
+      if (check(mid)) {
+         ans = mid;
+         high = mid - 1;
+      } else {
+         low = mid + 1;
+      }
+   }
+   pl(ans);
+}
 signed main() {
    IOE;
    _IOE();
    int test_cases = 1;
    cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
-      Solution obj;
-      obj.solution();
+      _main();
    }
    return 0;
 }
