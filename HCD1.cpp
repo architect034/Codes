@@ -93,59 +93,53 @@ void _IOE() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-// #define int long long
-class Solution {
-  public:
-   void solution() {
-      int n;
-      string s;
-      cin >> n >> s;
-      vector<char> v;
-      for (int i = 0; i < n; i++) {
-         if (v.size() < 3) {
-            v.pb(s[i]);
-         }
-         while (v.size() >= 3) {
-            char last = v.back();
-            v.pop_back();
-            char slast = v.back();
-            v.pop_back();
-            char sslast = v.back();
-            v.pop_back();
-            map<char, int> m;
-            m[last]++;
-            m[slast]++;
-            m[sslast]++;
-            if (m.size() == 1) {
-               v.pb(last);
-               v.pb(slast);
-               v.pb(sslast);
-               break;
-            }
-            char x;
-            if (m[last] > 1) {
-               x = last;
-            } else if (m[slast] > 1) {
-               x = slast;
-            }
-            v.pb(x);
+#define int long long
+void _main() {
+   int n, m;
+   cin >> n >> m;
+   vector<ll> v(n + 1);
+   for (int i = 1; i <= n; i++) cin >> v[i];
+   vector<ll> ans(n + 1);
+   set<pair<ll, int> > s;
+   if (m + 1 >= n) {
+      pl(0);
+      return;
+   }
+   for (int i = 1; i <= m + 1; i++) {
+      ans[i] = 0;
+      if (v[i])
+         s.insert({v[i], i});
+   }
+   for (int i = m + 2; i <= n; i++) {
+      while (s.size()) {
+         auto x = s.begin();
+         int idx = x->ss;
+         if ((i - idx) > m) {
+            s.erase(s.begin());
+         } else {
+            break;
          }
       }
-      if (v.size() > 1) {
-         pl("N");
-      } else {
-         pl("Y");
+      if (s.size() == 0) {
+         ans[n] = -1;
+         break;
+      }
+      auto x = *s.begin();
+      ans[i] = x.ff;
+      if (v[i]) {
+         s.insert({ans[i] + v[i], i});
       }
    }
-};
+   cout << ans[n] << "\n";
+}
 signed main() {
    IOE;
    _IOE();
    int test_cases = 1;
    cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
-      Solution obj;
-      obj.solution();
+      cout << "Case #" << i << ": ";
+      _main();
    }
    return 0;
 }

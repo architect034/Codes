@@ -98,43 +98,51 @@ class Solution {
   public:
    void solution() {
       int n;
-      string s;
-      cin >> n >> s;
-      vector<char> v;
-      for (int i = 0; i < n; i++) {
-         if (v.size() < 3) {
-            v.pb(s[i]);
-         }
-         while (v.size() >= 3) {
-            char last = v.back();
-            v.pop_back();
-            char slast = v.back();
-            v.pop_back();
-            char sslast = v.back();
-            v.pop_back();
-            map<char, int> m;
-            m[last]++;
-            m[slast]++;
-            m[sslast]++;
-            if (m.size() == 1) {
-               v.pb(last);
-               v.pb(slast);
-               v.pb(sslast);
-               break;
-            }
-            char x;
-            if (m[last] > 1) {
-               x = last;
-            } else if (m[slast] > 1) {
-               x = slast;
-            }
-            v.pb(x);
+      cin >> n;
+      string in, out;
+      cin >> in >> out;
+      char ans[n + 1][n + 1];
+      for (int i = 1; i <= n; i++) {
+         for (int j = 1; j <= n; j++) {
+            ans[i][j] = 'N';
          }
       }
-      if (v.size() > 1) {
-         pl("N");
-      } else {
-         pl("Y");
+      for (int i = 1; i <= n; i++) {
+         ans[i][i] = 'Y';
+      }
+      for (int i = 1; i <= n; i++) {
+         for (int j = 1; j <= n; j++) {
+            if (i == j) continue;
+            int a = i, b = j;
+            if (a > b) {
+               bool say = 1;
+               for (int k = a - 1; k >= b; k--) {
+                  if ((in[k - 1] == 'Y' && out[k + 1 - 1] == 'Y')) {
+                     continue;
+                  }
+                  say = 0;
+               }
+               if (say) {
+                  ans[a][b] = 'Y';
+               }
+            } else {
+               bool say = 1;
+               for (int k = a + 1; k <= b; k++) {
+                  if (!(in[k - 1] == 'Y' && out[k - 1 - 1] == 'Y')) {
+                     say = false;
+                  }
+               }
+               if (say) {
+                  ans[a][b] = 'Y';
+               }
+            }
+         }
+      }
+      for (int i = 1; i <= n; i++) {
+         for (int j = 1; j <= n; j++) {
+            cout << ans[i][j];
+         }
+         nl;
       }
    }
 };
@@ -144,6 +152,7 @@ signed main() {
    int test_cases = 1;
    cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
+      cout << "Case #" << i << ":\n";
       Solution obj;
       obj.solution();
    }

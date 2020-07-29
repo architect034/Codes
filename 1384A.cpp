@@ -98,43 +98,28 @@ class Solution {
   public:
    void solution() {
       int n;
-      string s;
-      cin >> n >> s;
-      vector<char> v;
+      cin >> n;
+      vector<int> v(n);
+      for (int &x : v) cin >> x;
+      vector<string> ans;
+      string s = "";
+      for (int i = 0; i < 60; i++) {
+         s += 'a';
+      }
+      for (int i = 0; i <= n; i++) {
+         ans.pb(s);
+      }
       for (int i = 0; i < n; i++) {
-         if (v.size() < 3) {
-            v.pb(s[i]);
-         }
-         while (v.size() >= 3) {
-            char last = v.back();
-            v.pop_back();
-            char slast = v.back();
-            v.pop_back();
-            char sslast = v.back();
-            v.pop_back();
-            map<char, int> m;
-            m[last]++;
-            m[slast]++;
-            m[sslast]++;
-            if (m.size() == 1) {
-               v.pb(last);
-               v.pb(slast);
-               v.pb(sslast);
-               break;
-            }
-            char x;
-            if (m[last] > 1) {
-               x = last;
-            } else if (m[slast] > 1) {
-               x = slast;
-            }
-            v.pb(x);
+         int idx = v[i];
+         ans[i + 1] = ans[i];
+         if (ans[i + 1][idx] == 'a') {
+            ans[i + 1][idx] = 'b';
+         } else {
+            ans[i + 1][idx] = 'a';
          }
       }
-      if (v.size() > 1) {
-         pl("N");
-      } else {
-         pl("Y");
+      for (string x : ans) {
+         pl(x);
       }
    }
 };

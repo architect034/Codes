@@ -98,44 +98,33 @@ class Solution {
   public:
    void solution() {
       int n;
-      string s;
-      cin >> n >> s;
-      vector<char> v;
+      cin >> n;
+      string a, b;
+      cin >> a >> b;
       for (int i = 0; i < n; i++) {
-         if (v.size() < 3) {
-            v.pb(s[i]);
-         }
-         while (v.size() >= 3) {
-            char last = v.back();
-            v.pop_back();
-            char slast = v.back();
-            v.pop_back();
-            char sslast = v.back();
-            v.pop_back();
-            map<char, int> m;
-            m[last]++;
-            m[slast]++;
-            m[sslast]++;
-            if (m.size() == 1) {
-               v.pb(last);
-               v.pb(slast);
-               v.pb(sslast);
-               break;
-            }
-            char x;
-            if (m[last] > 1) {
-               x = last;
-            } else if (m[slast] > 1) {
-               x = slast;
-            }
-            v.pb(x);
+         if (a[i] > b[i]) {
+            pl(-1);
+            return;
          }
       }
-      if (v.size() > 1) {
-         pl("N");
-      } else {
-         pl("Y");
+      int ans = 0;
+      for (char c = 'a'; c <= 't'; c++) {
+         set<char> s;
+         for (int i = 0; i < n; i++) {
+            if (a[i] == c && a[i] != b[i]) {
+               s.insert(b[i]);
+            }
+         }
+         if (s.size() == 0) continue;
+         char ch = *s.begin();
+         ans++;
+         for (int i = 0; i < n; i++) {
+            if (a[i] == c && a[i] != b[i]) {
+               a[i] = ch;
+            }
+         }
       }
+      pl(ans);
    }
 };
 signed main() {

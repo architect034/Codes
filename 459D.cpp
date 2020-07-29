@@ -94,58 +94,104 @@ void _IOE() {
 #endif
 }
 // #define int long long
-class Solution {
-  public:
-   void solution() {
-      int n;
-      string s;
-      cin >> n >> s;
-      vector<char> v;
-      for (int i = 0; i < n; i++) {
-         if (v.size() < 3) {
-            v.pb(s[i]);
-         }
-         while (v.size() >= 3) {
-            char last = v.back();
-            v.pop_back();
-            char slast = v.back();
-            v.pop_back();
-            char sslast = v.back();
-            v.pop_back();
-            map<char, int> m;
-            m[last]++;
-            m[slast]++;
-            m[sslast]++;
-            if (m.size() == 1) {
-               v.pb(last);
-               v.pb(slast);
-               v.pb(sslast);
-               break;
-            }
-            char x;
-            if (m[last] > 1) {
-               x = last;
-            } else if (m[slast] > 1) {
-               x = slast;
-            }
-            v.pb(x);
-         }
-      }
-      if (v.size() > 1) {
-         pl("N");
+struct node {
+   int pos;
+   int l;
+   int r;
+   int val;
+};
+bool comp(node a, node b) {
+   if (a.val == b.val)
+      return a.l > b.l;
+   return a.val > b.val;
+}
+
+void update(int *BIT, int n, int idx) {
+   while (idx <= n) {
+      BIT[idx]++;
+      idx += idx & (-idx);
+   }
+}
+
+int query(int *BIT, int idx) {
+   int ans = 0;
+   while (idx) {
+      ans += BIT[idx];
+
+      idx -= idx & (-idx);
+   }
+   return ans;
+}
+
+void solveQuery(int arr[], int n, int QueryL[], int QueryR[], int QueryK[], int q) {
+   node a[n + q + 1];
+   for (int i = 1; i <= n; ++i) {
+      a[i].val = arr[i - 1];
+      a[i].pos = 0;
+      a[i].l = 0;
+      a[i].r = i;
+   }
+   for (int i = n + 1; i <= n + q; ++i) {
+      a[i].pos = i - n;
+      a[i].val = QueryK[i - n - 1];
+      a[i].l = QueryL[i - n - 1];
+      a[i].r = QueryR[i - n - 1];
+   }
+   sort(a + 1, a + n + q + 1, comp);
+   int BIT[n + 1];
+   memset(BIT, 0, sizeof(BIT));
+   int ans[q + 1];
+   for (int i = 1; i <= n + q; ++i) {
+      if (a[i].pos != 0) {
+         int cnt = query(BIT, a[i].r) - query(BIT, a[i].l - 1);
+         ans[a[i].pos] = cnt;
       } else {
-         pl("Y");
+         update(BIT, n, a[i].r);
       }
    }
-};
+   int sum = 0;
+   for (int i = 1; i <= q; ++i) {
+      sum += ans[i];
+   }
+   pl(sum);
+}
+void _main() {
+   int n;
+   cin >> n;
+   vector<int> v(n);
+   for (int &x : v) {
+      cin >> x;
+   }
+   map<int, int> m;
+   vector<int> pre(n), suf(n);
+   for (int i = 0; i < n; i++) {
+      m[v[i]]++;
+      pre[i] = m[v[i]];
+   }
+   m.clear();
+   for (int i = n - 1; i >= 0; i--) {
+      m[v[i]]++;
+      suf[i] = m[v[i]];
+   }
+   int qL[n - 1], qR[n - 1], qK[n - 1];
+   for (int i = n - 2; i >= 0; i--) {
+      qL[i] = i + 2;
+      qR[i] = n;
+      qK[i] = -pre[i];
+   }
+   int arr[n];
+   for (int i = 0; i < n; i++) {
+      arr[i] = -suf[i];
+   }
+   solveQuery(arr, n, qL, qR, qK, n - 1);
+}
 signed main() {
    IOE;
    _IOE();
    int test_cases = 1;
-   cin >> test_cases;
+   // cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
-      Solution obj;
-      obj.solution();
+      _main();
    }
    return 0;
 }

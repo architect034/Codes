@@ -93,56 +93,61 @@ void _IOE() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-// #define int long long
+#define int long long
+const int INF = 1e18 + 7;
 class Solution {
   public:
    void solution() {
-      int n;
-      string s;
-      cin >> n >> s;
-      vector<char> v;
-      for (int i = 0; i < n; i++) {
-         if (v.size() < 3) {
-            v.pb(s[i]);
+      int a, b;
+      cin >> a >> b;
+      if (a > b) swap(a, b);
+      if (a == b) {
+         pl(0);
+         return;
+      }
+      int lcm = INF;
+      int answer = 0;
+      int d = b - a;
+      for (int i = 1; i * i <= d; i++) {
+         if (d % i) continue;
+         int k = a % i;
+         if (k == 0) {
+            int p = (a * b) / i;
+            if (p < lcm) {
+               lcm = p;
+               answer = 0;
+            }
+         } else {
+            int p = ((a + i - k) * (b + i - k)) / __gcd(a + i - k, b + i - k);
+            if (p < lcm) {
+               lcm = p;
+               answer = i - k;
+            }
          }
-         while (v.size() >= 3) {
-            char last = v.back();
-            v.pop_back();
-            char slast = v.back();
-            v.pop_back();
-            char sslast = v.back();
-            v.pop_back();
-            map<char, int> m;
-            m[last]++;
-            m[slast]++;
-            m[sslast]++;
-            if (m.size() == 1) {
-               v.pb(last);
-               v.pb(slast);
-               v.pb(sslast);
-               break;
+         int j = d / i;
+         k = a % j;
+         if (k == 0) {
+            int p = (a * b) / j;
+            if (p < lcm) {
+               lcm = p;
+               answer = 0;
             }
-            char x;
-            if (m[last] > 1) {
-               x = last;
-            } else if (m[slast] > 1) {
-               x = slast;
+         } else {
+            int p = ((a + j - k) * (b + j - k)) / __gcd(a + j - k, b + j - k);
+            if (p < lcm) {
+               lcm = p;
+               answer = j - k;
             }
-            v.pb(x);
          }
       }
-      if (v.size() > 1) {
-         pl("N");
-      } else {
-         pl("Y");
-      }
+      pl(answer);
    }
 };
 signed main() {
    IOE;
    _IOE();
    int test_cases = 1;
-   cin >> test_cases;
+   // cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       Solution obj;
       obj.solution();

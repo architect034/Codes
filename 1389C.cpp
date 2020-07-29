@@ -97,52 +97,13 @@ void _IOE() {
 class Solution {
   public:
    void solution() {
-      int n;
-      string s;
-      cin >> n >> s;
-      vector<char> v;
-      for (int i = 0; i < n; i++) {
-         if (v.size() < 3) {
-            v.pb(s[i]);
-         }
-         while (v.size() >= 3) {
-            char last = v.back();
-            v.pop_back();
-            char slast = v.back();
-            v.pop_back();
-            char sslast = v.back();
-            v.pop_back();
-            map<char, int> m;
-            m[last]++;
-            m[slast]++;
-            m[sslast]++;
-            if (m.size() == 1) {
-               v.pb(last);
-               v.pb(slast);
-               v.pb(sslast);
-               break;
-            }
-            char x;
-            if (m[last] > 1) {
-               x = last;
-            } else if (m[slast] > 1) {
-               x = slast;
-            }
-            v.pb(x);
-         }
-      }
-      if (v.size() > 1) {
-         pl("N");
-      } else {
-         pl("Y");
-      }
    }
 };
 signed main() {
    IOE;
    _IOE();
    int test_cases = 1;
-   cin >> test_cases;
+   // cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       Solution obj;
       obj.solution();
