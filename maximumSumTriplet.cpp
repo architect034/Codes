@@ -93,28 +93,47 @@ void _IOE() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-#define int long long
-class Solution {
-  public:
-   void solution() {
-      int l, r;
-      cin >> l >> r;
-      int x = l, y = l * 2;
-      if (y >= l && y <= r) {
-         cout << x << " " << y << "\n";
-      } else {
-         cout << -1 << " " << -1 << "\n";
-      }
+// #define int long long
+int _main() {
+   int n;
+   cin >> n;
+   vector<int> v(n);
+   for (int i = 0; i < n; i++) cin >> v[i];
+   set<int> s;
+   s.insert(v[0]);
+   vector<int> mx(n);
+   mx[n - 1] = v[n - 1];
+   for (int i = n - 2; i >= 0; i--) {
+      mx[i] = max(v[i], mx[i + 1]);
    }
-};
+   int ans = 0;
+   for (int i = 1; i < n - 1; i++) {
+      if (*s.begin() > v[i]) {
+         s.insert(v[i]);
+         continue;
+      }
+      auto it = s.lower_bound(v[i]);
+      --it;
+      int l = *it;
+      if (*s.rbegin() < v[i]) {
+         l = *s.rbegin();
+      }
+      int r = mx[i + 1];
+      if (l < v[i] && v[i] < r) {
+         ans = max(ans, l + v[i] + r);
+      }
+      s.insert(v[i]);
+   }
+   pl(ans);
+   return ans;
+}
 signed main() {
    IOE;
    _IOE();
    int test_cases = 1;
-   cin >> test_cases;
+   // cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
-      Solution obj;
-      obj.solution();
+      _main();
    }
    return 0;
 }

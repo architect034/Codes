@@ -93,25 +93,55 @@ void _IOE() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-#define int long long
+// #define int long long
 class Solution {
   public:
-   void solution() {
-      int l, r;
-      cin >> l >> r;
-      int x = l, y = l * 2;
-      if (y >= l && y <= r) {
-         cout << x << " " << y << "\n";
-      } else {
-         cout << -1 << " " << -1 << "\n";
+   int solution() {
+      int n;
+      cin >> n;
+      vector<int> v(n);
+      for (int i = 0; i < n; i++) {
+         cin >> v[i];
       }
+      vector<int> pre(n, 0), suf(n, 0);
+      suf[n - 1] = v[n - 1];
+      pre[0] = v[0];
+      for (int i = n - 2; i >= 0; i--) {
+         suf[i] = suf[i + 1] + v[i];
+      }
+      for (int i = 1; i < n; i++) {
+         pre[i] = pre[i - 1] + v[i];
+      }
+      vector<int> p(n), s(n);
+      int sum = pre[n - 1];
+      if (sum % 3) return 0;
+      sum /= 3;
+      for (int i = 0; i < n; i++) {
+         if (pre[i] == sum) p[i] = 1;
+         if (suf[i] == sum) s[i] = 1;
+      }
+      for (int i = 1; i < n; i++) {
+         p[i] += p[i - 1];
+      }
+      for (int i = n - 2; i >= 0; i--) {
+         s[i] += s[i + 1];
+      }
+      int ans = 0;
+      for (int i = 0; i < n - 2; i++) {
+         if (pre[i] == sum) {
+            ans += (s[i + 2]);
+         }
+      }
+      dbg(p, s);
+      pl(ans);
+      return ans;
    }
 };
 signed main() {
    IOE;
    _IOE();
    int test_cases = 1;
-   cin >> test_cases;
+   // cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       Solution obj;
       obj.solution();

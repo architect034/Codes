@@ -94,27 +94,53 @@ void _IOE() {
 #endif
 }
 #define int long long
-class Solution {
-  public:
-   void solution() {
-      int l, r;
-      cin >> l >> r;
-      int x = l, y = l * 2;
-      if (y >= l && y <= r) {
-         cout << x << " " << y << "\n";
-      } else {
-         cout << -1 << " " << -1 << "\n";
-      }
+int n, m;
+int _, x, y, flag;
+int par[MAX], h[MAX], a[MAX], s[MAX];
+vector<int> g[MAX], t(MAX), dif(MAX);
+vector<int> good(MAX), bad(MAX);
+void dfs(int v, int p) {
+   s[v] = par[v];
+   long long sa = 0;
+   for (int u : g[v]) {
+      if (u == p) continue;
+      dfs(u, v);
+      s[v] += s[u];
+      sa += a[u];
    }
-};
+   if ((h[v] + s[v]) % 2) flag = 1;
+   a[v] = (h[v] + s[v]) / 2;
+   if (a[v] < sa || a[v] > s[v]) flag = 1;
+}
+void _main() {
+   flag = 0;
+   cin >> n >> m;
+   for (int i = 1; i <= n; i++) {
+      cin >> par[i];
+   }
+   for (int i = 1; i <= n; i++) {
+      cin >> h[i];
+   }
+   for (int i = 0; i < n - 1; i++) {
+      int x, y;
+      cin >> x >> y;
+      g[x].pb(y), g[y].pb(x);
+   }
+   dfs(1, 0);
+   if (flag) {
+      no;
+   } else {
+      yes;
+   }
+   for (int i = 1; i <= n; i++) g[i].clear();
+}
 signed main() {
    IOE;
    _IOE();
    int test_cases = 1;
    cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
-      Solution obj;
-      obj.solution();
+      _main();
    }
    return 0;
 }

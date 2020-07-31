@@ -93,25 +93,41 @@ void _IOE() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-#define int long long
+// #define int long long
 class Solution {
   public:
-   void solution() {
-      int l, r;
-      cin >> l >> r;
-      int x = l, y = l * 2;
-      if (y >= l && y <= r) {
-         cout << x << " " << y << "\n";
-      } else {
-         cout << -1 << " " << -1 << "\n";
+   vector<int> solution() {
+      int n;
+      cin >> n;
+      string s;
+      cin >> s;
+      int in = 0;
+      for (int i = 0; i < n - 1; i++) {
+         if (s[i] == 'I') {
+            in++;
+         }
       }
+      int a = n - in;
+      int b = a - 1;
+      vector<int> ans;
+      ans.push_back(a);
+      for (int i = 0; i < n - 1; i++) {
+         if (s[i] == 'I') {
+            ans.push_back(++a);
+         } else {
+            ans.push_back(b);
+            b--;
+         }
+      }
+      ps(ans, n);
+      return ans;
    }
 };
 signed main() {
    IOE;
    _IOE();
    int test_cases = 1;
-   cin >> test_cases;
+   // cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       Solution obj;
       obj.solution();

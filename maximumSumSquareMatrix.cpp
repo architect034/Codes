@@ -93,25 +93,56 @@ void _IOE() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-#define int long long
+// #define int long long
+const int INF = 1e9 + 10;
 class Solution {
   public:
-   void solution() {
-      int l, r;
-      cin >> l >> r;
-      int x = l, y = l * 2;
-      if (y >= l && y <= r) {
-         cout << x << " " << y << "\n";
-      } else {
-         cout << -1 << " " << -1 << "\n";
+   int solve(vector<vector<int> > &A, int b) {
+      int ans = -INF;
+      int n = A.size();
+      if (n == 0) return 0;
+      int dp[n + 1][n + 1];
+      memset(dp, 0, sizeof dp);
+      for (int i = 1; i <= n; i++) {
+         for (int j = 1; j <= n; j++) {
+            dp[i][j] = A[i - 1][j - 1];
+         }
       }
+      for (int i = 2; i <= n; i++) {
+         dp[1][i] += dp[1][i - 1];
+         dp[i][1] += dp[i - 1][1];
+      }
+      for (int i = 2; i <= n; i++) {
+         for (int j = 2; j <= n; j++) {
+            dp[i][j] += (dp[i - 1][j] + dp[i][j - 1] - dp[i - 1][j - 1]);
+         }
+      }
+      for (int i = b; i <= n; i++) {
+         for (int j = b; j <= n; j++) {
+            ans = max(ans, dp[i][j] - dp[i - b][j] - dp[i][j - b] + dp[i - b][j - b]);
+         }
+      }
+      return ans;
+   }
+   void solution() {
+      int n;
+      cin >> n;
+      vector<vector<int> > v(n, vector<int>(n));
+      for (int i = 0; i < n; i++) {
+         for (int j = 0; j < n; j++) {
+            cin >> v[i][j];
+         }
+      }
+      int b;
+      cin >> b;
+      cout << this->solve(v, b);
    }
 };
 signed main() {
    IOE;
    _IOE();
    int test_cases = 1;
-   cin >> test_cases;
+   // cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       Solution obj;
       obj.solution();

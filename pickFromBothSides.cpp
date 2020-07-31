@@ -94,27 +94,33 @@ void _IOE() {
 #endif
 }
 #define int long long
-class Solution {
-  public:
-   void solution() {
-      int l, r;
-      cin >> l >> r;
-      int x = l, y = l * 2;
-      if (y >= l && y <= r) {
-         cout << x << " " << y << "\n";
-      } else {
-         cout << -1 << " " << -1 << "\n";
-      }
+const int INF = 1e16 + 9;
+int n;
+vector<int> v(MAX);
+int _main() {
+   cin >> n;
+   for (int i = 0; i < n; i++) cin >> v[i];
+   int answer = -INF;
+   int b;
+   cin >> b;
+   vector<int> pre(n + 1, 0), suf(n + 2, 0);
+   for (int i = 1; i <= n; i++) pre[i] = v[i - 1];
+   for (int i = 1; i <= n; i++) suf[i] = v[i - 1];
+   for (int i = 2; i <= n; i++) pre[i] += pre[i - 1];
+   for (int i = n; i >= 1; i--) suf[i] += suf[i + 1];
+   for (int i = 0; i <= b; i++) {
+      answer = max(answer, pre[i] + suf[n + 1 - (b - i)]);
    }
-};
+   cout << answer << "\n";
+   return answer;
+}
 signed main() {
    IOE;
    _IOE();
    int test_cases = 1;
-   cin >> test_cases;
+   // cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
-      Solution obj;
-      obj.solution();
+      _main();
    }
    return 0;
 }

@@ -93,18 +93,20 @@ void _IOE() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-#define int long long
+// #define int long long
 class Solution {
   public:
    void solution() {
-      int l, r;
-      cin >> l >> r;
-      int x = l, y = l * 2;
-      if (y >= l && y <= r) {
-         cout << x << " " << y << "\n";
-      } else {
-         cout << -1 << " " << -1 << "\n";
+      int n;
+      cin >> n;
+      int k = (n + 3) / 4;
+      for (int i = 1; i <= n - k; i++) {
+         cout << 9;
       }
+      for (int i = 1; i <= k; i++) {
+         cout << 8;
+      }
+      nl;
    }
 };
 signed main() {

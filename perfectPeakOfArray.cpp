@@ -96,7 +96,31 @@ void _IOE() {
 // #define int long long
 class Solution {
   public:
-   void solution() {
+   int solution() {
+      int n;
+      cin >> n;
+      vector<int> v(n);
+      for (int i = 0; i < n; i++) {
+         cin >> v[i];
+      }
+      vector<int> ans(n, 1);
+      int mx = v[0];
+      for (int i = 1; i < n - 1; i++) {
+         if (v[i] > mx) {
+            ans[i] = 1;
+         } else {
+            ans[i] = 0;
+         }
+         mx = max(mx, v[i]);
+      }
+      int sm = v[n - 1];
+      for (int i = n - 2; i >= 1; i--) {
+         if (v[i] < sm && ans[i]) {
+            return 1;
+         }
+         sm = min(sm, v[i]);
+      }
+      return 0;
    }
 };
 signed main() {

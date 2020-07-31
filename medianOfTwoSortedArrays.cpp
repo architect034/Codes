@@ -93,25 +93,53 @@ void _IOE() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-#define int long long
+// #define int long long
 class Solution {
   public:
-   void solution() {
-      int l, r;
-      cin >> l >> r;
-      int x = l, y = l * 2;
-      if (y >= l && y <= r) {
-         cout << x << " " << y << "\n";
-      } else {
-         cout << -1 << " " << -1 << "\n";
+   double solution() {
+      int n, m;
+      cin >> n >> m;
+      vector<int> a(n), b(m);
+      for (int &x : a) cin >> x;
+      for (int &x : b) cin >> x;
+      if (b.size() < a.size()) {
+         swap(a, b);
       }
+      n = a.size(), m = b.size();
+      int low = 0, high = n;
+      while (low <= high) {
+         int lastA = (low + high) / 2;
+         int lastB = (n + m + 1) / 2 - lastA;
+         int mxLA = (lastA == 0) ? INT_MIN : a[lastA - 1];
+         int mnRA = (lastA == n) ? INT_MAX : a[lastA];
+
+         int mxLB = (lastB == 0) ? INT_MIN : b[lastB - 1];
+         int mnRB = (lastB == m) ? INT_MAX : b[lastB];
+
+         if (mxLA <= mnRB && mxLB <= mnRA) {
+            if ((n + m) & 1) {
+               double ans = double(max(mxLA, mxLB));
+               dbg(ans);
+               return double(max(mxLA, mxLB));
+            } else {
+               double ans = (max(mxLA, mxLB) + min(mnRA, mnRB)) / 2.0;
+               dbg(ans);
+               return double((max(mxLA, mxLB) + min(mnRA, mnRB)) / 2.0);
+            }
+         } else if (mxLA > mnRB) {
+            high = lastA - 1;
+         } else {
+            low = lastA + 1;
+         }
+      }
+      return 0.0;
    }
 };
 signed main() {
    IOE;
    _IOE();
    int test_cases = 1;
-   cin >> test_cases;
+   // cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       Solution obj;
       obj.solution();

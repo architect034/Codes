@@ -93,25 +93,66 @@ void _IOE() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-#define int long long
+// #define int long long
 class Solution {
   public:
-   void solution() {
-      int l, r;
-      cin >> l >> r;
-      int x = l, y = l * 2;
-      if (y >= l && y <= r) {
-         cout << x << " " << y << "\n";
-      } else {
-         cout << -1 << " " << -1 << "\n";
+   int solution() {
+      int n;
+      cin >> n;
+      vector<int> v(n);
+      for (int i = 0; i < n; i++) cin >> v[i];
+      int b;
+      cin >> b;
+      int ans = 0;
+      vector<int> res(n, 0);
+      for (int i = 0; i < n; i++) {
+         if (res[i] == 0) {
+            int idx = -1;
+            for (int j = i + 1; j < min(n, i + b); j++) {
+               if (v[j] == 1) {
+                  idx = j;
+               }
+            }
+            if (idx == -1) {
+               for (int j = i - 1; j > max(-1, i - b); j--) {
+                  if (v[j] == 1) {
+                     idx = j;
+                     break;
+                  }
+               }
+               if (idx == -1)
+                  return -1;
+               ans++;
+               res[idx] = 1;
+               for (int j = idx + 1; j < min(n, idx + b); j++) {
+                  res[j] = 1;
+               }
+               for (int j = idx - 1; j > max(-1, idx - b); j--) {
+                  res[j] = 1;
+               }
+               ps(res, n);
+               continue;
+            }
+            ans++;
+            res[idx] = 1;
+            for (int j = idx + 1; j < min(n, idx + b); j++) {
+               res[j] = 1;
+            }
+            for (int j = idx - 1; j > max(-1, idx - b); j--) {
+               res[j] = 1;
+            }
+            ps(res, n);
+         }
       }
+      pl(ans);
+      return ans;
    }
 };
 signed main() {
    IOE;
    _IOE();
    int test_cases = 1;
-   cin >> test_cases;
+   // cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       Solution obj;
       obj.solution();

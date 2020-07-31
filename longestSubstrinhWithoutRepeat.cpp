@@ -96,7 +96,34 @@ void _IOE() {
 // #define int long long
 class Solution {
   public:
-   void solution() {
+   int solution() {
+      string s;
+      cin >> s;
+      int n = s.size();
+      int ans = 0;
+      vector<int> h(26, 0);
+      int i = 0, j = -1;
+      while (j < n) {
+         bool say = 1;
+         for (int i = 0; i < 26; i++) {
+            if (h[i] > 1) {
+               say = false;
+               break;
+            }
+         }
+         if (say) {
+            j++;
+            ans = max(ans, j - i);
+            if (j < n) {
+               h[s[j] - 'a']++;
+            }
+         } else {
+            h[s[i] - 'a']--;
+            i++;
+         }
+      }
+      dbg(ans);
+      return ans;
    }
 };
 signed main() {

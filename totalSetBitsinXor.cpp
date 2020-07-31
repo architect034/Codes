@@ -93,28 +93,50 @@ void _IOE() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-#define int long long
-class Solution {
-  public:
-   void solution() {
-      int l, r;
-      cin >> l >> r;
-      int x = l, y = l * 2;
-      if (y >= l && y <= r) {
-         cout << x << " " << y << "\n";
-      } else {
-         cout << -1 << " " << -1 << "\n";
+// #define int long long
+void brute(vector<int> v, int n) {
+   int ans = 0;
+   for (int i = 0; i < n; i++) {
+      for (int j = 0; j < n; j++) {
+         if (i == j) continue;
+         int x = v[i] ^ v[j];
+         while (x) {
+            ans += (x & 1);
+            x >>= 1;
+         }
       }
    }
-};
+   pl(ans);
+}
+void _main() {
+   srand(time(0));
+   int n = 1 + rand() % 1000;
+   vector<int> v(n);
+   for (int i = 0; i < n; i++) v[i] = 1 + rand() % MAX;
+   brute(v, n);
+   vector<int> h(64, 0);
+   for (int i = 0; i < n; i++) {
+      int x = v[i];
+      int j = 0;
+      while (x) {
+         h[j++] += x % 2;
+         x >>= 1;
+      }
+   }
+   int ans = 0;
+   for (int i = 0; i < 64; i++) {
+      int x = h[i];
+      ans += (x * (n - x));
+   }
+   pl(2 * ans);
+}
 signed main() {
    IOE;
    _IOE();
    int test_cases = 1;
-   cin >> test_cases;
+   // cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
-      Solution obj;
-      obj.solution();
+      _main();
    }
    return 0;
 }

@@ -93,17 +93,56 @@ void _IOE() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-#define int long long
-class Solution {
-  public:
+// #define int long long
+struct Solution {
+   int lIdx(vector<int> v, int n, int x) {
+      int low = 0, high = n - 1, ans = 0;
+      while (low <= high) {
+         int mid = (low + high) >> 1;
+         if (v[mid] == x) {
+            ans = mid + 1;
+            high = mid - 1;
+         } else if (v[mid] > x) {
+            high = mid - 1;
+         } else {
+            low = mid + 1;
+         }
+      }
+      return ans;
+   }
+   int rIdx(vector<int> v, int n, int x) {
+      int low = 0, high = n - 1, ans = 0;
+      while (low <= high) {
+         int mid = (low + high) >> 1;
+         if (v[mid] == x) {
+            ans = mid + 1;
+            low = mid + 1;
+         } else if (v[mid] > x) {
+            high = mid - 1;
+         } else {
+            low = mid + 1;
+         }
+      }
+      return ans;
+   }
    void solution() {
-      int l, r;
-      cin >> l >> r;
-      int x = l, y = l * 2;
-      if (y >= l && y <= r) {
-         cout << x << " " << y << "\n";
-      } else {
-         cout << -1 << " " << -1 << "\n";
+      int n;
+      cin >> n;
+      vector<int> v(n);
+      for (int &x : v) cin >> x;
+      sort(all(v));
+      int q;
+      cin >> q;
+      while (q--) {
+         int x;
+         cin >> x;
+         if (binary_search(all(v), x)) {
+            int lb = lIdx(v, n, x);
+            int rb = rIdx(v, n, x);
+            cout << lb << " " << rb << "\n";
+            continue;
+         }
+         pl(-1);
       }
    }
 };
@@ -111,7 +150,7 @@ signed main() {
    IOE;
    _IOE();
    int test_cases = 1;
-   cin >> test_cases;
+   // cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       Solution obj;
       obj.solution();

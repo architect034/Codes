@@ -93,25 +93,61 @@ void _IOE() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-#define int long long
+// #define int long long
 class Solution {
   public:
-   void solution() {
-      int l, r;
-      cin >> l >> r;
-      int x = l, y = l * 2;
-      if (y >= l && y <= r) {
-         cout << x << " " << y << "\n";
-      } else {
-         cout << -1 << " " << -1 << "\n";
+   void solveConstantSpace(string s) {
+      int left = 0, right = 0, maxlength = 0, n = s.size();
+      for (int i = 0; i < n; i++) {
+         if (s[i] == '(')
+            left++;
+         else
+            right++;
+         if (left == right)
+            maxlength = max(maxlength, 2 * right);
+         else if (right > left)
+            left = right = 0;
       }
+      left = right = 0;
+      for (int i = n - 1; i >= 0; i--) {
+         if (s[i] == '(')
+            left++;
+         else
+            right++;
+         if (left == right)
+            maxlength = max(maxlength, 2 * left);
+         else if (left > right)
+            left = right = 0;
+      }
+      pl(maxlength);
+   }
+   void solution() {
+      string s;
+      cin >> s;
+      this->solveConstantSpace(s);
+      stack<int> st;
+      int res = 0;
+      for (int i = 0; i < s.size(); i++) {
+         if (s[i] == '(') {
+            st.push(i);
+         } else {
+            if (!st.empty() && s[st.top()] == '(') {
+               st.pop();
+               res = max(res, st.empty() ? i + 1 : i - st.top());
+            } else {
+               st.push(i);
+            }
+         }
+         res = max(res, st.empty() ? i + 1 : i - st.top());
+      }
+      cout << res << "\n";
    }
 };
 signed main() {
    IOE;
    _IOE();
    int test_cases = 1;
-   cin >> test_cases;
+   // cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       Solution obj;
       obj.solution();
