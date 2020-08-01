@@ -22,40 +22,31 @@ const ll mod = 1e9 + 7;
 vector<bool> prime(MAX, 1);
 vector<int> spf(MAX, 1);
 vector<int> primes;
-void sieve()
-{
+void sieve() {
    prime[0] = prime[1] = 0;
    spf[2] = 2;
-   f(i, 4, MAX - 1, 2)
-   {
+   f(i, 4, MAX - 1, 2) {
       spf[i] = 2;
       prime[i] = 0;
    }
    primes.pb(2);
-   f(i, 3, MAX - 1, 2)
-   {
-      if (prime[i])
-      {
+   f(i, 3, MAX - 1, 2) {
+      if (prime[i]) {
          primes.pb(i);
          spf[i] = i;
-         f(j, i * i, MAX - 1, i)
-         {
+         f(j, i * i, MAX - 1, i) {
             prime[j] = 0;
-            if (spf[j] == 1)
-            {
+            if (spf[j] == 1) {
                spf[j] = i;
             }
          }
       }
    }
 }
-ll power(ll a, ll b)
-{
+ll power(ll a, ll b) {
    ll res = 1;
-   while (b)
-   {
-      if (b & 1)
-      {
+   while (b) {
+      if (b & 1) {
          res = res * a;
       }
       a = a * a;
@@ -63,13 +54,10 @@ ll power(ll a, ll b)
    }
    return res;
 }
-ll power(ll a, ll b, ll m)
-{
+ll power(ll a, ll b, ll m) {
    ll res = 1;
-   while (b)
-   {
-      if (b & 1)
-      {
+   while (b) {
+      if (b & 1) {
          res = (res * a) % m;
       }
       a = (a * a) % m;
@@ -77,55 +65,39 @@ ll power(ll a, ll b, ll m)
    }
    return res % m;
 }
-void pre()
-{
+void pre() {
 #ifndef ONLINE_JUDGE
    freopen("input.txt", "r", stdin);
    freopen("output.txt", "w", stdout);
 #endif
 }
-int dhundhoasc(vector<int> v, int low, int high, int x)
-{
-   while (low <= high)
-   {
+int dhundhoasc(vector<int> v, int low, int high, int x) {
+   while (low <= high) {
       int mid = (low + high) / 2;
-      if (v[mid] == x)
-      {
+      if (v[mid] == x) {
          return mid;
-      }
-      else if (v[mid] > x)
-      {
+      } else if (v[mid] > x) {
          high = mid - 1;
-      }
-      else
-      {
+      } else {
          low = mid + 1;
       }
    }
    return -1;
 }
-int dhundhodesc(vector<int> v, int low, int high, int x)
-{
-   while (low <= high)
-   {
+int dhundhodesc(vector<int> v, int low, int high, int x) {
+   while (low <= high) {
       int mid = (low + high) / 2;
-      if (v[mid] == x)
-      {
+      if (v[mid] == x) {
          return mid;
-      }
-      else if (v[mid] > x)
-      {
+      } else if (v[mid] > x) {
          low = mid + 1;
-      }
-      else
-      {
+      } else {
          high = mid - 1;
       }
    }
    return -1;
 }
-void solve()
-{
+void solve() {
    int n;
    cin >> n;
    vector<int> v(n);
@@ -136,51 +108,37 @@ void solve()
    int bitonic_point = -1;
    int low = 1, high = n - 2;
    // cout << low << " " << high << "\n";
-   while (low <= high)
-   {
+   while (low <= high) {
       int mid = (low + high) / 2;
       // cout << mid << " mid\n";
-      if (v[mid] > v[mid - 1] && v[mid + 1] < v[mid])
-      {
+      if (v[mid] > v[mid - 1] && v[mid + 1] < v[mid]) {
          bitonic_point = mid;
          break;
-      }
-      else
-      {
-         if (v[mid + 1] > v[mid])
-         {
+      } else {
+         if (v[mid + 1] > v[mid]) {
             low = mid + 1;
-         }
-         else
-         {
+         } else {
             high = mid - 1;
          }
       }
    }
-   if (bitonic_point != -1)
-   {
+   if (bitonic_point != -1) {
       // cout << bitonic_point << " bp\n";
       int left = dhundhoasc(v, 0, bitonic_point, f);
       int right = dhundhodesc(v, bitonic_point + 1, n - 1, f);
       cout << max(left, right) << "\n";
-   }
-   else if (v[0] < v[n - 1])
-   {
+   } else if (v[0] < v[n - 1]) {
       cout << dhundhoasc(v, 0, n - 1, f) << "\n";
-   }
-   else
-   {
+   } else {
       cout << dhundhodesc(v, 0, n - 1, f) << "\n";
    }
 }
-int main()
-{
+int main() {
    ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(NULL);
    pre();
    int test_cases = 1;
    // cin >> test_cases;
-   for (int i = 1; i <= test_cases; i++)
-   {
+   for (int i = 1; i <= test_cases; i++) {
       // cout << "Case #" << tc << ": ";
       solve();
    }
