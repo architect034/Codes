@@ -1,5 +1,5 @@
-3 4
-A B C E
-S F C S
-A D E E
-ABCB
+4 4
+X X X X
+X O O X
+X X O X
+X O X X
