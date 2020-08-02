@@ -93,34 +93,56 @@ void _IOE() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-#define int long long
-int fact[MAX];
+// #define int long long
 class Solution {
   public:
-   void solution() {
-      int n;
-      cin >> n;
-      int ans = 0;
-      int p = 1;
-      for (int i = 1; i <= n; i++) {
-         ans += p;
-         ans = ans % mod;
-         p += n + 1;
+   void gameOfLife(vector<vector<int> > &v) {
+      int n = v.size(), m = v[0].size();
+      for (int i = 0; i < n; i++) {
+         for (int j = 0; j < m; j++) {
+            int sum = 0;
+            if (j - 1 >= 0 && (v[i][j - 1] == 1 || v[i][j - 1] == -2)) sum++;
+            if (i - 1 >= 0 && j - 1 >= 0 && (v[i - 1][j - 1] == 1 || v[i - 1][j - 1] == -2)) sum++;
+            if (i - 1 >= 0 && (v[i - 1][j] == 1 || v[i - 1][j] == -2)) sum++;
+            if (i - 1 >= 0 && j + 1 < m && (v[i - 1][j + 1] == 1 || v[i - 1][j + 1] == -2)) sum++;
+            if (j + 1 < m && (v[i][j + 1] == 1 || v[i][j + 1] == -2)) sum++;
+            if (i + 1 < n && j + 1 < m && (v[i + 1][j + 1] == 1 || v[i + 1][j + 1] == -2)) sum++;
+            if (i + 1 < n && (v[i + 1][j] == 1 || v[i + 1][j] == -2)) sum++;
+            if (i + 1 < n && j - 1 >= 0 && (v[i + 1][j - 1] == 1 || v[i + 1][j - 1] == -2)) sum++;
+            if (v[i][j] == 0) {
+               if (sum == 3) v[i][j] = -1;
+            } else {
+               if (sum < 2) v[i][j] = -2;
+               if (sum == 2 || sum == 3) v[i][j] = 1;
+               if (sum > 3) v[i][j] = -2;
+            }
+         }
       }
-      int times = 1;
-      ans = (ans * fact[n - 1]) % mod;
-      ans = (ans * n) % mod;
-      pl(ans);
+      for (int i = 0; i < n; i++) {
+         for (int j = 0; j < m; j++) {
+            if (v[i][j] == -2) v[i][j] = 0;
+            if (v[i][j] == -1) v[i][j] = 1;
+         }
+      }
+   }
+   void solution() {
+      int n, m;
+      cin >> n >> m;
+      vector<vector<int> > v(n, vector<int>(m));
+      for (int i = 0; i < n; i++)
+         for (int j = 0; j < m; j++) cin >> v[i][j];
+      this->gameOfLife(v);
+      for (int i = 0; i < n; i++) {
+         for (int j = 0; j < m; j++) {
+            cout << v[i][j] << " ";
+         }
+         nl;
+      }
    }
 };
 signed main() {
    IOE;
    _IOE();
-   fact[0] = 1;
-   for (int i = 1; i < MAX; i++) {
-      fact[i] = i * fact[i - 1];
-      fact[i] %= mod;
-   }
    int test_cases = 1;
    // cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {

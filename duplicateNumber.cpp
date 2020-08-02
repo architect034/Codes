@@ -93,34 +93,34 @@ void _IOE() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-#define int long long
-int fact[MAX];
+// #define int long long
 class Solution {
   public:
+   int findDuplicate(vector<int> &v) {
+      int n = v.size();
+      for (int i = 0; i < n; i++) {
+         v[v[i] % n] += n;
+      }
+      for (int i = 0; i < n; i++) {
+         if (v[i] / n >= 2) {
+            return i % n;
+         }
+      }
+      return 1;
+   }
    void solution() {
       int n;
       cin >> n;
-      int ans = 0;
-      int p = 1;
-      for (int i = 1; i <= n; i++) {
-         ans += p;
-         ans = ans % mod;
-         p += n + 1;
+      vector<int> v(n);
+      for (int i = 0; i < n; i++) {
+         cin >> v[i];
       }
-      int times = 1;
-      ans = (ans * fact[n - 1]) % mod;
-      ans = (ans * n) % mod;
-      pl(ans);
+      cout << this->findDuplicate(v);
    }
 };
 signed main() {
    IOE;
    _IOE();
-   fact[0] = 1;
-   for (int i = 1; i < MAX; i++) {
-      fact[i] = i * fact[i - 1];
-      fact[i] %= mod;
-   }
    int test_cases = 1;
    // cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {

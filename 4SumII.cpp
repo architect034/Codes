@@ -93,34 +93,46 @@ void _IOE() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-#define int long long
-int fact[MAX];
+// #define int long long
 class Solution {
   public:
+   int fourSumCount(vector<int> &a, vector<int> &b, vector<int> &c, vector<int> &d) {
+      int n = a.size();
+      vector<int> _a;
+      for (int i = 0; i < n; i++) {
+         for (int j = 0; j < n; j++) {
+            _a.push_back(a[i] + b[j]);
+         }
+      }
+      map<int, int> _b;
+      for (int i = 0; i < n; i++) {
+         for (int j = 0; j < n; j++) {
+            _b[c[i] + d[j]]++;
+         }
+      }
+      int ans = 0;
+      for (int i = 0; i < _a.size(); i++) {
+         int x = _a[i];
+         int dif = -x;
+         ans += _b[dif];
+      }
+      dbg(ans);
+      return ans;
+   }
    void solution() {
       int n;
       cin >> n;
-      int ans = 0;
-      int p = 1;
-      for (int i = 1; i <= n; i++) {
-         ans += p;
-         ans = ans % mod;
-         p += n + 1;
-      }
-      int times = 1;
-      ans = (ans * fact[n - 1]) % mod;
-      ans = (ans * n) % mod;
-      pl(ans);
+      vector<int> a(n), b(n), c(n), d(n);
+      for (int &x : a) cin >> x;
+      for (int &x : b) cin >> x;
+      for (int &x : c) cin >> x;
+      for (int &x : d) cin >> x;
+      cout << this->fourSumCount(a, b, c, d);
    }
 };
 signed main() {
    IOE;
    _IOE();
-   fact[0] = 1;
-   for (int i = 1; i < MAX; i++) {
-      fact[i] = i * fact[i - 1];
-      fact[i] %= mod;
-   }
    int test_cases = 1;
    // cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {

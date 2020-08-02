@@ -93,34 +93,50 @@ void _IOE() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-#define int long long
-int fact[MAX];
+// #define int long long
 class Solution {
   public:
-   void solution() {
-      int n;
-      cin >> n;
-      int ans = 0;
-      int p = 1;
-      for (int i = 1; i <= n; i++) {
-         ans += p;
-         ans = ans % mod;
-         p += n + 1;
+   int n;
+   int dp[1001][1001];
+   vector<int> a;
+   int solve(int pos, int amt) {
+      if (amt == 0) {
+         return 0;
       }
-      int times = 1;
-      ans = (ans * fact[n - 1]) % mod;
-      ans = (ans * n) % mod;
-      pl(ans);
+      if (pos == n || amt < 0) {
+         return 1e6 + 10;
+      }
+      if (dp[pos][amt] != -1) return dp[pos][amt];
+      int ans = INT_MAX;
+      for (int i = pos; i < n; i++) {
+         ans = min({ans, 1 + solve(i, amt - a[i]), solve(i + 1, amt)});
+      }
+      return dp[pos][amt] = ans;
+   }
+   int coinChange(vector<int> &v, int amt) {
+      n = v.size();
+      int ans = 0;
+      a = v;
+      for (int i = 0; i <= n; i++) {
+         for (int j = 0; j <= amt; j++) {
+            dp[i][j] = -1;
+         }
+      }
+      ans = solve(0, amt);
+      return (ans >= 1e6 + 10) ? -1 : ans;
+   }
+   void solution() {
+      cin >> n;
+      vector<int> v(n);
+      for (int i = 0; i < n; i++) cin >> v[i];
+      int sum;
+      cin >> sum;
+      cout << coinChange(v, sum) << endl;
    }
 };
 signed main() {
    IOE;
    _IOE();
-   fact[0] = 1;
-   for (int i = 1; i < MAX; i++) {
-      fact[i] = i * fact[i - 1];
-      fact[i] %= mod;
-   }
    int test_cases = 1;
    // cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {

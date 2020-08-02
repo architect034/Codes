@@ -93,34 +93,33 @@ void _IOE() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-#define int long long
-int fact[MAX];
+// #define int long long
 class Solution {
   public:
+   vector<int> productExceptSelf(vector<int> &v) {
+      int n = v.size();
+      vector<int> l(n), r(n);
+      l[0] = v[0];
+      r[n - 1] = v[n - 1];
+      for (int i = 1; i < n; i++) l[i] = v[i] * l[i - 1];
+      for (int i = n - 2; i >= 0; i--) r[i] = r[i + 1] * v[i];
+      vector<int> ans(n);
+      ans[0] = r[1], ans[n - 1] = l[n - 2];
+      for (int i = 1; i < n - 1; i++) ans[i] = l[i - 1] * r[i + 1];
+      dbg(ans);
+      return ans;
+   }
    void solution() {
       int n;
       cin >> n;
-      int ans = 0;
-      int p = 1;
-      for (int i = 1; i <= n; i++) {
-         ans += p;
-         ans = ans % mod;
-         p += n + 1;
-      }
-      int times = 1;
-      ans = (ans * fact[n - 1]) % mod;
-      ans = (ans * n) % mod;
-      pl(ans);
+      vector<int> v(n);
+      for (int &x : v) cin >> x;
+      this->productExceptSelf(v);
    }
 };
 signed main() {
    IOE;
    _IOE();
-   fact[0] = 1;
-   for (int i = 1; i < MAX; i++) {
-      fact[i] = i * fact[i - 1];
-      fact[i] %= mod;
-   }
    int test_cases = 1;
    // cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {

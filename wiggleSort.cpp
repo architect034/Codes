@@ -93,34 +93,32 @@ void _IOE() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-#define int long long
-int fact[MAX];
+// #define int long long
 class Solution {
   public:
+   void wiggleSort(vector<int> &v) {
+      int n = v.size();
+      for (int i = 1; i < n; i += 2) {
+         if (v[i] < v[i - 1]) {
+            swap(v[i], v[i - 1]);
+         }
+         if (i + 1 < n && v[i] < v[i + 1]) {
+            swap(v[i], v[i + 1]);
+         }
+      }
+      dbg(v);
+   }
    void solution() {
       int n;
       cin >> n;
-      int ans = 0;
-      int p = 1;
-      for (int i = 1; i <= n; i++) {
-         ans += p;
-         ans = ans % mod;
-         p += n + 1;
-      }
-      int times = 1;
-      ans = (ans * fact[n - 1]) % mod;
-      ans = (ans * n) % mod;
-      pl(ans);
+      vector<int> v(n);
+      for (int &x : v) cin >> x;
+      wiggleSort(v);
    }
 };
 signed main() {
    IOE;
    _IOE();
-   fact[0] = 1;
-   for (int i = 1; i < MAX; i++) {
-      fact[i] = i * fact[i - 1];
-      fact[i] %= mod;
-   }
    int test_cases = 1;
    // cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {

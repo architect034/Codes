@@ -93,34 +93,37 @@ void _IOE() {
    freopen("error.txt", "w", stderr);
 #endif
 }
-#define int long long
-int fact[MAX];
+// #define int long long
 class Solution {
   public:
-   void solution() {
-      int n;
-      cin >> n;
-      int ans = 0;
-      int p = 1;
-      for (int i = 1; i <= n; i++) {
-         ans += p;
-         ans = ans % mod;
-         p += n + 1;
+   int solve(int st, int en, int k, string s) {
+      vector<int> h(26, 0);
+      for (int i = st; i <= en; i++) {
+         h[s[i] - 'a']++;
       }
-      int times = 1;
-      ans = (ans * fact[n - 1]) % mod;
-      ans = (ans * n) % mod;
-      pl(ans);
+      for (int i = st; i <= en; i++) {
+         if (h[s[i] - 'a'] < k) {
+            int l = solve(st, i - 1, k, s);
+            int r = solve(i + 1, en, k, s);
+            return max(l, r);
+         }
+      }
+      return en - st + 1;
+   }
+   int longestSubstring(string s, int k) {
+      return solve(0, s.size() - 1, k, s);
+   }
+   void solution() {
+      string s;
+      cin >> s;
+      int k;
+      cin >> k;
+      cout << this->longestSubstring(s, k);
    }
 };
 signed main() {
    IOE;
    _IOE();
-   fact[0] = 1;
-   for (int i = 1; i < MAX; i++) {
-      fact[i] = i * fact[i - 1];
-      fact[i] %= mod;
-   }
    int test_cases = 1;
    // cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
