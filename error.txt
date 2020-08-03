@@ -1,1 +1,3 @@
-a = 6| ans = 6| 
+ans = 
+{"the", "is", "sunny", "day"}
+| 

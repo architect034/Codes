@@ -96,26 +96,31 @@ void _IOE() {
 // #define int long long
 class Solution {
   public:
-   int lastStoneWeight(vector<int> &v) {
-      int n = v.size();
-      priority_queue<int> pq;
-      for (int i = 0; i < n; i++) pq.push(v[i]);
-      while (pq.size() > 1) {
-         int x = pq.top();
-         pq.pop();
-         int y = pq.top();
-         pq.pop();
-         if (x != y) pq.push(x - y);
+   vector<string> topKFrequent(vector<string> &v, int k) {
+      unordered_map<string, int> m;
+      for (string s : v) {
+         m[s]++;
       }
-      if (pq.size() == 0) return 0;
-      return pq.top();
+      vector<pair<int, string> > temp;
+      for (auto x : m) {
+         temp.push_back({-x.second, x.first});
+      }
+      sort(temp.begin(), temp.end());
+      vector<string> ans;
+      for (int i = 0; i < k; i++) {
+         ans.push_back(temp[i].second);
+      }
+      dbg(ans);
+      return ans;
    }
    void solution() {
       int n;
       cin >> n;
-      vector<int> v(n);
-      for (int &x : v) cin >> x;
-      cout << this->lastStoneWeight(v);
+      vector<string> v(n);
+      for (string &s : v) cin >> s;
+      int k;
+      cin >> k;
+      this->topKFrequent(v, k);
    }
 };
 signed main() {
