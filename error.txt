@@ -1,6 +1,0 @@
-cnt = 1| 
-cnt = 4| 
-cnt = 4| 
-cnt = 5| 
-cnt = 6| 
-cnt = 5| 
