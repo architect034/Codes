@@ -96,81 +96,26 @@ void _IOE() {
 // #define int long long
 class Solution {
   public:
-   int leftRight(vector<int> &v) {
-      int n = v.size();
-      vector<int> l(n);
-      stack<int> s;
-      for (int i = 0; i < n; i++) {
-         while (s.empty() == 0 && v[s.top()] >= v[i]) {
-            s.pop();
-         }
-         if (s.size())
-            l[i] = s.top();
-         else
-            l[i] = -1;
-         l[i] = i - l[i];
-         s.push(i);
-      }
-      while (s.empty() == 0) s.pop();
-      for (int i = n - 1; i >= 0; i--) {
-         while (s.empty() == 0 && v[s.top()] >= v[i]) {
-            s.pop();
-         }
-         if (s.size())
-            l[i] = l[i] + s.top() - i - 1;
-         else
-            l[i] = l[i] + n - i - 1;
-         s.push(i);
-      }
-      int ans = 0;
-      for (int i = 0; i < n; i++) {
-         ans = max(ans, v[i] * l[i]);
-      }
-      return ans;
-   }
-   int largestRectangleArea(vector<int> &v) {
-      int ans2 = leftRight(v);
-      int n = v.size(), ans = 0;
-      stack<int> s;
-      for (int i = 0; i < n; i++) {
-         while (!s.empty() && v[s.top()] >= v[i]) {
-            int upar = s.top();
-            s.pop();
-            if (s.size()) {
-               ans = max(ans, v[upar] * (i - s.top() - 1));
-            } else {
-               ans = max(ans, v[upar] * i);
-            }
-         }
-         s.push(i);
-      }
-      while (s.size()) {
-         int upar = s.top();
-         s.pop();
-         if (s.size()) {
-            ans = max(ans, v[upar] * (n - s.top() - 1));
-         } else {
-            ans = max(ans, v[upar] * n);
-         }
-      }
-      if (ans != ans2) {
-         dbg(ans, ans2);
-      }
-      return ans;
-   }
    void solution() {
       int n;
       cin >> n;
       vector<int> v(n);
       for (int &x : v) cin >> x;
-      cout << this->largestRectangleArea(v);
+      sort(all(v));
+      for (int i = 1; i < n; i++) {
+         if (v[i] - v[i - 1] > 1) {
+            no;
+            return;
+         }
+      }
+      yes;
    }
 };
 signed main() {
    IOE;
    _IOE();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       Solution obj;
       obj.solution();
