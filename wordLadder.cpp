@@ -96,26 +96,46 @@ void _IOE() {
 // #define int long long
 class Solution {
   public:
-   vector<int> intersection(vector<int> &a, vector<int> &b) {
-      int n = a.size();
-      map<int, int> m;
-      vector<int> ans;
-      for (int i = 0; i < n; i++) m[a[i]]++;
-      for (int x : b) {
-         if (m[x] > 0) {
-            ans.push_back(x);
-            m[x] = 0;
+   int ladderLength(string s, string e, vector<string> &v) {
+      unordered_map<string, bool> m;
+      for (string x : v) m[x] = 1;
+      if (m.find(e) == m.end()) return 0;
+      queue<pair<string, int> > q;
+      q.push({s, 1});
+      while (!q.empty()) {
+         string t = q.front().first;
+         int d = q.front().second;
+         if (t == e) {
+            return d;
+         }
+         q.pop();
+         int n = t.size();
+         for (int i = 0; i < n; i++) {
+            char c = t[i];
+            for (char j = 'a'; j <= 'z'; j++) {
+               if (c == j) continue;
+               t[i] = j;
+               if (t == e) {
+                  return d + 1;
+               }
+               if (m.find(t) != m.end()) {
+                  q.push({t, d + 1});
+                  m.erase(t);
+               }
+            }
+            t[i] = c;
          }
       }
-      return ans;
+      return 0;
    }
    void solution() {
-      int n, m;
-      cin >> n >> m;
-      vector<int> a(n), b(m);
-      for (int &x : a) cin >> x;
-      for (int &x : b) cin >> x;
-      intersection(a, b);
+      string st, en;
+      cin >> st >> en;
+      int n;
+      cin >> n;
+      vector<string> v(n);
+      for (string &s : v) cin >> s;
+      cout << this->ladderLength(st, en, v);
    }
 };
 signed main() {

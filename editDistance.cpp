@@ -96,26 +96,29 @@ void _IOE() {
 // #define int long long
 class Solution {
   public:
-   vector<int> intersection(vector<int> &a, vector<int> &b) {
-      int n = a.size();
-      map<int, int> m;
-      vector<int> ans;
-      for (int i = 0; i < n; i++) m[a[i]]++;
-      for (int x : b) {
-         if (m[x] > 0) {
-            ans.push_back(x);
-            m[x] = 0;
+   string s, t;
+   int dp[1001][1001];
+   int solve(int n, int m) {
+      if (n == 0) return dp[n][m] = m;
+      if (m == 0) return dp[n][m] = n;
+      if (dp[n][m] != INT_MAX) return dp[n][m];
+      if (s[n - 1] == t[m - 1]) return dp[n][m] = solve(n - 1, m - 1);
+      return dp[n][m] = min({1 + solve(n, m - 1), 1 + solve(n - 1, m), 1 + solve(n - 1, m - 1)});
+   }
+   int minDistance(string s, string t) {
+      this->s = s;
+      this->t = t;
+      for (int i = 0; i <= s.size(); i++) {
+         for (int j = 0; j <= t.size(); j++) {
+            dp[i][j] = INT_MAX;
          }
       }
-      return ans;
+      return solve(s.size(), t.size());
    }
    void solution() {
-      int n, m;
-      cin >> n >> m;
-      vector<int> a(n), b(m);
-      for (int &x : a) cin >> x;
-      for (int &x : b) cin >> x;
-      intersection(a, b);
+      string s, t;
+      cin >> s >> t;
+      cout << minDistance(s, t);
    }
 };
 signed main() {

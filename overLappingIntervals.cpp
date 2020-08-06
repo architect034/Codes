@@ -96,33 +96,35 @@ void _IOE() {
 // #define int long long
 class Solution {
   public:
-   vector<int> intersection(vector<int> &a, vector<int> &b) {
-      int n = a.size();
-      map<int, int> m;
-      vector<int> ans;
-      for (int i = 0; i < n; i++) m[a[i]]++;
-      for (int x : b) {
-         if (m[x] > 0) {
-            ans.push_back(x);
-            m[x] = 0;
+   void solution() {
+      int n;
+      cin >> n;
+      vector<pair<int, int> > v(n);
+      for (int i = 0; i < n; i++) {
+         cin >> v[i].first >> v[i].second;
+      }
+      sort(v.begin(), v.end());
+      vector<pair<int, int> > ans;
+      ans.push_back({v[0].first, v[0].second});
+      for (int i = 1; i < n; i++) {
+         int newSt = v[i].first;
+         if (newSt <= ans.back().second) {
+            ans.back().second = max(ans.back().second, v[i].second);
+         } else {
+            ans.push_back(v[i]);
          }
       }
-      return ans;
-   }
-   void solution() {
-      int n, m;
-      cin >> n >> m;
-      vector<int> a(n), b(m);
-      for (int &x : a) cin >> x;
-      for (int &x : b) cin >> x;
-      intersection(a, b);
+      for (pair<int, int> p : ans) {
+         cout << p.first << " " << p.second << " ";
+      }
+      nl;
    }
 };
 signed main() {
    IOE;
    _IOE();
    int test_cases = 1;
-   // cin >> test_cases;
+   cin >> test_cases;
    for (int i = 1; i <= test_cases; i++) {
       Solution obj;
       obj.solution();

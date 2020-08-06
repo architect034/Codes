@@ -81,7 +81,7 @@ signed main() {
       v[y].pb(mp(x, wt));
    }
    int s = 1;
-   int dis[n + 1] = {0};
+   int dis[n + 1];
    loop(i, 1, n, 1) {
       dis[i] = INT_MAX;
    }
@@ -89,6 +89,7 @@ signed main() {
    st.insert(mp(0, s));
    int p[n];
    p[1] = -1;
+   dis[1] = 0;
    while (st.empty() == 0) {
       int a = (*st.begin()).SS;
       st.erase(st.begin());

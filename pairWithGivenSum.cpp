@@ -96,26 +96,68 @@ void _IOE() {
 // #define int long long
 class Solution {
   public:
-   vector<int> intersection(vector<int> &a, vector<int> &b) {
-      int n = a.size();
+   int totalPairsFunc(vector<int> &v, int sum) {
+      int n = v.size();
+      sort(v.begin(), v.end());
       map<int, int> m;
-      vector<int> ans;
-      for (int i = 0; i < n; i++) m[a[i]]++;
-      for (int x : b) {
-         if (m[x] > 0) {
-            ans.push_back(x);
-            m[x] = 0;
+      for (int i = 0; i < n; i++) m[v[i]]++;
+      int l = 0, r = n - 1, ans = 0;
+      while (l < r) {
+         if (v[l] + v[r] == sum) {
+            if (v[l] != v[r]) {
+               ans += (m[v[l]] * m[v[r]]);
+            } else {
+               ans += (m[v[l]] * (m[v[l]] - 1) / 2);
+            }
+            int i = l;
+            while (l < r && v[l] == v[i]) {
+               l++;
+            }
+            i = r;
+            while (l < r && v[r] == v[i]) {
+               r--;
+            }
+         } else if (v[l] + v[r] < sum) {
+            l++;
+         } else {
+            r--;
+         }
+      }
+      return ans;
+   }
+   int uniquePairFunc(vector<int> &v, int sum) {
+      int n = v.size();
+      sort(all(v));
+      int ans = 0, l = 0, r = n - 1;
+      while (l < r) {
+         if (v[l] + v[r] == sum) {
+            ans++;
+            int i = l;
+            while (l < r && v[l] == v[i]) {
+               l++;
+            }
+            i = r;
+            while (l < r && v[r] == v[i]) {
+               r--;
+            }
+         } else if (v[l] + v[r] < sum) {
+            l++;
+         } else {
+            r--;
          }
       }
       return ans;
    }
    void solution() {
-      int n, m;
-      cin >> n >> m;
-      vector<int> a(n), b(m);
-      for (int &x : a) cin >> x;
-      for (int &x : b) cin >> x;
-      intersection(a, b);
+      int n;
+      cin >> n;
+      vector<int> v(n);
+      for (int &x : v) cin >> x;
+      int sum;
+      cin >> sum;
+      int totalPairs = totalPairsFunc(v, sum);
+      int uniquePairs = uniquePairFunc(v, sum);
+      cout << totalPairs << " " << uniquePairs << "\n";
    }
 };
 signed main() {

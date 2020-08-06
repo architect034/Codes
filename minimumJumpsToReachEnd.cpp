@@ -96,26 +96,31 @@ void _IOE() {
 // #define int long long
 class Solution {
   public:
-   vector<int> intersection(vector<int> &a, vector<int> &b) {
-      int n = a.size();
-      map<int, int> m;
-      vector<int> ans;
-      for (int i = 0; i < n; i++) m[a[i]]++;
-      for (int x : b) {
-         if (m[x] > 0) {
-            ans.push_back(x);
-            m[x] = 0;
+   int jump(vector<int> &v) {
+      int n = v.size();
+      if (n <= 1) return 0;
+      int ans = 1, mx = v[0], step = v[0];
+      for (int i = 1; i < n; i++) {
+         if (i == n - 1) return ans;
+         mx = max(mx, i + v[i]);
+         step--;
+         if (step == 0) {
+            ans++;
+            if (i >= mx) {
+               return -1;
+            } else {
+               step = mx - i;
+            }
          }
       }
-      return ans;
+      return -1;
    }
    void solution() {
-      int n, m;
-      cin >> n >> m;
-      vector<int> a(n), b(m);
-      for (int &x : a) cin >> x;
-      for (int &x : b) cin >> x;
-      intersection(a, b);
+      int n;
+      cin >> n;
+      vector<int> v(n);
+      for (int &x : v) cin >> x;
+      cout << jump(v);
    }
 };
 signed main() {

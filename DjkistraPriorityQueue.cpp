@@ -17,6 +17,7 @@
 #define PI 3.14159265358979323846
 using namespace std;
 const int MAX = 2e5 + 9;
+const int INF = 2e8 + 9;
 const ll mod = 1e9 + 7;
 vector<bool> prime(MAX, 1);
 vector<int> spf(MAX, 1), primes;
@@ -96,26 +97,35 @@ void _IOE() {
 // #define int long long
 class Solution {
   public:
-   vector<int> intersection(vector<int> &a, vector<int> &b) {
-      int n = a.size();
-      map<int, int> m;
-      vector<int> ans;
-      for (int i = 0; i < n; i++) m[a[i]]++;
-      for (int x : b) {
-         if (m[x] > 0) {
-            ans.push_back(x);
-            m[x] = 0;
-         }
-      }
-      return ans;
-   }
    void solution() {
       int n, m;
       cin >> n >> m;
-      vector<int> a(n), b(m);
-      for (int &x : a) cin >> x;
-      for (int &x : b) cin >> x;
-      intersection(a, b);
+      vector<pair<int, int>> g[n + 1];
+      for (int i = 0; i < m; i++) {
+         int x, y, w;
+         cin >> x >> y >> w;
+         g[x].push_back({y, w});
+         g[y].push_back({x, w});
+      }
+      priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+      int s = 1;
+      vector<int> dis(n + 1, INF);
+      dis[1] = 0;
+      pq.push({0, 1});
+      while (!pq.empty()) {
+         int disToX = pq.top().first;
+         int x = pq.top().second;
+         pq.pop();
+         for (int i = 0; i < g[x].size(); i++) {
+            int y = g[x][i].first;
+            int wt = g[x][i].second;
+            if (disToX + wt < dis[y]) {
+               dis[y] = disToX + wt;
+               pq.push({dis[y], y});
+            }
+         }
+      }
+      dbg(dis);
    }
 };
 signed main() {
