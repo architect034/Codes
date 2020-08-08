@@ -96,35 +96,21 @@ void _IOE() {
 // #define int long long
 class Solution {
   public:
-   int firstMissingPositive(vector<int> &v) {
-      int n = v.size();
-      int p = 0;
-      for (int i = 0; i < n; i++) {
-         if (v[i] > 0) {
-            swap(v[i], v[p]);
-            p++;
-         }
+   bool isRectangleOverlap(vector<int> &p1, vector<int> &p2) {
+      if (p1[2] <= p2[0] || p2[2] <= p1[0]) {
+         return false;
       }
-      dbg(v);
-      n = p;
-      for (int i = 0; i < n; i++) {
-         if (abs(v[i]) - 1 < n && v[abs(v[i]) - 1] > 0) {
-            v[abs(v[i]) - 1] = -v[abs(v[i]) - 1];
-         }
+      if (p1[3] <= p2[1] || p2[3] <= p1[1]) {
+         return false;
       }
-      for (int i = 0; i < n; i++) {
-         if (v[i] > 0) {
-            return i + 1;
-         }
-      }
-      return n + 1;
+      return true;
    }
    void solution() {
-      int n;
-      cin >> n;
-      vector<int> v(n);
-      for (int &x : v) cin >> x;
-      cout << this->firstMissingPositive(v) << "\n";
+      int x1, y1, x2, y2, x3, y3, x4, y4;
+      cin >> x1 >> y1 >> x2 >> y2 >> x3 >> y3 >> x4 >> y4;
+      vector<int> p1 = {x1, y1, x2, y2};
+      vector<int> p2 = {x3, y3, x4, y4};
+      cout << isRectangleOverlap(p1, p2);
    }
 };
 signed main() {

@@ -96,35 +96,30 @@ void _IOE() {
 // #define int long long
 class Solution {
   public:
-   int firstMissingPositive(vector<int> &v) {
+   int MOD = 1000000007;
+   int solve(vector<int> &v) {
       int n = v.size();
-      int p = 0;
+      vector<int> setBits(35, 0);
       for (int i = 0; i < n; i++) {
-         if (v[i] > 0) {
-            swap(v[i], v[p]);
-            p++;
+         int idx = 0;
+         while (v[i]) {
+            setBits[idx++] += v[i] % 2;
+            v[i] /= 2;
          }
       }
-      dbg(v);
-      n = p;
-      for (int i = 0; i < n; i++) {
-         if (abs(v[i]) - 1 < n && v[abs(v[i]) - 1] > 0) {
-            v[abs(v[i]) - 1] = -v[abs(v[i]) - 1];
-         }
+      int ans = 0;
+      for (int i = 0; i < 35; i++) {
+         ans += (2 * ((setBits[i] % MOD * (n - setBits[i]) % MOD) % MOD)) % MOD;
+         ans %= MOD;
       }
-      for (int i = 0; i < n; i++) {
-         if (v[i] > 0) {
-            return i + 1;
-         }
-      }
-      return n + 1;
+      return ans;
    }
    void solution() {
       int n;
       cin >> n;
       vector<int> v(n);
       for (int &x : v) cin >> x;
-      cout << this->firstMissingPositive(v) << "\n";
+      cout << solve(v);
    }
 };
 signed main() {

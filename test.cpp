@@ -96,26 +96,37 @@ void _IOE() {
 // #define int long long
 class Solution {
   public:
-   vector<int> intersection(vector<int> &a, vector<int> &b) {
-      int n = a.size();
-      map<int, int> m;
-      vector<int> ans;
-      for (int i = 0; i < n; i++) m[a[i]]++;
-      for (int x : b) {
-         if (m[x] > 0) {
-            ans.push_back(x);
-            m[x] = 0;
+   vector<int> a;
+   int n, req;
+   map<pair<int, int>, int> dp;
+   int solve(int pos, int sum) {
+      if (sum == req) {
+         if (pos == n) {
+            return 1;
          }
       }
-      return ans;
+      if (pos == n) {
+         return 0;
+      }
+      if (dp.find({pos, sum}) != dp.end()) return dp[{pos, sum}];
+      return dp[{pos, sum}] = solve(pos + 1, sum - a[pos]) + solve(pos + 1, sum + a[pos]);
+   }
+   int findTargetSumWays(vector<int> &v, int sum) {
+      a.clear();
+      this->a.push_back(0);
+      for (int &x : v) this->a.push_back(x);
+      this->n = a.size();
+      this->req = sum;
+      return solve(1, 0);
    }
    void solution() {
-      int n, m;
-      cin >> n >> m;
-      vector<int> a(n), b(m);
-      for (int &x : a) cin >> x;
-      for (int &x : b) cin >> x;
-      intersection(a, b);
+      int n;
+      cin >> n;
+      vector<int> v(n);
+      for (int &x : v) cin >> x;
+      int sum;
+      cin >> sum;
+      cout << findTargetSumWays(v, sum);
    }
 };
 signed main() {
